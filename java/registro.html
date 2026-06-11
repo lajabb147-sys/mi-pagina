@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zensei Art - Registro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0b0612;
+            background-image: radial-gradient(circle at 50% 50%, rgba(90, 15, 150, 0.15) 0%, transparent 80%);
+        }
+
+        .contenedor-login {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(90, 15, 150, 0.1);
+            padding: 45px 35px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(140, 0, 255, 0.15);
+            backdrop-filter: blur(12px);
+        }
+
+        .titulo-login {
+            font-family: 'Alex Brush', cursive !important;
+            font-size: 45pt;
+            font-weight: 300;
+            color: #ffffff;
+            text-align: center;
+            margin: 0 0 5px 0;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 20px rgba(0, 255, 204, 0.25);
+        }
+
+        .titulo-login a.link-regreso {
+            font-family: 'Alex Brush', cursive !important;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .subtitulo-login {
+            font-size: 10pt;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin: 0 0 35px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .grupo-input {
+            margin-bottom: 22px;
+        }
+
+        .grupo-input label {
+            display: block;
+            font-size: 9.5pt;
+            color: #e0b0ff;
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .grupo-input input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 10pt;
+            transition: all 0.3s ease;
+        }
+
+        .grupo-input input:focus {
+            outline: none;
+            border-color: #00ffcc;
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .btn-entrar {
+            width: 100%;
+            padding: 14px;
+            background: #00ffcc;
+            border: none;
+            border-radius: 12px;
+            color: #0f0f1a;
+            font-size: 11pt;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-entrar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
+            background: #00e6b8;
+        }
+
+        .registro-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 9.5pt;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .registro-footer a {
+            color: #00ffcc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .registro-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor-login">
+        <header>
+            <h1 class="titulo-login">
+                <a href="index.html" class="link-regreso">Zensei Art</a>
+            </h1>
+            <p class="subtitulo-login">Registro de Usuario</p>
+        </header>
+
+        <form id="registroForm">
+            <div class="grupo-input">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required>
+            </div>
+            <div class="grupo-input">
+                <label for="email">Correo electrónico</label>
+                <input type="text" id="email" name="email" placeholder="ejemplo@arte.com" required>
+            </div>
+            <div class="grupo-input">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn-entrar">Crear Cuenta</button>
+        </form>
+
+        <footer class="registro-footer">
+            <span>¿Ya tienes cuenta?</span>
+            <a href="index.html">Inicia sesión aquí</a>
+        </footer>
+    </div>
+
+    <script>
+        const SERVER_BASE = 'http://localhost:3001';
+        const API_BASE = `${SERVER_BASE}/api`;
+        const LOGIN_PAGE = `${SERVER_BASE}/java/index.html`;
+
+        if (window.location.protocol === 'file:') {
+            window.location.href = `${SERVER_BASE}/java/registro.html`;
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('registroForm').addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const nombre = document.getElementById('nombre').value.trim();
+                const email = document.getElementById('email').value.trim().toLowerCase();
+                const password = document.getElementById('password').value.trim();
+                const boton = document.querySelector('.btn-entrar');
+
+                if (!nombre || !email || !password) {
+                    alert('Por favor completa todos los campos.');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    alert('La contraseña debe tener al menos 6 caracteres.');
+                    return;
+                }
+
+                boton.disabled = true;
+                boton.textContent = 'Registrando...';
+
+                try {
+                    const response = await fetch(`${API_BASE}/auth/registro`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ nombre, email, password })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        alert('❌ ' + (data.mensaje || 'Error al registrar')); 
+                        boton.disabled = false;
+                        boton.textContent = 'Crear Cuenta';
+                        return;
+                    }
+
+                    alert('✅ Registro correcto. Serás redirigido al login para iniciar sesión.');
+                    window.location.href = LOGIN_PAGE;
+                } catch (error) {
+                    console.error('Error de conexión:', error);
+                    alert('❌ Error de conexión. Verifica que el servidor esté activo.');
+                    boton.disabled = false;
+                    boton.textContent = 'Crear Cuenta';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

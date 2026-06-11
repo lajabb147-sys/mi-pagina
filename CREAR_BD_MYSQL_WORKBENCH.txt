@@ -1,0 +1,181 @@
+📋 CREAR BASE DE DATOS CON MYSQL WORKBENCH
+
+═══════════════════════════════════════════════════════════════
+
+PASO 1: Abre el archivo database.sql
+
+   Ubicación: backend/database.sql
+   
+   1. Haz clic derecho en la carpeta backend
+   2. Selecciona "Abrir con..."
+   3. Abre con tu editor de texto favorito
+   4. Verás el código SQL
+
+   O simplemente abre: 
+   C:\Users\lajab\OneDrive\Pictures\Desktop\Proyecto_Estructura_Jhoan\backend\database.sql
+
+═══════════════════════════════════════════════════════════════
+
+PASO 2: Copia TODO el contenido
+
+   1. Presiona Ctrl + A (seleccionar todo)
+   2. Presiona Ctrl + C (copiar)
+
+═══════════════════════════════════════════════════════════════
+
+PASO 3: Abre MySQL Workbench
+
+   Si no tienes instalado:
+   Descárgalo de: https://www.mysql.com/products/workbench/
+
+═══════════════════════════════════════════════════════════════
+
+PASO 4: Conecta a MySQL
+
+   1. Abre MySQL Workbench
+   2. Haz doble clic en tu conexión (normalmente "Local instance MySQL")
+   3. Ingresa tu contraseña si te la pide
+   4. Ahora estás dentro de MySQL
+
+═══════════════════════════════════════════════════════════════
+
+PASO 5: Crea la base de datos
+
+   1. Busca el área blanca grande en el centro (SQL Editor)
+   2. Pega todo el código que copiaste (Ctrl + V)
+   
+   Deberías ver algo así:
+   
+   -- Crear base de datos
+   CREATE DATABASE IF NOT EXISTS zensei_academy;
+   USE zensei_academy;
+   
+   -- Tabla de Usuarios
+   CREATE TABLE IF NOT EXISTS usuarios (
+   ...
+
+═══════════════════════════════════════════════════════════════
+
+PASO 6: Ejecuta el script
+
+   Opción A (MÁS FÁCIL):
+   1. Presiona Ctrl + Enter
+   
+   Opción B:
+   1. Haz clic en el botón ⚡ (Execute)
+   2. Está en la parte superior
+
+═══════════════════════════════════════════════════════════════
+
+PASO 7: Verifica que se creó correctamente
+
+   En el panel izquierdo, bajo "SCHEMAS", deberías ver:
+   
+   ✅ zensei_academy
+      - usuarios
+      - cursos
+      - inscripciones
+      - notificaciones
+
+   Si lo ves, ¡LISTO! La BD está creada correctamente
+
+═══════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+❌ "Access denied for user 'root'@'localhost'"
+   → Estás sin conexión a MySQL
+   → Haz doble clic en tu conexión y auténticate
+
+❌ "Syntax error"
+   → Probablemente copiaste incompleto el archivo
+   → Intenta copiar de nuevo
+
+❌ "Database already exists"
+   → La BD ya estaba creada
+   → Eso está bien, no pasa nada
+
+✅ Si ves estos mensajes está bien:
+   - "Query OK"
+   - "0 rows affected"
+   - "1 row affected"
+
+═══════════════════════════════════════════════════════════════
+
+VERIFICACIÓN FINAL:
+
+Para verificar que todo funcionó:
+
+1. En MySQL Workbench, haz clic en:
+   File → Run SQL Script
+
+2. Selecciona: backend/database.sql
+
+3. Haz clic en "Run"
+
+4. Si ves ✅ significa que la BD está perfecta
+
+═══════════════════════════════════════════════════════════════
+
+TABLAS CREADAS:
+
+✅ usuarios
+   - id (INT PRIMARY KEY AUTO_INCREMENT)
+   - nombre (VARCHAR 100)
+   - email (VARCHAR 100 UNIQUE)
+   - password (VARCHAR 255)
+   - fecha_registro (TIMESTAMP)
+   - activo (BOOLEAN)
+
+✅ cursos
+   - id (INT PRIMARY KEY AUTO_INCREMENT)
+   - nombre (VARCHAR 150)
+   - descripcion (TEXT)
+   - precio (DECIMAL 10,2)
+   - imagen (VARCHAR 255)
+   - fecha_creacion (TIMESTAMP)
+   - activo (BOOLEAN)
+
+✅ inscripciones
+   - id (INT PRIMARY KEY AUTO_INCREMENT)
+   - usuario_id (INT FOREIGN KEY)
+   - curso_id (INT FOREIGN KEY)
+   - fecha_inscripcion (TIMESTAMP)
+   - estado (ENUM: activo, completado, cancelado)
+
+✅ notificaciones
+   - id (INT PRIMARY KEY AUTO_INCREMENT)
+   - usuario_id (INT FOREIGN KEY)
+   - tipo (VARCHAR 50)
+   - mensaje (TEXT)
+   - leida (BOOLEAN)
+   - fecha_creacion (TIMESTAMP)
+
+Y 3 CURSOS DE EJEMPLO ya cargados
+
+═══════════════════════════════════════════════════════════════
+
+DATOS DE EJEMPLO PRECARGADOS:
+
+📚 Curso 1:
+   Nombre: Lineart Minimalista
+   Precio: $25.00
+
+📚 Curso 2:
+   Nombre: Realismo e Hiperrealismo
+   Precio: $49.99
+
+📚 Curso 3:
+   Nombre: Manga y Anime Profesional
+   Precio: $39.99
+
+═══════════════════════════════════════════════════════════════
+
+¡LISTO! La base de datos está creada 🎉
+
+Ahora:
+1. Cierra MySQL Workbench
+2. Edita backend/.env con tu contraseña MySQL
+3. El servidor se conectará automáticamente
+
+═══════════════════════════════════════════════════════════════

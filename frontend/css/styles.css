@@ -1,0 +1,423 @@
+:root {
+  --bg: #0c0711;
+  --surface: rgba(18, 10, 35, 0.94);
+  --surface-soft: rgba(255, 255, 255, 0.08);
+  --text: #f4f3f8;
+  --muted: #b0a7cc;
+  --accent: #00e5c1;
+  --accent-dark: #00b38b;
+  --card-border: rgba(255,255,255,0.12);
+  --shadow: 0 30px 90px rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background: radial-gradient(circle at top, rgba(0, 229, 193, 0.08), transparent 26%),
+              linear-gradient(180deg, #10091b 0%, #0a0410 100%);
+  color: var(--text);
+}
+
+body {
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+}
+
+.app-shell {
+  width: min(1200px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 48px;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 36px;
+  border-radius: 32px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: var(--shadow);
+}
+
+.hero-content h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  line-height: 1.03;
+}
+
+.hero-content p {
+  margin: 22px 0 0;
+  max-width: 680px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,229,193,0.24);
+  background: rgba(0,229,193,0.08);
+  color: var(--accent);
+  font-size: 0.92rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.btn {
+  border: none;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: 14px 24px;
+  font-weight: 700;
+  transition: transform 0.24s ease, box-shadow 0.24s ease, background-color 0.24s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00e5c1 0%, #00a78f 100%);
+  color: #081018;
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.hero-image {
+  min-height: 320px;
+  border-radius: 32px;
+  background: url('../minimalista_curso.jpg') center/cover no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 30px 90px rgba(0,0,0,0.35);
+}
+
+.main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 28px;
+}
+
+.catalogo-section,
+.detalle-panel {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  padding: 26px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.section-header p {
+  margin: 8px 0 0;
+  color: var(--muted);
+}
+
+.tag {
+  align-self: center;
+  border-radius: 999px;
+  padding: 10px 16px;
+  border: 1px solid rgba(0,229,193,0.2);
+  color: var(--accent);
+  background: rgba(0,229,193,0.06);
+  font-size: 0.95rem;
+}
+
+.alert-box {
+  margin-bottom: 20px;
+  padding: 18px 20px;
+  border-radius: 20px;
+  background: rgba(0,229,193,0.12);
+  color: #d4f7eb;
+  border: 1px solid rgba(0,229,193,0.25);
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+  gap: 20px;
+}
+
+.curso-card {
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.04);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.22);
+  display: grid;
+  grid-template-rows: 180px auto;
+}
+
+.curso-card.placeholder {
+  min-height: 240px;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+.curso-cover {
+  position: relative;
+  background: #111;
+}
+
+.curso-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.curso-status {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.48);
+  color: #fff;
+  font-size: 0.88rem;
+}
+
+.curso-card-body {
+  padding: 22px;
+  display: grid;
+  gap: 16px;
+}
+
+.curso-card h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.curso-card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.7;
+  min-height: 60px;
+}
+
+.curso-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.curso-precio {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.curso-accion {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.curso-accion button,
+.curso-accion a {
+  flex: 1;
+  min-width: 120px;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.curso-accion button {
+  border: none;
+  background: linear-gradient(135deg, #00e5c1 0%, #00b38b 100%);
+  color: #081018;
+}
+
+.curso-accion button.secondary {
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.detalle-card {
+  min-height: 450px;
+  display: grid;
+  gap: 20px;
+}
+
+.detalle-empty {
+  min-height: 320px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--muted);
+  padding: 20px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 24px;
+}
+
+.detalle-content {
+  display: grid;
+  gap: 18px;
+}
+
+.detalle-content h3,
+.detalle-content p {
+  margin: 0;
+}
+
+.detalle-content h3 {
+  font-size: 1.7rem;
+}
+
+.detalle-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.detalle-footer .precio {
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.detalle-footer .btn {
+  width: 100%;
+}
+
+@media (max-width: 980px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 28px;
+  }
+
+  .main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .app-shell {
+    width: min(100%, calc(100% - 24px));
+    padding: 16px 0 32px;
+  }
+
+  .hero-image {
+    min-height: 240px;
+  }
+}
+
+/* Mejoras responsivas adicionales para adaptarse a móviles pequeños */
+@media (max-width: 480px) {
+  :root {
+    --card-radius: 18px;
+  }
+
+  .hero {
+    padding: 20px;
+    gap: 16px;
+    border-radius: 18px;
+  }
+
+  .hero-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .hero-image {
+    min-height: 180px;
+    border-radius: 14px;
+    background-position: center top;
+  }
+
+  .cursos-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .curso-card {
+    border-radius: 14px;
+    grid-template-rows: 160px auto;
+  }
+
+  .curso-card-body {
+    padding: 16px;
+  }
+
+  .detalle-card {
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .detalle-content img {
+    height: 160px;
+    object-fit: cover;
+  }
+
+  .btn {
+    padding: 12px 14px;
+    font-size: 0.95rem;
+  }
+
+  .tag {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+}
+
+/* Usar tamaños relativos cuando sea posible para mantener proporciones */
+html { font-size: 16px; }
+@media (min-width: 1200px) { html { font-size: 18px; } }
+@media (max-width: 480px) { html { font-size: 15px; } }
+
+/* Forzar imágenes y vídeos a adaptarse a su contenedor */
+.curso-cover img, .detalle-content img, .hero-image { max-width: 100%; height: auto; }
+
+/* Botones de acción ocupan todo el ancho en pantallas pequeñas */
+@media (max-width: 520px) {
+  .curso-accion button, .detalle-footer .btn { width: 100%; }
+  .curso-accion { display: grid; grid-auto-rows: min-content; }
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso - Información</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero" style="padding:18px;">
+      <div class="hero-content">
+        <h1 id="cursoNombre">Cargando...</h1>
+        <p id="cursoSub"></p>
+        <div class="hero-actions">
+          <a href="index.html" class="btn btn-secondary">Volver al catálogo</a>
+        </div>
+      </div>
+    </header>
+
+    <main style="max-width:900px;margin:20px auto;padding:10px;">
+      <div id="cursoDetalle" class="detalle-card">
+        <div class="detalle-empty">Cargando información del curso...</div>
+      </div>
+      <section id="otrosCursos" style="margin-top:24px;">
+        <h2 style="margin-bottom:12px;">Otros cursos</h2>
+        <div id="otrosCursosList" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../js/cursos-data.js"></script>
+  <script src="../js/curso.js"></script>
+</body>
+</html>

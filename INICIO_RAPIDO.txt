@@ -1,0 +1,62 @@
+🚀 INICIO RÁPIDO - 5 MINUTOS
+
+PASO 1: Abre la terminal en: backend/
+```
+Presiona Shift + Click derecho en la carpeta "backend"
+Selecciona "Abrir terminal aquí"
+```
+
+PASO 2: Instala las dependencias
+```
+npm install
+```
+
+PASO 3: Edita el archivo .env (cambia la contraseña)
+```
+DB_PASSWORD=tu_contraseña_de_mysql
+```
+
+PASO 4: Crea la base de datos (en MySQL Workbench)
+```
+Copia todo el contenido de "database.sql"
+Pégalo en MySQL Workbench
+Presiona Ctrl + Enter
+```
+
+PASO 5: Inicia el servidor
+```
+npm run dev
+```
+
+✅ LISTO! Tu servidor está en: http://localhost:5000
+
+═══════════════════════════════════════════════════════════════
+
+PRUEBAS RÁPIDAS:
+
+1. En el navegador, abre:
+   http://localhost:5000/api/cursos
+
+2. Deberías ver algo como:
+   {
+     "estado": "éxito",
+     "datos": [...]
+   }
+
+3. Abre el archivo: backend/ejemplo-frontend.html
+   ¡Verás los cursos cargados automáticamente!
+
+═══════════════════════════════════════════════════════════════
+
+COMANDOS ÚTILES:
+
+npm run dev        → Iniciar en desarrollo (con auto-recarga)
+npm start          → Iniciar en producción
+npm install        → Instalar dependencias
+npm list           → Ver paquetes instalados
+
+═══════════════════════════════════════════════════════════════
+
+¡ESO ES TODO! 🎉
+
+Si tienes dudas, lee: INSTRUCCIONES.md

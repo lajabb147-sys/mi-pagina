@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zensei Art - Iniciar Sesión</title>
+    <style>
+        /* Importamos ambas fuentes para combinarlas correctamente */
+        @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            /* Por defecto, toda la interfaz usa la letra normal limpia */
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #0b0612; 
+            background-image: radial-gradient(circle at 50% 50%, rgba(90, 15, 150, 0.15) 0%, transparent 80%);
+        }
+
+        .contenedor-login {
+            width: 100%;
+            max-width: 420px;
+            background: rgba(90, 15, 150, 0.1); 
+            padding: 45px 35px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(140, 0, 255, 0.15);
+            backdrop-filter: blur(12px);
+        }
+
+        
+        .titulo-login {
+            font-family: 'Alex Brush', cursive !important;
+            font-size: 45pt; 
+            font-weight: 300;
+            color: #ffffff;
+            text-align: center;
+            margin: 0 0 5px 0;
+            /* Resplandor exacto de la captura */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 
+                         0 0 20px rgba(0, 255, 204, 0.25);
+        }
+
+        .titulo-login a.link-regreso {    
+            font-family: 'Alex Brush', cursive !important;
+            color: #ffffff;
+            text-decoration: none; 
+            cursor: pointer;
+        }
+
+        /* TODO LO DEMÁS QUEDA EN LETRA NORMAL (POPPINS) */
+        .subtitulo-login {
+            font-size: 10pt;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+            margin: 0 0 35px 0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .grupo-input {
+            margin-bottom: 22px;
+        }
+
+        .grupo-input label {
+            display: block;
+            font-size: 9.5pt;
+            color: #e0b0ff; 
+            margin-bottom: 8px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .grupo-input input {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 10pt;
+            transition: all 0.3s ease;
+        }
+
+        .grupo-input input:focus {
+            outline: none;
+            border-color: #00ffcc;
+            box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .opciones-extra {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 9pt;
+            margin-bottom: 30px;
+        }
+
+        .recordarme {
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+        }
+
+        .recordarme input {
+            margin-right: 8px;
+            accent-color: #00ffcc; 
+        }
+
+        .link-olvido {
+            color: #00ffcc;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+
+        .link-olvido:hover {
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+
+        .btn-entrar {
+            width: 100%;
+            padding: 14px;
+            background: #00ffcc;
+            border: none;
+            border-radius: 12px;
+            color: #0f0f1a;
+            font-size: 11pt;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-entrar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
+            background: #00e6b8;
+        }
+
+        .registro-footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 9.5pt;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .registro-footer a {
+            color: #00ffcc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .registro-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-login">
+        <header>
+            <h1 class="titulo-login">
+                <a href="index.html" class="link-regreso">Zensei Art</a>
+            </h1>
+            <p class="subtitulo-login">Iniciar Sesión</p>
+        </header>
+
+        <form id="loginForm">
+            <div class="grupo-input">
+                <label for="email">Usuario o Correo Electrónico</label>
+                <input type="text" id="email" name="email" placeholder="ejemplo@arte.com" required>
+            </div>
+
+            <div class="grupo-input">
+                <label for="password">Contraseña</label>
+                <input type="password" id="password" name="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="opciones-extra">
+                <label class="recordarme">
+                    <input type="checkbox" id="chkRecordar">
+                    <span>Recordarme</span>
+                </label>
+                <a href="#" class="link-olvido">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <button type="submit" class="btn-entrar">Entrar</button>
+        </form>
+
+        <footer class="registro-footer">
+            <span>¿No tienes una cuenta?</span> 
+            <a href="registro.html">Regístrate aquí</a>
+        </footer>
+    </div>
+<script>
+        const SERVER_BASE = 'http://localhost:3001';
+        const API_BASE = `${SERVER_BASE}/api`;
+        const FRONTEND_HOME = SERVER_BASE;
+
+        // Si el usuario abre el archivo desde disco local, redirigir al servidor
+        if (window.location.protocol === 'file:') {
+            window.location.href = `${SERVER_BASE}/java/index.html`;
+        }
+        // Al cargar la pantalla de login, verificamos si ya hay sesión activa
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // Si existe token válido, redirigir a la página principal
+                window.location.href = FRONTEND_HOME;
+            }
+
+            // Conectar el formulario
+            document.getElementById('loginForm').addEventListener('submit', hacerLogin);
+        });
+
+        // Función para procesar el login con el backend
+        async function hacerLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const password = document.getElementById('password').value.trim();
+            const recordar = document.getElementById('chkRecordar').checked;
+            const btnEntrar = document.querySelector('.btn-entrar');
+
+            // Desactivar botón mientras procesa
+            btnEntrar.disabled = true;
+            btnEntrar.textContent = 'Verificando...';
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    // Mostrar error
+                    alert('❌ ' + (data.mensaje || 'Error al iniciar sesión'));
+                    btnEntrar.disabled = false;
+                    btnEntrar.textContent = 'Entrar';
+                    return;
+                }
+
+                // Login exitoso
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('usuarioId', data.usuarioId);
+                localStorage.setItem('usuarioLogueado', data.nombre);
+                
+                if (recordar) {
+                    localStorage.setItem('recordarSesion', 'true');
+                }
+
+                // Redirigir a la página principal del servidor
+                window.location.href = FRONTEND_HOME;
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('❌ Error de conexión. Verifica que el servidor esté activo.');
+                btnEntrar.disabled = false;
+                btnEntrar.textContent = 'Entrar';
+            }
+        }
+    </script>
+</body>
+</html>

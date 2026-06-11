@@ -1,0 +1,154 @@
+🚀 CÓMO EJECUTAR TODO CORRECTAMENTE
+
+═══════════════════════════════════════════════════════════════
+
+✅ PASO 1: VERIFICAR INSTALACIONES
+
+1. Node.js debe estar instalado
+   Abre PowerShell y escribe:
+   node --version
+   
+   Si no tienes Node.js, descárgalo de: https://nodejs.org/
+
+2. MySQL debe estar instalado y corriendo
+   Descárgalo de: https://www.mysql.com/downloads/
+
+═══════════════════════════════════════════════════════════════
+
+📝 PASO 2: CREAR LA BASE DE DATOS
+
+1. Abre MySQL Workbench
+2. Copia TODO el contenido de: backend/database.sql
+3. Pégalo en MySQL Workbench
+4. Presiona Ctrl + Enter para ejecutar
+
+O en terminal:
+   mysql -u root -p < database.sql
+   (Ingresa tu contraseña de MySQL)
+
+═══════════════════════════════════════════════════════════════
+
+⚙️ PASO 3: CONFIGURAR CREDENCIALES
+
+1. Abre el archivo: backend/.env
+
+2. Busca esta línea:
+   DB_PASSWORD=
+
+3. Agrega tu contraseña de MySQL:
+   DB_PASSWORD=tu_contraseña
+
+   Ejemplo:
+   DB_PASSWORD=mysql123
+
+═══════════════════════════════════════════════════════════════
+
+📦 PASO 4: INSTALAR DEPENDENCIAS
+
+Las dependencias ya están instaladas (node_modules), pero si necesitas reinstalarlas:
+
+1. Abre PowerShell en la carpeta backend/
+2. Ejecuta:
+   npm install
+
+═══════════════════════════════════════════════════════════════
+
+🎯 PASO 5: INICIAR EL SERVIDOR
+
+1. Abre PowerShell en la carpeta backend/
+
+2. Ejecuta uno de estos comandos:
+   
+   DESARROLLO (con auto-recarga):
+   npm run dev
+   
+   PRODUCCIÓN (sin auto-recarga):
+   npm start
+
+3. Verás esto:
+   ╔════════════════════════════════════════╗
+   ║  🎨 ZENSEI ART ACADEMY - BACKEND 🎨  ║
+   ║  Servidor corriendo en puerto 5000      ║
+   ║  URL: http://localhost:5000            ║
+   ╚════════════════════════════════════════╝
+
+═══════════════════════════════════════════════════════════════
+
+🌐 PASO 6: USAR LA PÁGINA WEB
+
+1. Abre: backend/index.html en tu navegador
+
+2. Verás:
+   ✅ Estado de conexión
+   ✅ Formulario para crear cursos
+   ✅ Lista de cursos disponibles
+   ✅ Opción para eliminar cursos
+
+═══════════════════════════════════════════════════════════════
+
+🔗 URLS ÚTILES
+
+Página web:
+   file:///C:/Users/tu_usuario/OneDrive/Pictures/Desktop/Proyecto_Estructura_Jhoan/backend/index.html
+
+API de prueba (en el navegador):
+   http://localhost:5000/api/test
+   http://localhost:5000/api/cursos
+   http://localhost:5000/api/usuarios
+
+═══════════════════════════════════════════════════════════════
+
+⚡ COMANDOS ÚTILES EN POWERSHELL
+
+# Ver versión de Node.js
+node --version
+
+# Ver versión de npm
+npm --version
+
+# Instalar dependencias
+npm install
+
+# Iniciar en desarrollo
+npm run dev
+
+# Iniciar en producción
+npm start
+
+# Ver paquetes instalados
+npm list
+
+═══════════════════════════════════════════════════════════════
+
+❌ SOLUCIÓN DE PROBLEMAS
+
+PROBLEMA: "Cannot find module 'express'"
+SOLUCIÓN: npm install
+
+PROBLEMA: "connect ECONNREFUSED 127.0.0.1:3306"
+SOLUCIÓN: MySQL no está corriendo
+   - Abre Services (Windows)
+   - Inicia MySQL80
+
+PROBLEMA: "ER_ACCESS_DENIED_FOR_USER"
+SOLUCIÓN: Contraseña incorrecta en .env
+   - Verifica DB_PASSWORD en .env
+
+PROBLEMA: "Port 5000 already in use"
+SOLUCIÓN: Otro programa usa el puerto
+   - Cambia en .env: PORT=3001
+
+PROBLEMA: "No se puede cargar el archivo porque la ejecución..."
+SOLUCIÓN: Ejecuta PowerShell como administrador
+
+═══════════════════════════════════════════════════════════════
+
+✨ ¡LISTO! 
+
+Tu backend está funcionando correctamente si:
+✅ El servidor está corriendo (npm run dev)
+✅ MySQL está activo
+✅ La página index.html muestra "✅ Servidor conectado"
+✅ Puedes crear y eliminar cursos
+
+¿Tienes dudas? Lee README.md o INSTRUCCIONES.md

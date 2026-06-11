@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pago de Curso - Zensei Art Academy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 40px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    .header h1 {
+      color: #333;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    
+    .header p {
+      color: #666;
+      font-size: 16px;
+    }
+    
+    .curso-info {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .curso-info h2 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+    
+    .curso-info p {
+      color: #666;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    
+    .precio-box {
+      font-size: 24px;
+      font-weight: bold;
+      color: #667eea;
+    }
+    
+    .payment-methods {
+      margin-bottom: 30px;
+    }
+    
+    .payment-methods h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 16px;
+    }
+    
+    .method {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .method:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+    
+    .method input[type="radio"] {
+      margin-right: 15px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+    
+    .method label {
+      flex: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .method-icon {
+      font-size: 24px;
+    }
+    
+    .method-text {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .method-text strong {
+      color: #333;
+      font-size: 16px;
+    }
+    
+    .method-text small {
+      color: #999;
+      font-size: 12px;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+    }
+    
+    button {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-pagar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-pagar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-pagar:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .btn-cancelar {
+      background: #f0f0f0;
+      color: #333;
+    }
+    
+    .btn-cancelar:hover {
+      background: #e0e0e0;
+    }
+    
+    .error {
+      color: #dc3545;
+      background: #f8d7da;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #f5c6cb;
+    }
+    
+    .success {
+      color: #155724;
+      background: #d4edda;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #c3e6cb;
+    }
+    
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    @media (max-width: 480px) {
+      .container { padding: 20px; border-radius: 12px; }
+      .header h1 { font-size: 20px; }
+      .curso-info { padding: 14px; }
+      .precio-box { font-size: 20px; }
+      .method { padding: 10px; }
+      .button-group { flex-direction: column; }
+      .btn-pagar, .btn-cancelar { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Procesar Pago</h1>
+      <p>Zensei Art Academy</p>
+    </div>
+    
+    <div id="error" class="error" style="display:none;"></div>
+    <div id="success" class="success" style="display:none;"></div>
+    
+    <div id="form-section">
+      <div class="curso-info" id="curso-info">
+        <h2>Cargando información...</h2>
+      </div>
+      
+      <div class="payment-methods">
+        <h3>Precio del curso</h3>
+        <p id="precioTexto" style="font-size:1.4rem; margin-top:10px; color:#333;"></p>
+        <p style="color:#666; margin-top:12px;">No se requieren métodos de pago. Confirma para acceder al curso.</p>
+      </div>
+      
+      <div class="button-group">
+        <button class="btn-cancelar" onclick="volverAlCatalogo()">Cancelar</button>
+        <button class="btn-pagar" onclick="procesarPago()">Proceder al Pago</button>
+      </div>
+    </div>
+    
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Procesando pago...</p>
+    </div>
+  </div>
+
+  <script>
+    // Obtener parámetros de URL
+    const params = new URLSearchParams(window.location.search);
+    const usuarioId = params.get('usuarioId');
+    const cursoId = params.get('cursoId');
+
+    // Cargar información del curso
+    async function cargarCurso() {
+      try {
+        const response = await fetch(`/api/cursos/${cursoId}`);
+        const data = await response.json();
+        
+        if (data.estado === 'éxito') {
+          const curso = data.datos;
+          document.getElementById('curso-info').innerHTML = `
+            <h2>${curso.nombre}</h2>
+            <p>${curso.descripcion}</p>
+            <div class="precio-box">$${curso.precio}</div>
+          `;
+          // Mostrar precio en la sección simplificada
+          const precioTexto = document.getElementById('precioTexto');
+          if (precioTexto) precioTexto.textContent = `$${Number(curso.precio).toFixed(2)}`;
+        }
+      } catch (error) {
+        mostrarError('Error al cargar el curso');
+      }
+    }
+
+    function mostrarError(mensaje) {
+      const errorDiv = document.getElementById('error');
+      errorDiv.textContent = mensaje;
+      errorDiv.style.display = 'block';
+      setTimeout(() => {
+        errorDiv.style.display = 'none';
+      }, 5000);
+    }
+
+    function mostrarExito(mensaje) {
+      const successDiv = document.getElementById('success');
+      successDiv.textContent = mensaje;
+      successDiv.style.display = 'block';
+    }
+
+    function volverAlCatalogo() {
+      window.location.href = '/';
+    }
+
+    async function procesarPago() {
+      if (!usuarioId || !cursoId) {
+        mostrarError('Faltan parámetros requeridos');
+        return;
+      }
+      // No se solicita método de pago
+      // Mostrar loading
+      document.getElementById('form-section').style.display = 'none';
+      document.getElementById('loading').style.display = 'block';
+
+      try {
+        const response = await fetch('/api/comprar-curso', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            usuarioId: parseInt(usuarioId),
+            cursoId: parseInt(cursoId)
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.estado === 'éxito') {
+          mostrarExito('¡Pago procesado exitosamente! Redirigiendo al curso...');
+          setTimeout(() => {
+            window.location.href = `/curso.html?usuarioId=${usuarioId}&cursoId=${cursoId}`;
+          }, 2000);
+        } else {
+          throw new Error(data.mensaje);
+        }
+      } catch (error) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('form-section').style.display = 'block';
+        mostrarError('Error al procesar pago: ' + error.message);
+      }
+    }
+
+    // Cargar información al iniciar
+    if (usuarioId && cursoId) {
+      cargarCurso();
+    } else {
+      mostrarError('Faltan parámetros: usuarioId y cursoId requeridos');
+    }
+  </script>
+</body>
+</html>

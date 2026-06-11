@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso - Zensei Art Academy</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #f5f5f5;
+    }
+    
+    .navbar {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .navbar-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .navbar h1 {
+      font-size: 24px;
+    }
+    
+    .navbar button {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: 1px solid white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .navbar button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .course-header {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    
+    .course-header h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 28px;
+    }
+    
+    .progress-bar {
+      background: #e0e0e0;
+      height: 30px;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+    
+    .progress-fill {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .content {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 20px;
+    }
+    
+    .sidebar {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+    
+    .sidebar h3 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 16px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+    
+    .modulo {
+      margin-bottom: 15px;
+    }
+    
+    .modulo-titulo {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #333;
+      transition: 0.3s;
+      border-left: 4px solid transparent;
+    }
+    
+    .modulo-titulo:hover {
+      background: #e8eaf6;
+      border-left-color: #667eea;
+    }
+    
+    .modulo-titulo.activo {
+      background: #e8eaf6;
+      border-left-color: #667eea;
+    }
+    
+    .modulo-content {
+      display: none;
+      margin-top: 10px;
+      padding-left: 10px;
+    }
+    
+    .modulo-content.activo {
+      display: block;
+    }
+    
+    .leccion {
+      padding: 8px 12px;
+      margin-bottom: 5px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .leccion:hover {
+      border-color: #667eea;
+      background: #f0f4ff;
+    }
+    
+    .leccion.completada {
+      background: #d4edda;
+      border-color: #28a745;
+      color: #155724;
+    }
+    
+    .leccion.completada::before {
+      content: '✓ ';
+      font-weight: bold;
+    }
+    
+    .main-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .leccion-titulo {
+      color: #333;
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    
+    .leccion-descripcion {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+    
+    .leccion-contenido {
+      margin-bottom: 25px;
+    }
+    
+    .leccion-contenido img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .nivel {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      border-left: 4px solid #667eea;
+    }
+    
+    .nivel h4 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+    
+    .nivel p {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    
+    .acciones {
+      display: flex;
+      gap: 10px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+    
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .btn-siguiente {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      flex: 1;
+    }
+    
+    .btn-siguiente:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-siguiente:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .btn-marcar {
+      background: #28a745;
+      color: white;
+    }
+    
+    .btn-marcar:hover {
+      background: #218838;
+    }
+    
+    .btn-certificado {
+      background: #ffc107;
+      color: #333;
+    }
+    
+    .btn-certificado:hover {
+      background: #ffb300;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+    
+    .error {
+      background: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #f5c6cb;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        position: static;
+      }
+    }
+
+    /* Ajustes extra para móviles más pequeños */
+    @media (max-width: 480px) {
+      .course-header { padding: 18px; }
+      .course-header h2 { font-size: 20px; }
+      .progress-bar { height: 22px; }
+      .progress-fill { font-size: 12px; }
+      .sidebar { padding: 12px; border-radius: 12px; }
+      .main-content { padding: 16px; }
+      .leccion-titulo { font-size: 18px; }
+      .leccion-descripcion { font-size: 14px; }
+      .modulo-titulo { padding: 10px; }
+      .leccion { font-size: 13px; padding: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="navbar-content">
+      <h1>🎨 Zensei Art Academy</h1>
+      <button onclick="volverAlCatalogo()">← Volver al Catálogo</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div id="error" class="error" style="display:none;"></div>
+    
+    <div id="loading" class="loading">
+      <p>Cargando contenido del curso...</p>
+    </div>
+
+    <div id="content" style="display:none;">
+      <div class="course-header">
+        <h2 id="curso-nombre"></h2>
+        <p id="curso-descripcion" style="color:#c7d1e2; margin-top:10px; max-width:720px; line-height:1.5;">Contenido específico del curso aparecerá aquí.</p>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width: 0%">
+            <span id="progress-text">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <aside class="sidebar">
+          <h3>Módulos</h3>
+          <div id="modulos-list"></div>
+        </aside>
+
+        <main class="main-content">
+          <div id="leccion-container">
+            <p style="text-align: center; color: #999;">Selecciona una lección para comenzar</p>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const usuarioId = params.get('usuarioId');
+    const cursoId = params.get('cursoId');
+    
+    let moduloActual = 1;
+    let leccionActual = 1;
+    let nivelActual = 1;
+    let progreso = {};
+    let cursoData = {};
+    let modulosData = [];
+    
+    const CURSOS_FALLBACK = {
+      'Lineart Minimalista': {
+        modulos: [
+          { id: 101, numero_modulo: 1, titulo: 'Fundamentos del Lineart' },
+          { id: 102, numero_modulo: 2, titulo: 'Trazos y Volumen' },
+          { id: 103, numero_modulo: 3, titulo: 'Proyecto Final' }
+        ],
+        lecciones: {
+          101: [
+            { id: 1001, numero_leccion: 1, titulo: 'Introducción al lineart', descripcion: 'Aprende a usar líneas limpias y sencillas para construir formas sólidas.', contenido_html: '<p>En este curso veremos cómo simplificar personajes, rostros y objetos con solo el trazo correcto.</p>' },
+            { id: 1002, numero_leccion: 2, titulo: 'Líneas expresivas', descripcion: 'Diferencia entre línea suave y línea firme para transmitir peso.', contenido_html: '<p>Trabaja líneas dinámicas en manos, pelo y composición.</p>' }
+          ],
+          102: [
+            { id: 1003, numero_leccion: 1, titulo: 'Sombreado ligero', descripcion: 'Añade textura sin perder limpieza.', contenido_html: '<p>Usa sombreado con puntos y líneas paralelas para mantener el estilo minimalista.</p>' },
+            { id: 1004, numero_leccion: 2, titulo: 'Contraste y enfoque', descripcion: 'Haz que las partes importantes destaquen con menos detalles.', contenido_html: '<p>Selecciona un foco visual y reduce elementos secundarios.</p>' }
+          ],
+          103: [
+            { id: 1005, numero_leccion: 1, titulo: 'Construcción del proyecto', descripcion: 'Crea una pieza final con todos los conceptos aprendidos.', contenido_html: '<p>Planifica tu boceto, define líneas fuertes y añade detalles puntuales.</p>' }
+          ]
+        }
+      },
+      'Realismo e Hiperrealismo': {
+        modulos: [
+          { id: 201, numero_modulo: 1, titulo: 'Bases del Realismo' },
+          { id: 202, numero_modulo: 2, titulo: 'Textura y Detalle' },
+          { id: 203, numero_modulo: 3, titulo: 'Hiperrealismo' }
+        ],
+        lecciones: {
+          201: [
+            { id: 2001, numero_leccion: 1, titulo: 'Anatomía y proporciones', descripcion: 'Comprende cómo construir formas reales.', contenido_html: '<p>Estudia referencias y divide el cuerpo en estructuras simples.</p>' },
+            { id: 2002, numero_leccion: 2, titulo: 'Luz y sombra', descripcion: 'Aprende a modelar volúmenes con valor tonal.', contenido_html: '<p>Practica degradados suaves y transiciones de luz.</p>' }
+          ],
+          202: [
+            { id: 2003, numero_leccion: 1, titulo: 'Texturas de piel y cabello', descripcion: 'Crea superficies realistas con detalles auténticos.', contenido_html: '<p>Usa trazos cortos y capas para simular poro, pelo y materiales.</p>' },
+            { id: 2004, numero_leccion: 2, titulo: 'Atmosfera y foco', descripcion: 'Controla la profundidad mediante contraste y enfoque.', contenido_html: '<p>Desenfoca áreas secundarias y resalta lo importante.</p>' }
+          ],
+          203: [
+            { id: 2005, numero_leccion: 1, titulo: 'Acabado hiperrealista', descripcion: 'Pulsa los últimos detalles que hacen la obra creíble.', contenido_html: '<p>Observa metálicos, brillos y texturas complejas en alta definición.</p>' }
+          ]
+        }
+      },
+      'Manga y Anime Profesional': {
+        modulos: [
+          { id: 301, numero_modulo: 1, titulo: 'Diseño de Personajes' },
+          { id: 302, numero_modulo: 2, titulo: 'Expresiones y Estilo' },
+          { id: 303, numero_modulo: 3, titulo: 'Viñetas y Narrativa' }
+        ],
+        lecciones: {
+          301: [
+            { id: 3001, numero_leccion: 1, titulo: 'Estructura de rostro manga', descripcion: 'Dibuja cabezas y rostros con anatomía estilizada.', contenido_html: '<p>Aprende a ubicar ojos grandes, nariz pequeña y boca expresiva.</p>' },
+            { id: 3002, numero_leccion: 2, titulo: 'Tipología de personajes', descripcion: 'Crea guerreros, mágicos y personajes cotidianos.', contenido_html: '<p>Usa siluetas y contraste para diferenciar roles.</p>' }
+          ],
+          302: [
+            { id: 3003, numero_leccion: 1, titulo: 'Ojos y emociones', descripcion: 'Domina miradas intensas y sentimientos claros.', contenido_html: '<p>Prueba distintos estilos de ojos y debe verse cuál es el ánimo.</p>' },
+            { id: 3004, numero_leccion: 2, titulo: 'Action lines y poses', descripcion: 'Haz que las escenas se sientan dinámicas.', contenido_html: '<p>Exagera posturas, líneas de movimiento y escenografía rápida.</p>' }
+          ],
+          303: [
+            { id: 3005, numero_leccion: 1, titulo: 'Storyboard sencillo', descripcion: 'Cuenta historias con pocas viñetas.', contenido_html: '<p>Define tiempo, espacio y emociones en cada cuadro.</p>' }
+          ]
+        }
+      },
+      'Cartoon y Animación Tradicional': {
+        modulos: [
+          { id: 401, numero_modulo: 1, titulo: 'Formas y Exageración' },
+          { id: 402, numero_modulo: 2, titulo: 'Movimiento y Ritmo' },
+          { id: 403, numero_modulo: 3, titulo: 'Animación Básica' }
+        ],
+        lecciones: {
+          401: [
+            { id: 4001, numero_leccion: 1, titulo: 'Construcción de personajes cartoon', descripcion: 'Crea figuras con formas simples y rasgos exagerados.', contenido_html: '<p>Usa círculos, óvalos y rectángulos para construir personajes divertidos.</p>' },
+            { id: 4002, numero_leccion: 2, titulo: 'Expresiones caricaturescas', descripcion: 'Dibuja gestos claros y exagerados.', contenido_html: '<p>Amplía ojos, sonrisas y cejas para transmitir emoción.</p>' }
+          ],
+          402: [
+            { id: 4003, numero_leccion: 1, titulo: 'Principios de movimiento', descripcion: 'Aplica squash & stretch y anticipación.', contenido_html: '<p>Haz que tus personajes se sientan vivos con movimientos simples.</p>' },
+            { id: 4004, numero_leccion: 2, titulo: 'Secuencias dinámicas', descripcion: 'Dibuja acciones rápidas con claridad.', contenido_html: '<p>Divide el movimiento en poses clave y frames intermedios.</p>' }
+          ],
+          403: [
+            { id: 4005, numero_leccion: 1, titulo: 'Animación cuadro por cuadro', descripcion: 'Crea un ciclo simple de animación tradicional.', contenido_html: '<p>Dibuja una caminata básica usando pocos cuadros efectivos.</p>' }
+          ]
+        }
+      }
+    };
+
+    function getFallbackContent(cursoNombre) {
+      return CURSOS_FALLBACK[cursoNombre] || CURSOS_FALLBACK['Lineart Minimalista'];
+    }
+
+    async function cargarDatos() {
+      try {
+        // Cargar curso
+        const cursoRes = await fetch(`/api/cursos/${cursoId}`);
+        const cursoResp = await cursoRes.json();
+        if (cursoResp.estado !== 'éxito') {
+          throw new Error(cursoResp.mensaje || 'Curso no encontrado');
+        }
+
+        cursoData = cursoResp.datos || {};
+        document.getElementById('curso-nombre').textContent = cursoData.nombre || 'Curso';
+
+        // Cargar progreso
+        const progresoRes = await fetch(`/api/progreso/${usuarioId}/${cursoId}`);
+        if (!progresoRes.ok) {
+          progreso = { modulo_actual: 1, leccion_actual: 1, nivel_actual: 1, porcentaje: 0 };
+        } else {
+          const progresoResp = await progresoRes.json();
+          progreso = progresoResp.datos || { modulo_actual: 1, leccion_actual: 1, nivel_actual: 1, porcentaje: 0 };
+        }
+
+        moduloActual = progreso.modulo_actual || 1;
+        leccionActual = progreso.leccion_actual || 1;
+        nivelActual = progreso.nivel_actual || 1;
+        progreso.porcentaje = progreso.porcentaje || 0;
+
+        document.getElementById('progress-fill').style.width = progreso.porcentaje + '%';
+        document.getElementById('progress-text').textContent = Math.round(progreso.porcentaje) + '%';
+
+        // Cargar módulos
+        const modulosRes = await fetch(`/api/modulos/${cursoId}`);
+        const modulosResp = await modulosRes.json();
+        modulosData = Array.isArray(modulosResp.datos) ? modulosResp.datos : [];
+
+        if (modulosData.length === 0) {
+          const fallback = getFallbackContent(cursoData.nombre);
+          modulosData = fallback.modulos;
+        }
+
+        const descripcionElemento = document.getElementById('curso-descripcion');
+        if (descripcionElemento) {
+          descripcionElemento.textContent = cursoData.descripcion || 'Aprende de manera práctica y con lecciones diseñadas para avanzar en cada curso.';
+        }
+
+        await renderModulos();
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
+
+        await cargarLeccion(moduloActual, leccionActual);
+      } catch (error) {
+        console.error('Error cargando datos:', error);
+        document.getElementById('error').textContent = 'Error al cargar el curso: ' + error.message;
+        document.getElementById('error').style.display = 'block';
+      }
+    }
+    
+    async function renderModulos() {
+      const modulosList = document.getElementById('modulos-list');
+      modulosList.innerHTML = '';
+      
+      for (const modulo of modulosData) {
+        const moduloDiv = document.createElement('div');
+        moduloDiv.className = 'modulo';
+        
+        const moduloTitulo = document.createElement('div');
+        moduloTitulo.className = 'modulo-titulo' + (modulo.numero_modulo === moduloActual ? ' activo' : '');
+        moduloTitulo.textContent = modulo.titulo;
+        moduloTitulo.onclick = (event) => toggleModulo(event, modulo.id, modulo.numero_modulo);
+        
+        const moduloContent = document.createElement('div');
+        moduloContent.className = 'modulo-content' + (modulo.numero_modulo === moduloActual ? ' activo' : '');
+        moduloContent.id = 'modulo-' + modulo.id;
+        
+        let lecciones = [];
+        try {
+          const leccionesRes = await fetch(`/api/lecciones/${modulo.id}`);
+          const leccionesResp = await leccionesRes.json();
+          if (Array.isArray(leccionesResp.datos) && leccionesResp.datos.length > 0) {
+            lecciones = leccionesResp.datos;
+          }
+        } catch (error) {
+          console.warn('No se pudieron cargar las lecciones desde API:', error);
+        }
+
+        if (lecciones.length === 0) {
+          const fallback = getFallbackContent(cursoData.nombre);
+          lecciones = fallback.lecciones[modulo.id] || [];
+        }
+        
+        for (const leccion of lecciones) {
+          const leccionDiv = document.createElement('div');
+          leccionDiv.className = 'leccion';
+          if (leccion.numero_leccion <= (progreso.leccion_actual || 1) && modulo.numero_modulo === moduloActual) {
+            leccionDiv.classList.add('completada');
+          }
+          leccionDiv.textContent = leccion.titulo;
+          leccionDiv.onclick = () => cargarLeccion(modulo.numero_modulo, leccion.id);
+          
+          moduloContent.appendChild(leccionDiv);
+        }
+        
+        moduloDiv.appendChild(moduloTitulo);
+        moduloDiv.appendChild(moduloContent);
+        modulosList.appendChild(moduloDiv);
+      }
+    }
+    
+    function toggleModulo(event, moduloId, numeroModulo) {
+      const content = document.getElementById('modulo-' + moduloId);
+      const titulo = event.currentTarget;
+      
+      if (!content) return;
+      document.querySelectorAll('.modulo-content').forEach(el => el.classList.remove('activo'));
+      document.querySelectorAll('.modulo-titulo').forEach(el => el.classList.remove('activo'));
+      
+      content.classList.add('activo');
+      titulo.classList.add('activo');
+    }
+    
+    async function cargarLeccion(numeroModulo, leccionId) {
+      try {
+        const modulo = modulosData.find(m => m.numero_modulo === numeroModulo);
+        if (!modulo) return;
+
+        let lecciones = [];
+        try {
+          const leccionRes = await fetch(`/api/lecciones/${modulo.id}`);
+          const leccionesResp = await leccionRes.json();
+          if (Array.isArray(leccionesResp.datos)) {
+            lecciones = leccionesResp.datos;
+          }
+        } catch (error) {
+          console.warn('No se pudieron cargar las lecciones desde API:', error);
+        }
+
+        if (lecciones.length === 0) {
+          const fallback = getFallbackContent(cursoData.nombre);
+          lecciones = fallback.lecciones[modulo.id] || [];
+        }
+
+        const leccion = lecciones.find(l => Number(l.id) === Number(leccionId));
+        if (!leccion) return;
+        
+        const container = document.getElementById('leccion-container');
+        container.innerHTML = `
+          <h3 class="leccion-titulo">${leccion.titulo}</h3>
+          <p class="leccion-descripcion">${leccion.descripcion || ''}</p>
+          <div class="leccion-contenido">
+            ${leccion.imagen_url ? `<img src="${leccion.imagen_url}" alt="${leccion.titulo}">` : ''}
+            ${leccion.contenido_html || ''}
+          </div>
+          <div id="niveles-container"></div>
+          <div class="acciones">
+            <button class="btn-marcar" onclick="marcarCompletada(${numeroModulo}, ${leccion.numero_leccion})">✓ Marcar como Completada</button>
+            <button class="btn-siguiente" onclick="siguienteLeccion(${numeroModulo})">Siguiente Lección →</button>
+          </div>
+        `;
+        
+        // Cargar niveles
+        const nivelesRes = await fetch(`/api/niveles/${leccionId}`);
+        const nivelesResp = await nivelesRes.json();
+        
+        if (nivelesResp.datos && nivelesResp.datos.length > 0) {
+          const nivelesDiv = document.getElementById('niveles-container');
+          nivelesDiv.innerHTML = '<h4 style="margin-top: 20px; margin-bottom: 10px;">Niveles de Ejercicio:</h4>';
+          
+          for (const nivel of nivelesResp.datos) {
+            const nivelDiv = document.createElement('div');
+            nivelDiv.className = 'nivel';
+            nivelDiv.innerHTML = `
+              <h4>${nivel.titulo}</h4>
+              <p>${nivel.descripcion}</p>
+            `;
+            nivelesDiv.appendChild(nivelDiv);
+          }
+        }
+        
+      } catch (error) {
+        console.error('Error cargando lección:', error);
+      }
+    }
+    
+    async function marcarCompletada(numeroModulo, numeroLeccion) {
+      try {
+        const percentage = Math.round((numeroModulo * 20) + (numeroLeccion * 5));
+        
+        await fetch('/api/progreso', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            usuarioId: parseInt(usuarioId),
+            cursoId: parseInt(cursoId),
+            moduloActual: numeroModulo,
+            leccionActual: numeroLeccion,
+            nivelActual: nivelActual,
+            porcentaje: Math.min(percentage, 100)
+          })
+        });
+        
+        // Recargar progreso
+        const progresoRes = await fetch(`/api/progreso/${usuarioId}/${cursoId}`);
+        const progresoResp = await progresoRes.json();
+        progreso = progresoResp.datos;
+        
+        document.getElementById('progress-fill').style.width = progreso.porcentaje + '%';
+        document.getElementById('progress-text').textContent = Math.round(progreso.porcentaje) + '%';
+        
+        alert('¡Lección marcada como completada!');
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    }
+    
+    async function siguienteLeccion(numeroModulo) {
+      leccionActual++;
+      await cargarLeccion(numeroModulo, leccionActual);
+    }
+    
+    function volverAlCatalogo() {
+      window.location.href = '/';
+    }
+    
+    // Cargar al iniciar
+    if (usuarioId && cursoId) {
+      cargarDatos();
+    } else {
+      document.getElementById('error').textContent = 'Faltan parámetros: usuarioId y cursoId';
+      document.getElementById('error').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

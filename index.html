@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zensei Art Academy - Cursos Profesionales</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <div class="contenedor-principal">
+        
+        <div class="contenedor-ajustes">
+            <button class="btn-icon" onclick="toggleMenu(event)">⚙️</button>
+            <div id="menuOpciones" class="menu-desplegable">
+                <span class="menu-titulo" data-es="Visual" data-en="Visual">Visual</span>
+                <button onclick="cambiarTema('oscuro')">🌙 <span data-es="Modo Oscuro" data-en="Dark Mode">Dark mode</span></button>
+                <button onclick="cambiarTema('claro')">☀️ <span data-es="Modo Claro" data-en="Light Mode">Light mode</span></button>
+                
+                <hr class="menu-separador">
+                
+                <span class="menu-titulo" data-es="Idioma" data-en="Language">Idioma</span>
+                <button onclick="cambiarIdioma('es')">    Español</button>
+                <button onclick="cambiarIdioma('en')">English</button>
+                
+                <hr class="menu-separador">
+                
+                <span class="menu-titulo" data-es="Audio" data-en="Audio">Audio</span>
+                <button onclick="toggleSonido()" id="btnSonido" data-es="🔊 Sonido: ON" data-en="🔊 Sound: ON">🔊 Sonido: ON</button>
+                
+                <hr class="menu-separador">
+                
+                <button onclick="window.location.href='/java/index.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
+                <button id="btnLogout" onclick="hacerLogout()" style="display:none;">🚪 <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span></button>
+            </div>
+        </div>
+
+        <header class="encabezado">
+            <p class="txt-bienvenidos-arriba" data-es="Bienvenidos a" data-en="Welcome to">Bienvenidos a</p>
+            <h1 class="titulo-academia">Zensei Art Academy</h1>
+            <p class="txt-bienvenidos-abajo" 
+               data-es="Eleva tu talento al nivel profesional. Toca un curso para ver su especialización." 
+               data-en="Elevate your talent to a professional level. Tap a course to see its specialization.">
+               Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.
+            </p>
+            <div class="contenedor-notificaciones">
+                <span class="txt-notificaciones" data-es="Recibir ofertas de cursos:" data-en="Receive course offers:">Recibir ofertas de cursos:</span>
+                <label class="switch-notificaciones">
+                    <input type="checkbox" id="chkNotificaciones" onchange="controlarNotificaciones()">
+                    <span class="slider-switch"></span>
+                </label>
+            </div>
+        </header>
+
+        <h3 class="titulo-categoria" data-es="🧑‍🎨 Estilos de Dibujo / Especializaciones" data-en="🧑‍🎨 Drawing Styles / Specializations">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
+        
+        <div class="grid-cursos" id="grid-cursos">
+            <p style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
+        </div>
+
+        <section class="banner-inspirador">
+            <div class="banner-texto">
+                <h2 data-es="Tu viaje apenas comienza" data-en="Your journey is just beginning">Tu viaje apenas comienza</h2>
+                <p data-es="El artista que te espera al final del camino es capaz de dominar cualquier lienzo. Nuestro método te llevará paso a paso, de novato a maestro. Tu estilo único te está esperando." 
+                   data-en="The artist waiting for you at the end of the road is capable of mastering any canvas. Our method will take you step by step, from novice to master. Your unique style is waiting for you.">
+                   El artista que te espera al final del camino es capaz de dominar cualquier lienzo. Nuestro método te llevará paso a paso, de novato a maestro. <strong>Tu estilo único te está esperando.</strong>
+                </p>
+            </div>
+        </section>
+
+        <footer class="pie-pagina">
+            <h4 class="titulo-footer">Zensei Art Academy</h4>
+            <p class="txt-footer" 
+               data-es="Somos un espacio independiente dedicado a la formación de dibujantes y creadores visuales. Nuestro propósito es darte las herramientas clave para romper los límites y ayudarte a descubrir tu propia identidad artística." 
+               data-en="We are an independent space dedicated to training artists and visual creators. Our purpose is to give you the key tools to break boundaries and help you discover your own artistic identity.">
+                Somos un espacio independiente dedicado a la formación de dibujantes y creadores visuales. Nuestro propósito es darte las herramientas clave para romper los límites y ayudarte a descubrir tu propia identidad artística.
+            </p>
+            <p class="copyright" data-es="© 2026 Zensei Art Academy. Todos los derechos reservados." data-en="© 2026 Zensei Art Academy. All rights reserved.">© 2026 Zensei Art Academy. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script>
+        let sonidoActivo = true;
+
+        function controlarNotificaciones() {
+            const checkbox = document.getElementById('chkNotificaciones');
+            if (checkbox.checked) {
+                alert("🔔 ¡Excelente! Te enviaremos descuentos exclusivos.");
+            }
+        }
+
+        // Desplegar menú de la tuerquita
+        function toggleMenu(event) {
+            event.stopPropagation();
+            document.getElementById("menuOpciones").classList.toggle("mostrar");
+            reproducirSonido();
+        }
+
+        // Cambiar entre modo claro y oscuro alternando clases
+        function cambiarTema(tipo) {
+            const body = document.body;
+            if (tipo === 'claro') {
+                body.classList.add('light-mode');
+            } else {
+                body.classList.remove('light-mode');
+            }
+            document.getElementById("menuOpciones").classList.remove("mostrar");
+            reproducirSonido();
+        }
+
+        
+        function cambiarIdioma(idioma) {
+            const elementosTraducibles = document.querySelectorAll('[data-es]');
+            
+            elementosTraducibles.forEach(elemento => {
+                if (idioma === 'en') {
+                    if (elemento.children.length === 0) {
+                        elemento.innerText = elemento.getAttribute('data-en');
+                    } else {
+                        const spanTraducible = elemento.querySelector('[data-en]');
+                        if(spanTraducible) spanTraducible.innerText = spanTraducible.getAttribute('data-en');
+                    }
+                } else {
+                    if (elemento.children.length === 0) {
+                        elemento.innerText = elemento.getAttribute('data-es');
+                    } else {
+                        const spanTraducible = elemento.querySelector('[data-es]');
+                        if(spanTraducible) spanTraducible.innerText = spanTraducible.getAttribute('data-es');
+                    }
+                }
+            });
+            
+            document.getElementById("menuOpciones").classList.remove("mostrar");
+            reproducirSonido();
+        }
+
+        // Activar/Desactivar efectos de audio
+        function toggleSonido() {
+            sonidoActivo = !sonidoActivo;
+            const btn = document.getElementById("btnSonido");
+            if (sonidoActivo) {
+                btn.setAttribute('data-es', '🔊 Sonido: ON');
+                btn.setAttribute('data-en', '🔊 Sound: ON');
+                btn.innerText = "🔊 Sonido: ON";
+                reproducirSonido();
+            } else {
+                btn.setAttribute('data-es', '🔇 Sonido: OFF');
+                btn.setAttribute('data-en', '🔇 Sound: OFF');
+                btn.innerText = "🔇 Sonido: OFF";
+            }
+        }
+
+        // Sintetizador nativo para el efecto de sonido "click" sutil
+        function reproducirSonido() {
+            if (!sonidoActivo) return;
+
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscilador = audioCtx.createOscillator();
+            const nodoGain = audioCtx.createGain();
+
+            oscilador.connect(nodoGain);
+            nodoGain.connect(audioCtx.destination);
+
+            oscilador.type = 'sine';
+            oscilador.frequency.setValueAtTime(850, audioCtx.currentTime); // Frecuencia limpia
+            
+            nodoGain.gain.setValueAtTime(0.015, audioCtx.currentTime); // Volumen sutil
+            nodoGain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.06); // Decaimiento corto
+
+            oscilador.start(audioCtx.currentTime);
+            oscilador.stop(audioCtx.currentTime + 0.06);
+        }
+
+        // Ocultar menú si el usuario hace click en otra zona de la pantalla
+        document.addEventListener("click", function() {
+            const menu = document.getElementById("menuOpciones");
+            if (menu) menu.classList.remove("mostrar");
+        });
+    </script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            // Verificar si hay sesión activa
+            const usuarioActivo = localStorage.getItem('usuarioLogueado');
+            
+            if (usuarioActivo) {
+                // Mostrar botón de logout
+                document.getElementById('btnLogin').style.display = 'none';
+                document.getElementById('btnLogout').style.display = 'block';
+            }
+            
+            // Cargar cursos dinámicamente
+            cargarCursos();
+        });
+
+        // Cerrar sesión
+        function hacerLogout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('usuarioId');
+            localStorage.removeItem('usuarioLogueado');
+            
+            document.getElementById('btnLogin').style.display = 'block';
+            document.getElementById('btnLogout').style.display = 'none';
+            
+            window.location.href = '/java/index.html';
+        }
+
+        const API_BASE = 'http://localhost:3001/api';
+
+        // Función para cargar cursos desde el API
+        async function cargarCursos() {
+            try {
+                // Obtener usuario ID (por defecto 1, pero puedes cambiar según la sesión)
+                const usuarioId = localStorage.getItem('usuarioId') || 1;
+                
+                // Cargar cursos desde el backend
+                const response = await fetch(`${API_BASE}/cursos`);
+                const data = await response.json();
+                
+                if (data.estado === 'éxito') {
+                    const cursos = data.datos;
+                    const gridCursos = document.getElementById('grid-cursos');
+                    gridCursos.innerHTML = '';
+                    
+                    // Eliminar duplicados por ID y mostrar solo los primeros 4 cursos
+                    const cursosUnicos = Array.from(new Map(cursos.map(curso => [curso.id, curso])).values());
+                    const cursosMostrar = cursosUnicos.slice(0, 4);
+                    
+                    // Crear imágenes por defecto si no existen
+                    const imagenesDefecto = {
+                        1: 'minimalista_curso.jpg',
+                        2: 'realismo_curso.jpg',
+                        3: 'manga_curso.jpg',
+                        4: 'cartoon_curso.jpg'
+                    };
+                    
+                    for (const curso of cursosMostrar) {
+                        // Verificar acceso del usuario a este curso
+                        const accesoResponse = await fetch(`${API_BASE}/acceso-curso/${usuarioId}/${curso.id}`);
+                        const accesoData = await accesoResponse.json();
+                        const tieneAcceso = accesoData.acceso;
+                        
+                        const imagen = curso.imagen || imagenesDefecto[curso.id] || 'default_curso.jpg';
+                        
+                        const tarjeta = document.createElement('div');
+                        tarjeta.className = 'tarjeta-curso';
+                        tarjeta.onmouseenter = reproducirSonido;
+                        
+                        const botonnText = tieneAcceso ? '▶️ Acceder al Curso' : '💳 Comprar Curso';
+                        const botonLink = tieneAcceso 
+                            ? `/curso.html?usuarioId=${usuarioId}&cursoId=${curso.id}`
+                            : `/pago.html?usuarioId=${usuarioId}&cursoId=${curso.id}`;
+                        
+                        tarjeta.innerHTML = `
+                            <div class="imagen-curso">
+                                <span class="badge-precio">$${curso.precio}</span>
+                                <img src="${imagen}" alt="${curso.nombre}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22%3E%3Crect fill=%22%23ddd%22 width=%22300%22 height=%22200%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2220%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3EImagen del Curso%3C/text%3E%3C/svg%3E'">
+                            </div>
+                            <div class="info-curso">
+                                <h4>${curso.nombre}</h4>
+                                <p>${curso.descripcion}</p>
+                                <a href="${botonLink}" class="btn-enlace">${botonnText}</a>
+                                ${tieneAcceso ? '<span style="color: #28a745; font-size: 12px; margin-top: 8px; display: block;">✓ Acceso Desbloqueado</span>' : ''}
+                            </div>
+                        `;
+                        
+                        gridCursos.appendChild(tarjeta);
+                    }
+                }
+            } catch (error) {
+                console.error('Error cargando cursos:', error);
+                const gridCursos = document.getElementById('grid-cursos');
+                gridCursos.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar los cursos</p>';
+            }
+        }
+
+        // Función por si el usuario quiere salir del sistema manualmente
+        function cerrarSesion() {
+            localStorage.removeItem('usuarioLogueado');
+            localStorage.removeItem('recordarSesion');
+            localStorage.removeItem('usuarioId');
+            window.location.href = '/java/index.html';
+        }
+    </script>
+</body>
+</html>

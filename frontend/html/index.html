@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zensei Art Academy - Cursos de Dibujo</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-content">
+        <span class="hero-badge">4 Cursos de Dibujo</span>
+        <h1>Aprende un estilo de dibujo profesional</h1>
+        <p>Explora cursos de lineart, realismo, manga y cartoon. Compra un curso y accede al contenido directamente desde la misma plataforma.</p>
+        <div class="hero-actions">
+          <button id="btnRecargar" class="btn btn-primary">Actualizar cursos</button>
+          <button id="btnAyuda" class="btn btn-secondary">¿Cómo funciona?</button>
+        </div>
+      </div>
+      <div class="hero-image"></div>
+    </header>
+
+    <main class="main-grid">
+      <section class="catalogo-section">
+        <div class="section-header">
+          <div>
+            <h2>Listado de Cursos</h2>
+            <p>Selecciona cualquier curso para ver más detalles y comprar.</p>
+          </div>
+          <div class="tag">Usuario por defecto: #<span id="usuario-id">1</span></div>
+        </div>
+
+        <div id="alertBox" class="alert-box" hidden></div>
+        <div id="cursosGrid" class="cursos-grid">
+          <div class="curso-card placeholder">Cargando cursos...</div>
+        </div>
+      </section>
+
+      <aside class="detalle-panel">
+        <div class="detalle-header">
+          <h3>Detalle del curso</h3>
+          <p>Haz clic en un curso para ver más información.</p>
+        </div>
+        <div id="detalleCard" class="detalle-card">
+          <div class="detalle-empty">
+            <p>Selecciona un curso para ver su descripción, precio y botón de compra.</p>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="../js/cursos-data.js"></script>
+  <script src="../js/app.js"></script>
+</body>
+</html>
