@@ -19,6 +19,7 @@
             padding: 0;
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #0b0612; 
@@ -36,7 +37,6 @@
             backdrop-filter: blur(12px);
         }
 
-        
         .titulo-login {
             font-family: 'Alex Brush', cursive !important;
             font-size: 45pt; 
@@ -44,7 +44,6 @@
             color: #ffffff;
             text-align: center;
             margin: 0 0 5px 0;
-            /* Resplandor exacto de la captura */
             text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 
                          0 0 20px rgba(0, 255, 204, 0.25);
         }
@@ -56,7 +55,6 @@
             cursor: pointer;
         }
 
-        /* TODO LO DEMÁS QUEDA EN LETRA NORMAL (POPPINS) */
         .subtitulo-login {
             font-size: 10pt;
             color: rgba(255, 255, 255, 0.6);
@@ -149,6 +147,14 @@
             background: #00e6b8;
         }
 
+        .btn-entrar:disabled {
+            background: #555555 !important;
+            color: #aaaaaa !important;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
         .registro-footer {
             text-align: center;
             margin-top: 30px;
@@ -164,6 +170,44 @@
 
         .registro-footer a:hover {
             text-decoration: underline;
+        }
+
+        /* BARRA DE ASISTENCIA GIT (Herramienta de desarrollo agregada) */
+        .contenedor-git-helper {
+            margin-top: 25px;
+            width: 100%;
+            max-width: 420px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px dashed #00ffcc;
+            border-radius: 14px;
+            padding: 15px;
+            color: #00ffcc;
+            font-size: 8.5pt;
+        }
+
+        .git-titulo {
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .git-comando {
+            background: rgba(0, 255, 204, 0.1);
+            padding: 8px;
+            border-radius: 6px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #ffffff;
+            white-space: pre-wrap;
+            word-break: break-all;
+            user-select: all;
+            cursor: pointer;
+        }
+        
+        .git-comando:hover {
+            background: rgba(0, 255, 204, 0.2);
         }
     </style>
 </head>
@@ -204,37 +248,48 @@
             <a href="registro.html">Regístrate aquí</a>
         </footer>
     </div>
-<script>
+
+    <div class="contenedor-git-helper">
+        <div class="git-titulo">
+            <span>🚀 Consola Git para GitHub</span>
+            <span style="color: rgba(255,255,255,0.4);">Click para seleccionar todo</span>
+        </div>
+        <div class="git-comando" id="gitCode">git add Java/index.html && git commit -m "Mejora diseño dark de login y corrige ruta de redirección a Java/index.html" && git push origin main</div>
+    </div>
+
+    <script>
         const SERVER_BASE = 'http://localhost:3001';
         const API_BASE = `${SERVER_BASE}/api`;
-        const FRONTEND_HOME = SERVER_BASE;
+        const FRONTEND_HOME = `${SERVER_BASE}/Java/index.html`; 
 
-        // Si el usuario abre el archivo desde disco local, redirigir al servidor
+        // Si se abre directo desde disco, redirigir al servidor local activo
         if (window.location.protocol === 'file:') {
-            window.location.href = `${SERVER_BASE}/java/index.html`;
+            window.location.href = FRONTEND_HOME;
         }
-        // Al cargar la pantalla de login, verificamos si ya hay sesión activa
+
         window.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('token');
             if (token) {
-                // Si existe token válido, redirigir a la página principal
                 window.location.href = FRONTEND_HOME;
             }
 
-            // Conectar el formulario
             document.getElementById('loginForm').addEventListener('submit', hacerLogin);
+            
+            // Hacer que al dar click al cuadro de Git, se copie automáticamente
+            document.getElementById('gitCode').addEventListener('click', function() {
+                navigator.clipboard.writeText(this.innerText);
+                alert("📋 ¡Comandos copiados! Pégalos directamente en tu terminal de VS Code.");
+            });
         });
 
-        // Función para procesar el login con el backend
         async function hacerLogin(event) {
             event.preventDefault();
             
             const email = document.getElementById('email').value.trim().toLowerCase();
-            const password = document.getElementById('password').value.trim();
+            const password = document.getElementById('password').value; 
             const recordar = document.getElementById('chkRecordar').checked;
             const btnEntrar = document.querySelector('.btn-entrar');
 
-            // Desactivar botón mientras procesa
             btnEntrar.disabled = true;
             btnEntrar.textContent = 'Verificando...';
 
@@ -250,14 +305,12 @@
                 const data = await response.json();
 
                 if (!response.ok) {
-                    // Mostrar error
                     alert('❌ ' + (data.mensaje || 'Error al iniciar sesión'));
                     btnEntrar.disabled = false;
                     btnEntrar.textContent = 'Entrar';
                     return;
                 }
 
-                // Login exitoso
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('usuarioId', data.usuarioId);
                 localStorage.setItem('usuarioLogueado', data.nombre);
@@ -266,7 +319,6 @@
                     localStorage.setItem('recordarSesion', 'true');
                 }
 
-                // Redirigir a la página principal del servidor
                 window.location.href = FRONTEND_HOME;
 
             } catch (error) {
