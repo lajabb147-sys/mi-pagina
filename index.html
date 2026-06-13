@@ -177,21 +177,25 @@
         });
     </script>
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            // Verificar si hay sesión activa
+        const SERVER_BASE = 'http://localhost:3001';
+        const API_BASE = 'http://localhost:3001/api';
+        const FRONTEND_HOME = 'http://localhost:3001/Java/index.html';
+
+        if (window.location.protocol === 'file:') {
+            window.location.href = FRONTEND_HOME;
+        }
+        
+         window.addEventListener('DOMContentLoaded', () => {
             const usuarioActivo = localStorage.getItem('usuarioLogueado');
             
             if (usuarioActivo) {
-                // Mostrar botón de logout
                 document.getElementById('btnLogin').style.display = 'none';
                 document.getElementById('btnLogout').style.display = 'block';
             }
             
-            // Cargar cursos dinámicamente
             cargarCursos();
         });
 
-        // Cerrar sesión
         function hacerLogout() {
             localStorage.removeItem('token');
             localStorage.removeItem('usuarioId');
@@ -200,15 +204,11 @@
             document.getElementById('btnLogin').style.display = 'block';
             document.getElementById('btnLogout').style.display = 'none';
             
-            window.location.href = '/java/index.html';
+            window.location.href = FRONTEND_HOME;
         }
-
-        const API_BASE = 'http://localhost:3001/api';
-
-        // Función para cargar cursos desde el API
+// === FUNCIÓN CARGAR CURSOS RECONSTRUIDA SIN ERRORES ===
         async function cargarCursos() {
             try {
-                // Obtener usuario ID (por defecto 1, pero puedes cambiar según la sesión)
                 const usuarioId = localStorage.getItem('usuarioId') || 1;
                 
                 // Cargar cursos desde el backend
@@ -224,7 +224,6 @@
                     const cursosUnicos = Array.from(new Map(cursos.map(curso => [curso.id, curso])).values());
                     const cursosMostrar = cursosUnicos.slice(0, 4);
                     
-                    // Crear imágenes por defecto si no existen
                     const imagenesDefecto = {
                         1: 'minimalista_curso.jpg',
                         2: 'realismo_curso.jpg',
@@ -233,21 +232,19 @@
                     };
                     
                     for (const curso of cursosMostrar) {
-                        // Verificar acceso del usuario a este curso
-                        const accesoResponse = await fetch(`${API_BASE}/acceso-curso/${usuarioId}/${curso.id}`);
-                        const accesoData = await accesoResponse.json();
-                        const tieneAcceso = accesoData.acceso;
+                        // Comprobamos la simulación de compra local
+                        const cursoComprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
+                        
+                        const botonnText = cursoComprado ? '▶️ Acceder al Curso' : '💳 Comprar Curso';
+                        const botonLink = cursoComprado 
+                            ? `/Java/curso.html?usuarioId=${usuarioId}&cursoId=${curso.id}`
+                            : `/Java/pago.html?usuarioId=${usuarioId}&cursoId=${curso.id}`;
                         
                         const imagen = curso.imagen || imagenesDefecto[curso.id] || 'default_curso.jpg';
                         
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        tarjeta.onmouseenter = reproducirSonido;
-                        
-                        const botonnText = tieneAcceso ? '▶️ Acceder al Curso' : '💳 Comprar Curso';
-                        const botonLink = tieneAcceso 
-                            ? `/curso.html?usuarioId=${usuarioId}&cursoId=${curso.id}`
-                            : `/pago.html?usuarioId=${usuarioId}&cursoId=${curso.id}`;
+                        if (typeof reproducirSonido === 'function') tarjeta.onmouseenter = reproducirSonido;
                         
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
@@ -258,27 +255,31 @@
                                 <h4>${curso.nombre}</h4>
                                 <p>${curso.descripcion}</p>
                                 <a href="${botonLink}" class="btn-enlace">${botonnText}</a>
-                                ${tieneAcceso ? '<span style="color: #28a745; font-size: 12px; margin-top: 8px; display: block;">✓ Acceso Desbloqueado</span>' : ''}
                             </div>
                         `;
                         
                         gridCursos.appendChild(tarjeta);
-                    }
-                }
+                    } // Cierre del bucle for
+                } // Cierre del if éxito
             } catch (error) {
                 console.error('Error cargando cursos:', error);
                 const gridCursos = document.getElementById('grid-cursos');
-                gridCursos.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar los cursos</p>';
+                if (gridCursos) {
+                    gridCursos.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: red;">Error al cargar los cursos</p>';
+                }
             }
         }
-
-        // Función por si el usuario quiere salir del sistema manualmente
         function cerrarSesion() {
             localStorage.removeItem('usuarioLogueado');
             localStorage.removeItem('recordarSesion');
             localStorage.removeItem('usuarioId');
-            window.location.href = '/java/index.html';
+            window.location.href = FRONTEND_HOME;
         }
     </script>
-</body>
-</html>
+        function cerrarSesion() {
+            localStorage.removeItem('usuarioLogueado');
+            localStorage.removeItem('recordarSesion');
+            localStorage.removeItem('usuarioId');
+            window.location.href = FRONTEND_HOME;
+        }
+    </script>
