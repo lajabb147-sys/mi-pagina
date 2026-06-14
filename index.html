@@ -46,6 +46,7 @@
     </div>
 
     <script>
+        let sonidoActivo = true;
         const API_BASE = 'http://localhost:3001/api';
 
         function cambiarIdioma(idioma) {
@@ -68,7 +69,7 @@
 
         function cerrarSesion() {
             localStorage.removeItem('usuarioLogueado');
-            window.location.reload();
+            window.location.href = 'index.html'; 
         }
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -80,23 +81,23 @@
         });
 
         async function cargarCursos() {
-            const grid = document.getElementById('grid-cursos');
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
                 
                 if (data.estado === 'éxito') {
-                    grid.innerHTML = '';
+                    const grid = document.getElementById('grid-cursos');
+                    grid.innerHTML = ''; // Limpieza obligatoria
                     
-                    // FILTRO EXTREMO: Guardamos los IDs que ya dibujamos
+                    // ESCUDO ANTI-DUPLICADOS: Solo permite un ID único por tarjeta
                     const idsProcesados = new Set();
-                    
+
                     data.datos.forEach(curso => {
-                        // Si el ID ya está en el Set, ignoramos este curso y saltamos al siguiente
-                        if (idsProcesados.has(curso.id)) return;
+                        // Si el curso ya se dibujó, lo ignora y pasa al siguiente
+                        if (idsProcesados.has(curso.id)) return; 
                         
-                        // Si es un ID nuevo, lo agregamos al Set para recordarlo
-                        idsProcesados.add(curso.id);
+                        // Si es nuevo, lo registra en el escudo
+                        idsProcesados.add(curso.id); 
 
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
@@ -117,8 +118,8 @@
                     });
                 }
             } catch (e) { 
-                console.error('Error cargando cursos:', e); 
-                grid.innerHTML = '<p style="text-align: center; color: red;">Error al conectar con el servidor.</p>';
+                console.error('Error:', e); 
+                document.getElementById('grid-cursos').innerHTML = '<p style="text-align: center; color: red;">Error de conexión con el servidor.</p>';
             }
         }
     </script>
