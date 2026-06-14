@@ -237,23 +237,15 @@ function cambiarIdioma(idioma) {
   // Guardamos el idioma en el navegador para que se mantenga al cambiar de página
   localStorage.setItem('idiomaSeleccionado', idioma);
 
-  // 1. Traducir elementos de la Pasarela de Pago (pago.html)
-  if (document.getElementById('titulo-pago')) {
-    document.getElementById('titulo-pago').innerText = traducciones[idioma].tituloPasarela;
-    document.getElementById('label-kash').innerText = traducciones[idioma].txtTarjeta;
-    document.getElementById('label-banco').innerText = traducciones[idioma].txtBanco;
-    document.getElementById('label-movil').innerText = traducciones[idioma].txtMovil;
-    document.getElementById('btn-pagar-texto').innerText = traducciones[idioma].btnPagar;
-    document.getElementById('btn-cancelar-texto').innerText = traducciones[idioma].btnCancelar;
-    document.getElementById('titulo-exito').innerText = traducciones[idioma].pagoExitoso;
-    document.getElementById('subtitulo-exito').innerText = traducciones[idioma].txtExito;
-    document.getElementById('btn-ir-cursos').innerText = traducciones[idioma].btnCursos;
-  }
-
-  // 2. Traducir bloques de Cursos (curso.html o index.html)
-  if (document.getElementById('titulo-curso-manga')) {
-    document.getElementById('titulo-curso-manga').innerText = traducciones[idioma].cursoManga;
-  }
+  // 1. Traducir elementos con la clase "traducible"
+  const elementos = document.querySelectorAll('.traducible');
+  elementos.forEach(el => {
+    // Si el idioma es inglés, buscamos el atributo data-en, si es español, data-es
+    const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
+    if (textoTraducido) {
+        el.innerText = textoTraducido;
+    }
+  });
 }
 
 // Al cargar cualquier página, aplicar el idioma que el usuario eligió antes
