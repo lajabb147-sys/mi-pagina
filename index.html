@@ -81,44 +81,30 @@
         });
 
         async function cargarCursos() {
-            try {
-                const res = await fetch(`${API_BASE}/cursos`);
-                const data = await res.json();
-                
-                if (data.estado === 'éxito') {
-                    const grid = document.getElementById('grid-cursos');
-                    grid.innerHTML = ''; 
-                    
-                    // NUEVO ESCUDO: Ahora filtramos por el NOMBRE del curso, no por el ID.
-                    const nombresProcesados = new Set();
+    console.log("Iniciando carga de cursos..."); // <--- ESTO DEBE APARECER EN LA CONSOLA
+    try {
+        const res = await fetch(`${API_BASE}/cursos`);
+        console.log("Respuesta recibida del servidor:", res); // <--- SI ESTO NO SALE, EL SERVIDOR NO RESPONDE
+        const data = await res.json();
+        console.log("Datos recibidos:", data); // <--- AQUÍ VEREMOS SI LLEGAN LOS DUPLICADOS
+        
+        if (data.estado === 'éxito') {
+            const grid = document.getElementById('grid-cursos');
+            grid.innerHTML = ''; 
+            
+            const nombresProcesados = new Set();
 
-                    data.datos.forEach(curso => {
-                        // Si el NOMBRE ya se dibujó, lo ignora
-                        if (nombresProcesados.has(curso.nombre)) return; 
-                        
-                        // Si es un nombre nuevo, lo registra
-                        nombresProcesados.add(curso.nombre); 
+            data.datos.forEach(curso => {
+                if (nombresProcesados.has(curso.nombre)) return; 
+                nombresProcesados.add(curso.nombre); 
 
-                        const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
-                        const tarjeta = document.createElement('div');
-                        tarjeta.className = 'tarjeta-curso';
-                        
-                        tarjeta.innerHTML = `
-                            <div class="imagen-curso">
-                                <span class="badge-precio">$${curso.precio}</span>
-                                <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
-                            </div>
-                            <div class="info-curso">
-                                <h4>${curso.nombre}</h4>
-                                <p>${curso.descripcion}</p>
-                                <a href="${comprado ? 'curso.html' : 'pago.html'}?cursoId=${curso.id}" class="btn-enlace">${comprado ? 'Acceder' : 'Comprar'}</a>
-                            </div>
-                        `;
-                        grid.appendChild(tarjeta);
-                    });
-                }
-            } catch (e) { 
-                console.error('Error:', e); 
-                document.getElementById('grid-cursos').innerHTML = '<p style="text-align: center; color: red;">Error de conexión con el servidor.</p>';
-            }
+                const tarjeta = document.createElement('div');
+                tarjeta.className = 'tarjeta-curso';
+                tarjeta.innerHTML = `<h4>${curso.nombre}</h4>`; // Simplificado para probar
+                grid.appendChild(tarjeta);
+            });
         }
+    } catch (e) { 
+        console.error('ERROR CRÍTICO:', e); 
+    }
+}
