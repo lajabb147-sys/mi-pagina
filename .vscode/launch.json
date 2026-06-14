@@ -11,7 +11,7 @@
             "name": "Launch Chrome against localhost",
             "file": "${workspaceFolder}/index.html",
             "webRoot": "${workspaceFolder}",
-            "restart": true
+        
 
         }
     ]
