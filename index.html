@@ -3,128 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zensei Art Academy - Cursos Profesionales</title>
+    <title>Zensei Art Academy</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
     <script>
-        // Protección: Si no está logueado, redirige al login
+        // Si no está logueado, redirige al login
         if (!localStorage.getItem('usuarioLogueado')) {
-            window.location.href = '/Java/login.html'; 
+            window.location.href = 'login.html'; 
         }
     </script>
 
     <div class="contenedor-principal">
-        <div class="contenedor-ajustes">
-            <button class="btn-icon" onclick="toggleMenu(event)">⚙️</button>
-            <div id="menuOpciones" class="menu-desplegable">
-                <span class="menu-titulo" data-es="Visual" data-en="Visual">Visual</span>
-                <button onclick="cambiarTema('oscuro')">🌙 <span data-es="Modo Oscuro" data-en="Dark Mode">Dark mode</span></button>
-                <button onclick="cambiarTema('claro')">☀️ <span data-es="Modo Claro" data-en="Light Mode">Light mode</span></button>
-                <hr class="menu-separador">
-                <span class="menu-titulo" data-es="Idioma" data-en="Language">Idioma</span>
-                <button onclick="cambiarIdioma('es')">Español</button>
-                <button onclick="cambiarIdioma('en')">English</button>
-                <hr class="menu-separador">
-                <span class="menu-titulo" data-es="Audio" data-en="Audio">Audio</span>
-                <button onclick="toggleSonido()" id="btnSonido" data-es="🔊 Sonido: ON" data-en="🔊 Sound: ON">🔊 Sonido: ON</button>
-                <hr class="menu-separador">
-                <button onclick="window.location.href='/java/index.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
-                <button id="btnLogout" onclick="cerrarSesion()" style="display:none;">🚪 <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span></button>
-            </div>
-        </div>
-
         <header class="encabezado">
-            <p class="txt-bienvenidos-arriba" data-es="Bienvenidos a" data-en="Welcome to">Bienvenidos a</p>
-            <h1 class="titulo-academia">Zensei Art Academy</h1>
-            <p class="txt-bienvenidos-abajo" data-es="Eleva tu talento al nivel profesional. Toca un curso para ver su especialización." data-en="Elevate your talent to a professional level. Tap a course to see its specialization.">
-                Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.
-            </p>
-            <div class="contenedor-notificaciones">
-                <span class="txt-notificaciones" data-es="Recibir ofertas de cursos:" data-en="Receive course offers:">Recibir ofertas de cursos:</span>
-                <label class="switch-notificaciones">
-                    <input type="checkbox" id="chkNotificaciones" onchange="controlarNotificaciones()">
-                    <span class="slider-switch"></span>
-                </label>
-            </div>
+            <h1>Zensei Art Academy</h1>
         </header>
 
-        <h3 class="titulo-categoria" data-es="🧑‍🎨 Estilos de Dibujo / Especializaciones" data-en="🧑‍🎨 Drawing Styles / Specializations">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
         <div class="grid-cursos" id="grid-cursos">
-            <p style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
+            <p>Cargando cursos...</p>
         </div>
-
-        <section class="banner-inspirador">
-            <div class="banner-texto">
-                <h2 data-es="Tu viaje apenas comienza" data-en="Your journey is just beginning">Tu viaje apenas comienza</h2>
-                <p data-es="El artista que te espera al final del camino es capaz de dominar cualquier lienzo. Nuestro método te llevará paso a paso, de novato a maestro. Tu estilo único te está esperando." 
-                   data-en="The artist waiting for you at the end of the road is capable of mastering any canvas. Our method will take you step by step, from novice to master. Your unique style is waiting for you.">
-                   El artista que te espera al final del camino es capaz de dominar cualquier lienzo. Nuestro método te llevará paso a paso, de novato a maestro. <strong>Tu estilo único te está esperando.</strong>
-                </p>
-            </div>
-        </section>
-
-        <footer class="pie-pagina">
-            <h4 class="titulo-footer">Zensei Art Academy</h4>
-            <p class="txt-footer" data-es="Somos un espacio independiente dedicado a la formación de dibujantes y creadores visuales. Nuestro propósito es darte las herramientas clave para romper los límites y ayudarte a descubrir tu propia identidad artística." data-en="We are an independent space dedicated to training artists and visual creators. Our purpose is to give you the key tools to break boundaries and help you discover your own artistic identity.">
-                Somos un espacio independiente dedicado a la formación de dibujantes y creadores visuales. Nuestro propósito es darte las herramientas clave para romper los límites y ayudarte a descubrir tu propia identidad artística.
-            </p>
-            <p class="copyright" data-es="© 2026 Zensei Art Academy. Todos los derechos reservados." data-en="© 2026 Zensei Art Academy. All rights reserved.">© 2026 Zensei Art Academy. Todos los derechos reservados.</p>
-        </footer>
     </div>
 
     <script>
-        let sonidoActivo = true;
         const API_BASE = 'http://localhost:3001/api';
-        const FRONTEND_HOME = '/Java/login.html'; // Ajusta a tu ruta de login
-
-        function cambiarIdioma(idioma) {
-            localStorage.setItem('idiomaSeleccionado', idioma);
-            document.querySelectorAll('[data-es]').forEach(el => {
-                const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
-                if (textoTraducido) el.innerText = textoTraducido;
-            });
-            document.getElementById("menuOpciones").classList.remove("mostrar");
-        }
 
         async function cargarCursos() {
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
+                
                 if (data.estado === 'éxito') {
                     const grid = document.getElementById('grid-cursos');
                     grid.innerHTML = '';
-                    const idioma = localStorage.getItem('idiomaSeleccionado') || 'es';
                     
                     data.datos.forEach(curso => {
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
                         tarjeta.innerHTML = `
-                            <div class="imagen-curso">
-                                <span class="badge-precio">$${curso.precio}</span>
-                                <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
-                            </div>
-                            <div class="info-curso">
-                                <h4 data-es="${curso.nombre}" data-en="${curso.nombre_en}">${idioma === 'en' ? curso.nombre_en : curso.nombre}</h4>
-                                <p data-es="${curso.descripcion}" data-en="${curso.descripcion_en}">${idioma === 'en' ? curso.descripcion_en : curso.descripcion}</p>
-                                <a href="/Java/pago.html?cursoId=${curso.id}" class="btn-enlace" data-es="Comprar" data-en="Buy">Comprar</a>
-                            </div>
+                            <h3>${curso.nombre}</h3>
+                            <p>${curso.descripcion}</p>
+                            <a href="pago.html?cursoId=${curso.id}">Comprar</a>
                         `;
                         grid.appendChild(tarjeta);
                     });
                 }
-            } catch (e) { console.error(e); }
+            } catch (e) {
+                console.error("Error al conectar con el servidor:", e);
+                document.getElementById('grid-cursos').innerHTML = '<p>Error al cargar. Asegúrate de que el servidor esté activo en el puerto 3001.</p>';
+            }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            cargarCursos();
-            const idiomaGuardado = localStorage.getItem('idiomaSeleccionado') || 'es';
-            cambiarIdioma(idiomaGuardado);
-        });
-
-        // Agrega aquí tus funciones de sonido, menú, etc. que ya tenías
-        function toggleMenu(e) { e.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
-        document.addEventListener("click", () => document.getElementById("menuOpciones").classList.remove("mostrar"));
+        window.addEventListener('DOMContentLoaded', cargarCursos);
     </script>
 </body>
 </html>
