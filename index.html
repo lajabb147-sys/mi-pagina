@@ -37,7 +37,7 @@
 
         <h3 class="titulo-categoria" data-es="🧑‍🎨 Estilos de Dibujo / Especializaciones" data-en="🧑‍🎨 Drawing Styles / Specializations">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
         <div class="grid-cursos" id="grid-cursos">
-            <p style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
+            <p id="mensaje-estado" style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
         </div>
 
         <footer class="pie-pagina">
@@ -81,30 +81,41 @@
         });
 
         async function cargarCursos() {
-    console.log("Iniciando carga de cursos..."); // <--- ESTO DEBE APARECER EN LA CONSOLA
-    try {
-        const res = await fetch(`${API_BASE}/cursos`);
-        console.log("Respuesta recibida del servidor:", res); // <--- SI ESTO NO SALE, EL SERVIDOR NO RESPONDE
-        const data = await res.json();
-        console.log("Datos recibidos:", data); // <--- AQUÍ VEREMOS SI LLEGAN LOS DUPLICADOS
-        
-        if (data.estado === 'éxito') {
+            console.log("Iniciando carga de cursos...");
             const grid = document.getElementById('grid-cursos');
-            grid.innerHTML = ''; 
             
-            const nombresProcesados = new Set();
+            try {
+                const res = await fetch(`${API_BASE}/cursos`);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                
+                const data = await res.json();
+                console.log("Datos recibidos:", data);
+                
+                if (data.estado === 'éxito') {
+                    grid.innerHTML = ''; 
+                    const nombresProcesados = new Set();
 
-            data.datos.forEach(curso => {
-                if (nombresProcesados.has(curso.nombre)) return; 
-                nombresProcesados.add(curso.nombre); 
+                    data.datos.forEach(curso => {
+                        if (nombresProcesados.has(curso.nombre)) return; 
+                        nombresProcesados.add(curso.nombre); 
 
-                const tarjeta = document.createElement('div');
-                tarjeta.className = 'tarjeta-curso';
-                tarjeta.innerHTML = `<h4>${curso.nombre}</h4>`; // Simplificado para probar
-                grid.appendChild(tarjeta);
-            });
+                        const tarjeta = document.createElement('div');
+                        tarjeta.className = 'tarjeta-curso';
+                        tarjeta.innerHTML = `<h4>${curso.nombre}</h4>`;
+                        grid.appendChild(tarjeta);
+                    });
+                } else {
+                    throw new Error("El servidor devolvió un estado distinto a éxito.");
+                }
+            } catch (e) { 
+                console.error('ERROR CRÍTICO:', e); 
+                grid.innerHTML = `<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; padding: 20px;">
+                    <strong>Error de conexión:</strong> No se pudo conectar al servidor en ${API_BASE}. 
+                    <br>Verifica que tu servidor esté corriendo en la terminal. 
+                    <br>Detalle: ${e.message}
+                </p>`;
+            }
         }
-    } catch (e) { 
-        console.error('ERROR CRÍTICO:', e); 
-    }
-}
+    </script>
+</body>
+</html>
