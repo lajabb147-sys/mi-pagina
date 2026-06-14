@@ -85,17 +85,14 @@
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
                 if (data.estado === 'éxito') {
-                    // LIMPIEZA: Esto asegura que no se dupliquen elementos
-                    grid.innerHTML = ''; 
+                    // Limpieza absoluta del contenedor antes de procesar
+                    grid.innerHTML = '';
                     
                     data.datos.forEach(curso => {
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
-                        
-                        // Lógica: Si comprado -> ir a curso.html, si no -> ir a pago.html
-                        const urlDestino = comprado ? `curso.html?id=${curso.id}` : `pago.html?cursoId=${curso.id}`;
-                        
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
+                        
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
@@ -104,15 +101,16 @@
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
                                 <p>${curso.descripcion}</p>
-                                <a href="${urlDestino}" class="btn-enlace" style="background: ${comprado ? '#10b981' : '#00f2c3'}; color: #000; font-weight: bold; text-decoration: none; padding: 10px; border-radius: 8px; display: block; text-align: center;">
-                                    ${comprado ? 'ACCEDER' : 'COMPRAR'}
-                                </a>
+                                <a href="${comprado ? 'curso.html' : 'pago.html'}?cursoId=${curso.id}" class="btn-enlace">${comprado ? 'Acceder' : 'Comprar'}</a>
                             </div>
                         `;
                         grid.appendChild(tarjeta);
                     });
                 }
-            } catch (e) { console.error('Error:', e); }
+            } catch (e) { 
+                console.error('Error cargando cursos:', e); 
+                grid.innerHTML = '<p style="text-align: center; color: red;">Error al conectar con el servidor.</p>';
+            }
         }
     </script>
 </body>
