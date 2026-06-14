@@ -46,76 +46,38 @@
     </div>
 
     <script>
-        let sonidoActivo = true;
         const API_BASE = 'http://localhost:3001/api';
 
-        function cambiarIdioma(idioma) {
-            localStorage.setItem('idiomaSeleccionado', idioma);
-            document.querySelectorAll('[data-es]').forEach(el => {
-                const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
-                if (textoTraducido) {
-                    const spanHijo = el.querySelector('[data-es]');
-                    if (spanHijo) {
-                        spanHijo.innerText = (idioma === 'en') ? spanHijo.getAttribute('data-en') : spanHijo.getAttribute('data-es');
-                    } else {
-                        el.innerText = textoTraducido;
-                    }
-                }
-            });
-            document.getElementById("menuOpciones").classList.remove("mostrar");
-        }
-
-        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
-
-        function cerrarSesion() {
-            localStorage.removeItem('usuarioLogueado');
-            window.location.href = 'index.html'; 
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('usuarioLogueado')) {
-                document.getElementById('btnLogin').style.display = 'none';
-                document.getElementById('btnLogout').style.display = 'block';
-            }
-            cargarCursos();
-        });
-
         async function cargarCursos() {
-            console.log("Iniciando carga de cursos...");
             const grid = document.getElementById('grid-cursos');
-            
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
-                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-                
+                if (!res.ok) throw new Error("Error en servidor");
                 const data = await res.json();
-                console.log("Datos recibidos:", data);
                 
                 if (data.estado === 'éxito') {
                     grid.innerHTML = ''; 
                     const nombresProcesados = new Set();
-
                     data.datos.forEach(curso => {
                         if (nombresProcesados.has(curso.nombre)) return; 
                         nombresProcesados.add(curso.nombre); 
 
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        tarjeta.innerHTML = `<h4>${curso.nombre}</h4>`;
+                        tarjeta.innerHTML = `
+                            <img src="${curso.imagen}" alt="${curso.nombre}">
+                            <h4>${curso.nombre}</h4>
+                            <p>${curso.descripcion || 'Sin descripción'}</p>
+                        `;
                         grid.appendChild(tarjeta);
                     });
-                } else {
-                    throw new Error("El servidor devolvió un estado distinto a éxito.");
                 }
             } catch (e) { 
-                console.error('ERROR CRÍTICO:', e); 
-                grid.innerHTML = `<p style="color: #ff4d4d; grid-column: 1/-1; text-align: center; padding: 20px;">
-                    <strong>Error de conexión:</strong> No se pudo conectar al servidor en ${API_BASE}. 
-                    <br>Verifica que tu servidor esté corriendo en la terminal. 
-                    <br>Detalle: ${e.message}
-                </p>`;
+                grid.innerHTML = `<p style="color: red;">Error de conexión. Verifica el servidor.</p>`;
             }
         }
+
+        window.addEventListener('DOMContentLoaded', cargarCursos);
     </script>
 </body>
 </html>
