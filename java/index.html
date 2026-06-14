@@ -5,33 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zensei Art - Iniciar Sesión</title>
     <style>
-        
         @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap');
 
-        * {
-            box-sizing: border-box;
-            
-            font-family: 'Poppins', sans-serif;
-        }
+        * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
         body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            margin: 0; padding: 0; min-height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
             background-color: #0b0612; 
             background-image: radial-gradient(circle at 50% 50%, rgba(90, 15, 150, 0.15) 0%, transparent 80%);
         }
 
         .contenedor-login {
-            width: 100%;
-            max-width: 420px;
+            width: 100%; max-width: 420px;
             background: rgba(90, 15, 150, 0.1); 
-            padding: 45px 35px;
-            border-radius: 24px;
+            padding: 45px 35px; border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(140, 0, 255, 0.15);
             backdrop-filter: blur(12px);
@@ -39,185 +28,46 @@
 
         .titulo-login {
             font-family: 'Alex Brush', cursive !important;
-            font-size: 45pt; 
-            font-weight: 300;
-            color: #ffffff;
-            text-align: center;
-            margin: 0 0 5px 0;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 
-                         0 0 20px rgba(0, 255, 204, 0.25);
+            font-size: 45pt; font-weight: 300; color: #ffffff;
+            text-align: center; margin: 0 0 5px 0;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6), 0 0 20px rgba(0, 255, 204, 0.25);
         }
 
-        .titulo-login a.link-regreso {    
-            font-family: 'Alex Brush', cursive !important;
-            color: #ffffff;
-            text-decoration: none; 
-            cursor: pointer;
-        }
+        .link-regreso { font-family: 'Alex Brush', cursive !important; color: #ffffff; text-decoration: none; cursor: pointer; }
 
-        .subtitulo-login {
-            font-size: 10pt;
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            margin: 0 0 35px 0;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+        .subtitulo-login { font-size: 10pt; color: rgba(255, 255, 255, 0.6); text-align: center; margin: 0 0 35px 0; letter-spacing: 1px; text-transform: uppercase; }
 
-        .grupo-input {
-            margin-bottom: 22px;
-        }
+        .grupo-input { margin-bottom: 22px; }
+        .grupo-input label { display: block; font-size: 9.5pt; color: #e0b0ff; margin-bottom: 8px; font-weight: 500; }
+        .grupo-input input { width: 100%; padding: 14px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; color: #ffffff; font-size: 10pt; transition: all 0.3s ease; }
+        .grupo-input input:focus { outline: none; border-color: #00ffcc; box-shadow: 0 0 12px rgba(0, 255, 204, 0.3); background: rgba(0, 0, 0, 0.6); }
 
-        .grupo-input label {
-            display: block;
-            font-size: 9.5pt;
-            color: #e0b0ff; 
-            margin-bottom: 8px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-        }
-
-        .grupo-input input {
-            width: 100%;
-            padding: 14px 16px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 12px;
-            color: #ffffff;
-            font-size: 10pt;
-            transition: all 0.3s ease;
-        }
-
-        .grupo-input input:focus {
-            outline: none;
-            border-color: #00ffcc;
-            box-shadow: 0 0 12px rgba(0, 255, 204, 0.3);
-            background: rgba(0, 0, 0, 0.6);
-        }
-
-        .opciones-extra {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 9pt;
-            margin-bottom: 30px;
-        }
-
-        .recordarme {
-            display: flex;
-            align-items: center;
-            color: rgba(255, 255, 255, 0.7);
-            cursor: pointer;
-        }
-
-        .recordarme input {
-            margin-right: 8px;
-            accent-color: #00ffcc; 
-        }
-
-        .link-olvido {
-            color: #00ffcc;
-            text-decoration: none;
-            transition: opacity 0.2s;
-        }
-
-        .link-olvido:hover {
-            text-decoration: underline;
-            opacity: 0.9;
-        }
+        .opciones-extra { display: flex; justify-content: space-between; align-items: center; font-size: 9pt; margin-bottom: 30px; }
+        .recordarme { display: flex; align-items: center; color: rgba(255, 255, 255, 0.7); cursor: pointer; }
+        .recordarme input { margin-right: 8px; accent-color: #00ffcc; }
+        .link-olvido { color: #00ffcc; text-decoration: none; }
 
         .btn-entrar {
-            width: 100%;
-            padding: 14px;
-            background: #00ffcc;
-            border: none;
-            border-radius: 12px;
-            color: #0f0f1a;
-            font-size: 11pt;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
-            letter-spacing: 0.5px;
+            width: 100%; padding: 14px; background: #00ffcc; border: none; border-radius: 12px;
+            color: #0f0f1a; font-size: 11pt; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0, 255, 204, 0.3);
         }
+        .btn-entrar:hover { transform: translateY(-2px); background: #00e6b8; }
+        .btn-entrar:disabled { background: #555555 !important; color: #aaaaaa !important; cursor: not-allowed; }
 
-        .btn-entrar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 255, 204, 0.5);
-            background: #00e6b8;
-        }
-
-        .btn-entrar:disabled {
-            background: #555555 !important;
-            color: #aaaaaa !important;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .registro-footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 9.5pt;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .registro-footer a {
-            color: #00ffcc;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .registro-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* BARRA DE ASISTENCIA GIT (Herramienta de desarrollo agregada) */
-        .contenedor-git-helper {
-            margin-top: 25px;
-            width: 100%;
-            max-width: 420px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px dashed #00ffcc;
-            border-radius: 14px;
-            padding: 15px;
-            color: #00ffcc;
-            font-size: 8.5pt;
-        }
-
-        .git-titulo {
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .git-comando {
-            background: rgba(0, 255, 204, 0.1);
-            padding: 8px;
-            border-radius: 6px;
-            font-family: 'Courier New', Courier, monospace;
-            color: #ffffff;
-            white-space: pre-wrap;
-            word-break: break-all;
-            user-select: all;
-            cursor: pointer;
-        }
+        .registro-footer { text-align: center; margin-top: 30px; font-size: 9.5pt; color: rgba(255, 255, 255, 0.6); }
+        .registro-footer a { color: #00ffcc; text-decoration: none; font-weight: 500; }
         
-        .git-comando:hover {
-            background: rgba(0, 255, 204, 0.2);
-        }
+        .contenedor-git-helper { margin-top: 25px; width: 100%; max-width: 420px; background: rgba(0, 0, 0, 0.6); border: 1px dashed #00ffcc; border-radius: 14px; padding: 15px; color: #00ffcc; font-size: 8.5pt; }
+        .git-titulo { font-weight: 600; margin-bottom: 8px; text-transform: uppercase; display: flex; justify-content: space-between; }
+        .git-comando { background: rgba(0, 255, 204, 0.1); padding: 8px; border-radius: 6px; font-family: 'Courier New', Courier, monospace; color: #ffffff; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="contenedor-login">
         <header>
-            <h1 class="titulo-login">
-                <a href="index.html" class="link-regreso">Zensei Art</a>
-            </h1>
+            <h1 class="titulo-login"><a href="index.html" class="link-regreso">Zensei Art</a></h1>
             <p class="subtitulo-login">Iniciar Sesión</p>
         </header>
 
@@ -226,12 +76,10 @@
                 <label for="email">Usuario o Correo Electrónico</label>
                 <input type="text" id="email" name="email" placeholder="ejemplo@arte.com" required>
             </div>
-
             <div class="grupo-input">
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" placeholder="••••••••" required>
             </div>
-
             <div class="opciones-extra">
                 <label class="recordarme">
                     <input type="checkbox" id="chkRecordar">
@@ -239,7 +87,6 @@
                 </label>
                 <a href="#" class="link-olvido">¿Olvidaste tu contraseña?</a>
             </div>
-
             <button type="submit" class="btn-entrar">Entrar</button>
         </form>
 
@@ -249,44 +96,30 @@
         </footer>
     </div>
 
-    <div class="contenedor-git-helper">
-        <div class="git-titulo">
-            <span>🚀 Consola Git para GitHub</span>
-            <span style="color: rgba(255,255,255,0.4);">Click para seleccionar todo</span>
-        </div>
-        <div class="git-comando" id="gitCode">git add Java/index.html && git commit -m "Mejora diseño dark de login y corrige ruta de redirección a Java/index.html" && git push origin main</div>
-    </div>
-
     <script>
-        const SERVER_BASE = 'http://localhost:3001';
-        const API_BASE = `${SERVER_BASE}/api`;
-        const FRONTEND_HOME = `${SERVER_BASE}/Java/index.html`; 
-
-        // Si se abre directo desde disco, redirigir al servidor local activo
-        if (window.location.protocol === 'file:') {
-            window.location.href = FRONTEND_HOME;
-        }
+        const API_BASE = 'http://localhost:3001/api';
+        // CAMBIO CRÍTICO: Usamos el nombre del archivo directamente para evitar bucles
+        const FRONTEND_HOME = 'index.html'; 
 
         window.addEventListener('DOMContentLoaded', () => {
-            const token = localStorage.getItem('token');
-            if (token) {
+            // Si el usuario ya tiene token, lo enviamos al index
+            if (localStorage.getItem('token')) {
                 window.location.href = FRONTEND_HOME;
             }
 
             document.getElementById('loginForm').addEventListener('submit', hacerLogin);
             
-            // Hacer que al dar click al cuadro de Git, se copie automáticamente
             document.getElementById('gitCode').addEventListener('click', function() {
                 navigator.clipboard.writeText(this.innerText);
-                alert("📋 ¡Comandos copiados! Pégalos directamente en tu terminal de VS Code.");
+                alert("📋 ¡Comandos copiados!");
             });
         });
 
         async function hacerLogin(event) {
-            event.preventDefault();
+            event.preventDefault(); // EVITA RECARGA AUTOMÁTICA
             
             const email = document.getElementById('email').value.trim().toLowerCase();
-            const password = document.getElementById('password').value; 
+            const password = document.getElementById('password').value;
             const recordar = document.getElementById('chkRecordar').checked;
             const btnEntrar = document.querySelector('.btn-entrar');
 
@@ -296,9 +129,7 @@
             try {
                 const response = await fetch(`${API_BASE}/auth/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
                 });
 
@@ -312,13 +143,9 @@
                 }
 
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('usuarioId', data.usuarioId);
                 localStorage.setItem('usuarioLogueado', data.nombre);
                 
-                if (recordar) {
-                    localStorage.setItem('recordarSesion', 'true');
-                }
-
+                // Redirección limpia al archivo index.html
                 window.location.href = FRONTEND_HOME;
 
             } catch (error) {
