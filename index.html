@@ -22,7 +22,7 @@
                 <span class="menu-titulo" data-es="Audio" data-en="Audio">Audio</span>
                 <button onclick="toggleSonido()" id="btnSonido" data-es="🔊 Sonido: ON" data-en="🔊 Sound: ON">🔊 Sonido: ON</button>
                 <hr class="menu-separador">
-                <button onclick="window.location.href='/java/index.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
+                <button onclick="window.location.href='login.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
                 <button id="btnLogout" onclick="cerrarSesion()" style="display:none;">🚪 <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span></button>
             </div>
         </div>
@@ -33,13 +33,6 @@
             <p class="txt-bienvenidos-abajo" data-es="Eleva tu talento al nivel profesional. Toca un curso para ver su especialización." data-en="Elevate your talent to a professional level. Tap a course to see its specialization.">
                 Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.
             </p>
-            <div class="contenedor-notificaciones">
-                <span class="txt-notificaciones" data-es="Recibir ofertas de cursos:" data-en="Receive course offers:">Recibir ofertas de cursos:</span>
-                <label class="switch-notificaciones">
-                    <input type="checkbox" id="chkNotificaciones" onchange="controlarNotificaciones()">
-                    <span class="slider-switch"></span>
-                </label>
-            </div>
         </header>
 
         <h3 class="titulo-categoria" data-es="🧑‍🎨 Estilos de Dibujo / Especializaciones" data-en="🧑‍🎨 Drawing Styles / Specializations">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
@@ -47,30 +40,16 @@
             <p style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
         </div>
 
-        <section class="banner-inspirador">
-            <div class="banner-texto">
-                <h2 data-es="Tu viaje apenas comienza" data-en="Your journey is just beginning">Tu viaje apenas comienza</h2>
-                <p data-es="El artista que te espera al final del camino es capaz de dominar cualquier lienzo. Nuestro método te llevará paso a paso, de novato a maestro. Tu estilo único te está esperando." 
-                   data-en="The artist waiting for you at the end of the road is capable of mastering any canvas. Our method will take you step by step, from novice to master. Your unique style is waiting for you.">
-                   El artista que te espera al final del camino es capaz de dominar cualquier lienzo. Nuestro método te llevará paso a paso, de novato a maestro. <strong>Tu estilo único te está esperando.</strong>
-                </p>
-            </div>
-        </section>
-
         <footer class="pie-pagina">
-            <h4 class="titulo-footer">Zensei Art Academy</h4>
-            <p class="txt-footer" data-es="Somos un espacio independiente dedicado a la formación de dibujantes y creadores visuales. Nuestro propósito es darte las herramientas clave para romper los límites y ayudarte a descubrir tu propia identidad artística." data-en="We are an independent space dedicated to training artists and visual creators. Our purpose is to give you the key tools to break boundaries and help you discover your own artistic identity.">
-                Somos un espacio independiente dedicado a la formación de dibujantes y creadores visuales. Nuestro propósito es darte las herramientas clave para romper los límites y ayudarte a descubrir tu propia identidad artística.
-            </p>
-            <p class="copyright" data-es="© 2026 Zensei Art Academy. Todos los derechos reservados." data-en="© 2026 Zensei Art Academy. All rights reserved.">© 2026 Zensei Art Academy. Todos los derechos reservados.</p>
+            <p class="copyright" data-es="© 2026 Zensei Art Academy." data-en="© 2026 Zensei Art Academy.">© 2026 Zensei Art Academy.</p>
         </footer>
     </div>
 
     <script>
         let sonidoActivo = true;
         const API_BASE = 'http://localhost:3001/api';
-        const FRONTEND_HOME = 'http://localhost:3001/Java/index.html';
 
+        // Lógica de traducción
         function cambiarIdioma(idioma) {
             localStorage.setItem('idiomaSeleccionado', idioma);
             document.querySelectorAll('[data-es]').forEach(el => {
@@ -85,63 +64,22 @@
                 }
             });
             document.getElementById("menuOpciones").classList.remove("mostrar");
-            reproducirSonido();
         }
 
-        function toggleMenu(event) {
-            event.stopPropagation();
-            document.getElementById("menuOpciones").classList.toggle("mostrar");
-            reproducirSonido();
-        }
-
-        function cambiarTema(tipo) {
-            document.body.classList.toggle('light-mode', tipo === 'claro');
-            document.getElementById("menuOpciones").classList.remove("mostrar");
-            reproducirSonido();
-        }
-
-        function toggleSonido() {
-            sonidoActivo = !sonidoActivo;
-            const btn = document.getElementById("btnSonido");
-            btn.innerText = sonidoActivo ? "🔊 Sonido: ON" : "🔇 Sonido: OFF";
-            if (sonidoActivo) reproducirSonido();
-        }
-
-        function reproducirSonido() {
-            if (!sonidoActivo) return;
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.frequency.setValueAtTime(850, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.06);
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.06);
-        }
-
-        function controlarNotificaciones() {
-            if (document.getElementById('chkNotificaciones').checked) alert("🔔 ¡Excelente! Te enviaremos descuentos exclusivos.");
-        }
+        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
 
         function cerrarSesion() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('usuarioId');
             localStorage.removeItem('usuarioLogueado');
-            window.location.href = FRONTEND_HOME;
+            window.location.reload(); // Recarga la página después de salir
         }
 
-        document.addEventListener("click", () => document.getElementById("menuOpciones").classList.remove("mostrar"));
-
         window.addEventListener('DOMContentLoaded', () => {
+            // Verificamos sesión solo para mostrar/ocultar botones, NO para bloquear el acceso
             if (localStorage.getItem('usuarioLogueado')) {
                 document.getElementById('btnLogin').style.display = 'none';
                 document.getElementById('btnLogout').style.display = 'block';
             }
             cargarCursos();
-            const idiomaGuardado = localStorage.getItem('idiomaSeleccionado');
-            if (idiomaGuardado) cambiarIdioma(idiomaGuardado);
         });
 
         async function cargarCursos() {
@@ -151,32 +89,29 @@
                 if (data.estado === 'éxito') {
                     const grid = document.getElementById('grid-cursos');
                     grid.innerHTML = '';
-                    data.datos.slice(0, 4).forEach(curso => {
+                    data.datos.forEach(curso => {
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
+                        
+                        // Lógica de enlace: Si no está logueado, al tocar 'Comprar' lo manda al login
+                        const enlace = localStorage.getItem('usuarioLogueado') ? `pago.html?cursoId=${curso.id}` : 'login.html';
+                        
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
                                 <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
                             </div>
                             <div class="info-curso">
-                                <h4 data-es="${curso.nombre}" data-en="${curso.nombre_en}">${curso.nombre}</h4>
-                                <p data-es="${curso.descripcion}" data-en="${curso.descripcion_en}">${curso.descripcion}</p>
-                                <a href="${comprado ? '/Java/curso.html' : '/Java/pago.html'}?cursoId=${curso.id}" 
-                                   class="btn-enlace"
-                                   data-es="${comprado ? 'Acceder' : 'Comprar'}"
-                                   data-en="${comprado ? 'Access' : 'Buy'}">${comprado ? 'Acceder' : 'Comprar'}</a>
+                                <h4>${curso.nombre}</h4>
+                                <p>${curso.descripcion}</p>
+                                <a href="${comprado ? 'curso.html' : enlace}" class="btn-enlace">${comprado ? 'Acceder' : 'Comprar'}</a>
                             </div>
                         `;
                         grid.appendChild(tarjeta);
                     });
-                    const idiomaActual = localStorage.getItem('idiomaSeleccionado') || 'es';
-                    cambiarIdioma(idiomaActual);
                 }
-            } catch (e) {
-                console.error('Error al cargar cursos:', e);
-            }
+            } catch (e) { console.error('Error:', e); }
         }
     </script>
 </body>
