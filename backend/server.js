@@ -844,3 +844,27 @@ function startServer(port) {
 }
 
 startServer(currentPort);
+// ======================================================================
+// 🗄️ ENDPOINT PARA GUARDAR LA INSCRIPCIÓN SIMULADA EN MYSQL
+// ======================================================================
+app.post('/api/inscripciones', async (req, res) => {
+  const { correo, curso, metodo } = req.body;
+
+  try {
+    // Usamos la variable de conexión que ya tengas configurada en tu proyecto (ej: conexion, pool, db, etc.)
+    const connection = await conexion.getConnection();
+    
+    // Consulta SQL para insertar la nueva inscripción simulada
+    const querySQL = 'INSERT INTO inscripciones (correo_usuario, curso_nombre, metodo_pago, fecha_inscripcion) VALUES (?, ?, ?, NOW())';
+    
+    await connection.query(querySQL, [correo, curso, metodo]);
+    connection.release(); // Liberamos la conexión
+
+    // Respondemos en JSON para que el frontend lo maneje en secreto sin recargar la página
+    res.json({ estado: 'éxito', mensaje: 'Inscripción simulada registrada correctamente' });
+    
+  } catch (error) {
+    console.error('Error al guardar en MySQL:', error);
+    res.status(500).json({ estado: 'error', mensaje: 'No se pudo guardar la inscripción' });
+  }
+});
