@@ -69,24 +69,25 @@
     <script>
         let sonidoActivo = true;
 
-        // Función Universal de Idioma
         function cambiarIdioma(idioma) {
-            localStorage.setItem('idiomaSeleccionado', idioma);
-            document.querySelectorAll('[data-es]').forEach(el => {
-                const trad = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
-                if (trad) {
-                    const span = el.querySelector('[data-es]');
-                    if (span) {
-                        span.innerText = (idioma === 'en') ? span.getAttribute('data-en') : span.getAttribute('data-es');
-                    } else {
-                        el.innerText = trad;
-                    }
-                }
-            });
-            document.getElementById("menuOpciones").classList.remove("mostrar");
-            reproducirSonido();
-        }
+    localStorage.setItem('idiomaSeleccionado', idioma);
 
+    document.querySelectorAll('[data-es]').forEach(el => {
+        const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
+        
+        if (textoTraducido) {
+            const spanHijo = el.querySelector('[data-es]');
+            if (spanHijo) {
+                spanHijo.innerText = (idioma === 'en') ? spanHijo.getAttribute('data-en') : spanHijo.getAttribute('data-es');
+            } else {
+                el.innerText = textoTraducido;
+            }
+        }
+    });
+
+    document.getElementById("menuOpciones").classList.remove("mostrar");
+    reproducirSonido();
+}
         function controlarNotificaciones() {
             if (document.getElementById('chkNotificaciones').checked) alert("🔔 ¡Excelente! Te enviaremos descuentos exclusivos.");
         }
@@ -147,36 +148,43 @@
             localStorage.removeItem('usuarioLogueado');
             window.location.href = FRONTEND_HOME;
         }
-
-        async function cargarCursos() {
+async function cargarCursos() {
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
+                
                 if (data.estado === 'éxito') {
                     const grid = document.getElementById('grid-cursos');
                     grid.innerHTML = '';
+                    
                     data.datos.slice(0, 4).forEach(curso => {
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
+                        
+                        // Agregamos data-es y data-en a los elementos dinámicos
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
                                 <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
                             </div>
                             <div class="info-curso">
-                                <h4>${curso.nombre}</h4>
-                                <p>${curso.descripcion}</p>
-                                <a href="${comprado ? '/Java/curso.html' : '/Java/pago.html'}?cursoId=${curso.id}" class="btn-enlace">${comprado ? '▶️ Acceder' : '💳 Comprar'}</a>
+                                <h4 data-es="${curso.nombre}" data-en="${curso.nombre_en}">${curso.nombre}</h4>
+                                <p data-es="${curso.descripcion}" data-en="${curso.descripcion_en}">${curso.descripcion}</p>
+                                <a href="${comprado ? '/Java/curso.html' : '/Java/pago.html'}?cursoId=${curso.id}" 
+                                   class="btn-enlace"
+                                   data-es="${comprado ? 'Acceder' : 'Comprar'}"
+                                   data-en="${comprado ? 'Access' : 'Buy'}">${comprado ? 'Acceder' : 'Comprar'}</a>
                             </div>
                         `;
                         grid.appendChild(tarjeta);
                     });
+
+                    // Esto obliga a traducir los cursos apenas aparecen en pantalla
+                    const idiomaActual = localStorage.getItem('idiomaSeleccionado') || 'es';
+                    cambiarIdioma(idiomaActual);
                 }
             } catch (e) {
-                console.error(e);
+                console.error('Error al cargar cursos:', e);
             }
         }
-    </script>
-</body>
-</html>
