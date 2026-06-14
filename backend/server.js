@@ -802,7 +802,7 @@ app.post('/api/admin/restaurar-cursos', async (req, res) => {
 // 💳 RUTA DIRECTA PARA ENTRAR A LA PASARELA DE PAGO (ZENSEI ART ACADEMY)
 // ======================================================================
 app.get('/Java/pago.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'pago.html'));
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'html', 'pago.html'));
 });
 // ======================================================================
 // Manejo de rutas no encontradas
