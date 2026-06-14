@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pasarela de Pago - Zensei Art Academy</title>
+    <!-- Iconos FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0d0b14;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .contenedor-pago {
+            background: #161224;
+            border: 1px solid #2d244e;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        h2 {
+            color: #a855f7;
+            font-size: 24px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .subtitulo {
+            color: #94a3b8;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tarjeta-curso {
+            background: #1e1933;
+            border-left: 4px solid #a855f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .tarjeta-curso h3 {
+            font-size: 16px;
+            color: #f1f5f9;
+        }
+
+        .tarjeta-curso .precio {
+            font-size: 18px;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .seccion-metodos {
+            margin-bottom: 30px;
+        }
+
+        .seccion-metodos label {
+            display: block;
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .opciones-pago {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .opcion-tarjeta {
+            background: #1e1933;
+            border: 1px solid #2d244e;
+            padding: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .opcion-tarjeta:hover {
+            border-color: #a855f7;
+            background: #251f3e;
+        }
+
+        .opcion-tarjeta input[type="radio"] {
+            margin-right: 15px;
+            accent-color: #a855f7;
+            transform: scale(1.2);
+        }
+
+        .opcion-tarjeta i {
+            font-size: 20px;
+            color: #a855f7;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .opcion-tarjeta span {
+            font-size: 15px;
+            color: #e2e8f0;
+        }
+
+        .bloque-botones {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-cancelar {
+            background: #2d244e;
+            color: #94a3b8;
+        }
+
+        .btn-cancelar:hover {
+            background: #3b2f66;
+            color: #f1f5f9;
+        }
+
+        .btn-pagar {
+            background: #a855f7;
+            color: white;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-pagar:hover {
+            background: #b55fe6;
+            transform: translateY(-1px);
+        }
+
+        /* PANTALLA DE ÉXITO OCULTA POR DEFECTO */
+        .pantalla-exito {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .icono-check {
+            font-size: 60px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="contenedor-pago">
+        
+        <!-- BLOQUE DEL FORMULARIO PRINCIPAL -->
+        <div id="bloque-formulario">
+            <h2 id="titulo-pago">Procesar Pago</h2>
+            <div class="subtitulo">Zensei Art Academy</div>
+
+            <div class="tarjeta-curso">
+                <h3 id="titulo-curso-manga">Manga y Anime Profesional</h3>
+                <div class="precio">$39.99</div>
+            </div>
+
+            <div class="seccion-metodos">
+                <label>Métodos de Pago Disponibles (Nicaragua):</label>
+                <div class="opciones-pago">
+                    <div class="opcion-tarjeta" onclick="document.getElementById('kash').checked = true">
+                        <input type="radio" id="kash" name="metodo_pago" value="Billetera Kash" checked>
+                        <i class="fa-solid fa-wallet"></i>
+                        <span id="label-kash">Billetera Kash Nicaragua</span>
+                    </div>
+                    <div class="opcion-tarjeta" onclick="document.getElementById('banca').checked = true">
+                        <input type="radio" id="banca" name="metodo_pago" value="Transferencia Bancaria">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <span id="label-banco">Transferencia LAFISE / BANPRO</span>
+                    </div>
+                    <div class="opcion-tarjeta" onclick="document.getElementById('movil').checked = true">
+                        <input type="radio" id="movil" name="metodo_pago" value="Billetera Movil">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                        <span id="label-movil">Billetera Móvil (Tigo Money / Claro Pay)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bloque-botones">
+                <button class="btn btn-cancelar" id="btn-cancelar-texto" onclick="window.history.back()">Cancelar</button>
+                <button class="btn btn-pagar" id="btn-pagar-texto" onclick="enviarInscripcionBackend()">Proceder al Pago</button>
+            </div>
+        </div>
+
+        <!-- BLOQUE VENTANA DE ÉXITO -->
+        <div id="bloque-exito" class="pantalla-exito">
+            <i class="fa-solid fa-circle-check icono-check"></i>
+            <h2 id="titulo-exito">¡Pago Completado!</h2>
+            <p id="subtitulo-exito" style="color: #94a3b8; font-size: 15px; margin-bottom: 25px;">Tu inscripción ha sido procesada de forma segura.</p>
+            <button class="btn btn-pagar" id="btn-ir-cursos" style="width: 100%;" onclick="window.location.href='/frontend/html/index.html'">Ir a mis Cursos</button>
+        </div>
+
+    </div>
+
+    <!-- ENLAZAMOS CON TU SCRIPT APP.JS QUE ESTÁ EN LA CARPETA JS -->
+    <script src="/frontend/js/app.js"></script>
+
+    <script>
+        // Función simulada para disparar la ventana de éxito y enviar los datos a MySQL
+        function enviarInscripcionBackend() {
+            // Aquí capturas el método que el usuario seleccionó
+            const metodos = document.getElementsByName('metodo_pago');
+            let metodoSeleccionado = '';
+            for(let i = 0; i < metodos.length; i++){
+                if(metodos[i].checked){
+                    metodoSeleccionado = metodos[i].value;
+                    break;
+                }
+            }
+
+            // Ocultamos el formulario y mostramos el éxito
+            document.getElementById('bloque-formulario').style.display = 'none';
+            document.getElementById('bloque-exito').style.display = 'block';
+
+            // Aquí puedes llamar a tu fetch('/api/inscripciones') si quieres disparar el guardado real en base de datos
+            console.log("Método seleccionado enviado a MySQL:", metodoSeleccionado);
+        }
+    </script>
+</body>
+</html>
