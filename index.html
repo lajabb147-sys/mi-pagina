@@ -84,11 +84,20 @@
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
+                
                 if (data.estado === 'éxito') {
-                    // Limpieza absoluta del contenedor antes de procesar
                     grid.innerHTML = '';
                     
+                    // FILTRO EXTREMO: Guardamos los IDs que ya dibujamos
+                    const idsProcesados = new Set();
+                    
                     data.datos.forEach(curso => {
+                        // Si el ID ya está en el Set, ignoramos este curso y saltamos al siguiente
+                        if (idsProcesados.has(curso.id)) return;
+                        
+                        // Si es un ID nuevo, lo agregamos al Set para recordarlo
+                        idsProcesados.add(curso.id);
+
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
