@@ -50,7 +50,18 @@
 
         function cambiarIdioma(idioma) {
             localStorage.setItem('idiomaSeleccionado', idioma);
-            location.reload(); 
+            document.querySelectorAll('[data-es]').forEach(el => {
+                const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
+                if (textoTraducido) {
+                    const spanHijo = el.querySelector('[data-es]');
+                    if (spanHijo) {
+                        spanHijo.innerText = (idioma === 'en') ? spanHijo.getAttribute('data-en') : spanHijo.getAttribute('data-es');
+                    } else {
+                        el.innerText = textoTraducido;
+                    }
+                }
+            });
+            document.getElementById("menuOpciones").classList.remove("mostrar");
         }
 
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
@@ -74,14 +85,17 @@
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
                 if (data.estado === 'éxito') {
-                    // LIMPIEZA: Esto evita que se dupliquen los cursos
-                    grid.innerHTML = '';
+                    // LIMPIEZA: Esto asegura que no se dupliquen elementos
+                    grid.innerHTML = ''; 
                     
                     data.datos.forEach(curso => {
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
+                        
+                        // Lógica: Si comprado -> ir a curso.html, si no -> ir a pago.html
+                        const urlDestino = comprado ? `curso.html?id=${curso.id}` : `pago.html?cursoId=${curso.id}`;
+                        
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
@@ -90,26 +104,15 @@
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
                                 <p>${curso.descripcion}</p>
-                                <button onclick="manejarAccion(${curso.id}, ${comprado})" class="btn-enlace" style="background: ${comprado ? '#10b981' : '#00f2c3'}; color: #000; font-weight: bold;">
+                                <a href="${urlDestino}" class="btn-enlace" style="background: ${comprado ? '#10b981' : '#00f2c3'}; color: #000; font-weight: bold; text-decoration: none; padding: 10px; border-radius: 8px; display: block; text-align: center;">
                                     ${comprado ? 'ACCEDER' : 'COMPRAR'}
-                                </button>
+                                </a>
                             </div>
                         `;
                         grid.appendChild(tarjeta);
                     });
                 }
             } catch (e) { console.error('Error:', e); }
-        }
-
-        function manejarAccion(cursoId, yaComprado) {
-            if (yaComprado) {
-                window.location.href = `curso.html?id=${cursoId}`;
-            } else {
-                // Simulación directa: marcamos como comprado y refrescamos
-                alert("¡Compra exitosa! Ahora tienes acceso.");
-                localStorage.setItem(`curso_${cursoId}_comprado`, 'true');
-                cargarCursos();
-            }
         }
     </script>
 </body>
