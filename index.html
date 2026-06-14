@@ -87,17 +87,17 @@
                 
                 if (data.estado === 'éxito') {
                     const grid = document.getElementById('grid-cursos');
-                    grid.innerHTML = ''; // Limpieza obligatoria
+                    grid.innerHTML = ''; 
                     
-                    // ESCUDO ANTI-DUPLICADOS: Solo permite un ID único por tarjeta
-                    const idsProcesados = new Set();
+                    // NUEVO ESCUDO: Ahora filtramos por el NOMBRE del curso, no por el ID.
+                    const nombresProcesados = new Set();
 
                     data.datos.forEach(curso => {
-                        // Si el curso ya se dibujó, lo ignora y pasa al siguiente
-                        if (idsProcesados.has(curso.id)) return; 
+                        // Si el NOMBRE ya se dibujó, lo ignora
+                        if (nombresProcesados.has(curso.nombre)) return; 
                         
-                        // Si es nuevo, lo registra en el escudo
-                        idsProcesados.add(curso.id); 
+                        // Si es un nombre nuevo, lo registra
+                        nombresProcesados.add(curso.nombre); 
 
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
@@ -122,6 +122,3 @@
                 document.getElementById('grid-cursos').innerHTML = '<p style="text-align: center; color: red;">Error de conexión con el servidor.</p>';
             }
         }
-    </script>
-</body>
-</html>
