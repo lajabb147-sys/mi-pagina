@@ -68,28 +68,24 @@
 
     <script>
         let sonidoActivo = true;
+        const API_BASE = 'http://localhost:3001/api';
+        const FRONTEND_HOME = 'http://localhost:3001/Java/index.html';
 
         function cambiarIdioma(idioma) {
-    localStorage.setItem('idiomaSeleccionado', idioma);
-
-    document.querySelectorAll('[data-es]').forEach(el => {
-        const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
-        
-        if (textoTraducido) {
-            const spanHijo = el.querySelector('[data-es]');
-            if (spanHijo) {
-                spanHijo.innerText = (idioma === 'en') ? spanHijo.getAttribute('data-en') : spanHijo.getAttribute('data-es');
-            } else {
-                el.innerText = textoTraducido;
-            }
-        }
-    });
-
-    document.getElementById("menuOpciones").classList.remove("mostrar");
-    reproducirSonido();
-}
-        function controlarNotificaciones() {
-            if (document.getElementById('chkNotificaciones').checked) alert("🔔 ¡Excelente! Te enviaremos descuentos exclusivos.");
+            localStorage.setItem('idiomaSeleccionado', idioma);
+            document.querySelectorAll('[data-es]').forEach(el => {
+                const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
+                if (textoTraducido) {
+                    const spanHijo = el.querySelector('[data-es]');
+                    if (spanHijo) {
+                        spanHijo.innerText = (idioma === 'en') ? spanHijo.getAttribute('data-en') : spanHijo.getAttribute('data-es');
+                    } else {
+                        el.innerText = textoTraducido;
+                    }
+                }
+            });
+            document.getElementById("menuOpciones").classList.remove("mostrar");
+            reproducirSonido();
         }
 
         function toggleMenu(event) {
@@ -125,22 +121,9 @@
             osc.stop(audioCtx.currentTime + 0.06);
         }
 
-        document.addEventListener("click", () => document.getElementById("menuOpciones").classList.remove("mostrar"));
-
-        // Lógica de Usuario y Cursos
-        const API_BASE = 'http://localhost:3001/api';
-        const FRONTEND_HOME = 'http://localhost:3001/Java/index.html';
-
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('usuarioLogueado')) {
-                document.getElementById('btnLogin').style.display = 'none';
-                document.getElementById('btnLogout').style.display = 'block';
-            }
-            cargarCursos();
-            // Aplicar idioma guardado si existe
-            const idiomaGuardado = localStorage.getItem('idiomaSeleccionado');
-            if (idiomaGuardado) cambiarIdioma(idiomaGuardado);
-        });
+        function controlarNotificaciones() {
+            if (document.getElementById('chkNotificaciones').checked) alert("🔔 ¡Excelente! Te enviaremos descuentos exclusivos.");
+        }
 
         function cerrarSesion() {
             localStorage.removeItem('token');
@@ -148,21 +131,30 @@
             localStorage.removeItem('usuarioLogueado');
             window.location.href = FRONTEND_HOME;
         }
-async function cargarCursos() {
+
+        document.addEventListener("click", () => document.getElementById("menuOpciones").classList.remove("mostrar"));
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('usuarioLogueado')) {
+                document.getElementById('btnLogin').style.display = 'none';
+                document.getElementById('btnLogout').style.display = 'block';
+            }
+            cargarCursos();
+            const idiomaGuardado = localStorage.getItem('idiomaSeleccionado');
+            if (idiomaGuardado) cambiarIdioma(idiomaGuardado);
+        });
+
+        async function cargarCursos() {
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
-                
                 if (data.estado === 'éxito') {
                     const grid = document.getElementById('grid-cursos');
                     grid.innerHTML = '';
-                    
                     data.datos.slice(0, 4).forEach(curso => {
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        
-                        // Agregamos data-es y data-en a los elementos dinámicos
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
@@ -179,8 +171,6 @@ async function cargarCursos() {
                         `;
                         grid.appendChild(tarjeta);
                     });
-
-                    // Esto obliga a traducir los cursos apenas aparecen en pantalla
                     const idiomaActual = localStorage.getItem('idiomaSeleccionado') || 'es';
                     cambiarIdioma(idiomaActual);
                 }
@@ -188,3 +178,6 @@ async function cargarCursos() {
                 console.error('Error al cargar cursos:', e);
             }
         }
+    </script>
+</body>
+</html>
