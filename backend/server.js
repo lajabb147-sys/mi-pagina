@@ -14,6 +14,8 @@ const app = express();
 // Middlewares
 app.use(cors());
 app.use(bodyParser.json());
+// ====== AGREGA ESTA LÍNEA PARA QUE EXPRESS RECONOZCA TU CARPETA JAVA ======
+app.use('/Java', express.static(path.join(__dirname, '..', 'Java')));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Servir archivos estáticos: la página original está en el directorio padre
