@@ -116,14 +116,21 @@ app.post('/api/auth/login', async (req, res) => {
       });
     }
 
-    // Verificar contraseña (hash simple)
+    // --- CAMBIO PARA DEPURAR ---
     const passwordHash = hashPassword(password);
+    console.log("Calculado:", passwordHash);
+    console.log("Guardado en DB:", usuario[0].password);
+
     if (usuario[0].password !== passwordHash) {
-      return res.status(401).json({
-        estado: 'error',
-        mensaje: 'Email o contraseña incorrectos'
-      });
+        // --- AQUÍ ESTÁ EL TRUCO ---
+        // Si falla, no te bloquees todavía, imprime el error en consola para verlo
+        console.log("¡Error de comparación! Las contraseñas no coinciden.");
+        return res.status(401).json({
+            estado: 'error',
+            mensaje: 'Email o contraseña incorrectos'
+        });
     }
+    // ---------------------------
 
     // Crear sesión y token
     const token = generarToken();
