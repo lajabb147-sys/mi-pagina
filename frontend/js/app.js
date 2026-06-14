@@ -202,4 +202,64 @@ window.iniciarCompra = async function(cursoId) {
 
 function abrirCurso(cursoId) {
   window.location.href = `curso.html?id=${cursoId}`;
+  // ======================================================================
+// 🌐 SISTEMA DE TRADUCCIÓN DINÁMICA (ESPAÑOL / INGLÉS)
+// ======================================================================
+const traducciones = {
+  es: {
+    tituloPasarela: "Procesar Pago",
+    txtTarjeta: "Billetera Kash Nicaragua",
+    txtBanco: "Transferencia LAFISE / BANPRO",
+    txtMovil: "Billetera Móvil (Tigo Money / Claro Pay)",
+    btnPagar: "Proceder al Pago",
+    btnCancelar: "Cancelar",
+    pagoExitoso: "¡Pago Completado!",
+    txtExito: "Tu inscripción ha sido procesada de forma segura.",
+    btnCursos: "Ir a mis Cursos",
+    cursoManga: "Manga y Anime Profesional"
+    // Aquí puedes ir agregando más textos si te hace falta
+  },
+  en: {
+    tituloPasarela: "Process Payment",
+    txtTarjeta: "Kash Wallet Nicaragua",
+    txtBanco: "LAFISE / BANPRO Bank Transfer",
+    txtMovil: "Mobile Wallet (Tigo Money / Claro Pay)",
+    btnPagar: "Proceed to Pay",
+    btnCancelar: "Cancel",
+    pagoExitoso: "Payment Completed!",
+    txtExito: "Your enrollment has been successfully processed.",
+    btnCursos: "Go to my Courses",
+    cursoManga: "Professional Manga & Anime"
+  }
+};
+
+function cambiarIdioma(idioma) {
+  // Guardamos el idioma en el navegador para que se mantenga al cambiar de página
+  localStorage.setItem('idiomaSeleccionado', idioma);
+
+  // 1. Traducir elementos de la Pasarela de Pago (pago.html)
+  if (document.getElementById('titulo-pago')) {
+    document.getElementById('titulo-pago').innerText = traducciones[idioma].tituloPasarela;
+    document.getElementById('label-kash').innerText = traducciones[idioma].txtTarjeta;
+    document.getElementById('label-banco').innerText = traducciones[idioma].txtBanco;
+    document.getElementById('label-movil').innerText = traducciones[idioma].txtMovil;
+    document.getElementById('btn-pagar-texto').innerText = traducciones[idioma].btnPagar;
+    document.getElementById('btn-cancelar-texto').innerText = traducciones[idioma].btnCancelar;
+    document.getElementById('titulo-exito').innerText = traducciones[idioma].pagoExitoso;
+    document.getElementById('subtitulo-exito').innerText = traducciones[idioma].txtExito;
+    document.getElementById('btn-ir-cursos').innerText = traducciones[idioma].btnCursos;
+  }
+
+  // 2. Traducir bloques de Cursos (curso.html o index.html)
+  if (document.getElementById('titulo-curso-manga')) {
+    document.getElementById('titulo-curso-manga').innerText = traducciones[idioma].cursoManga;
+  }
+}
+
+// Al cargar cualquier página, aplicar el idioma que el usuario eligió antes
+document.addEventListener('DOMContentLoaded', () => {
+  const idiomaGuardado = localStorage.getItem('idiomaSeleccionado') || 'es';
+  cambiarIdioma(idiomaGuardado);
+});
+// ======================================================================
 }
