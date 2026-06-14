@@ -46,35 +46,21 @@
     </div>
 
     <script>
-        let sonidoActivo = true;
         const API_BASE = 'http://localhost:3001/api';
 
-        // Lógica de traducción
         function cambiarIdioma(idioma) {
             localStorage.setItem('idiomaSeleccionado', idioma);
-            document.querySelectorAll('[data-es]').forEach(el => {
-                const textoTraducido = (idioma === 'en') ? el.getAttribute('data-en') : el.getAttribute('data-es');
-                if (textoTraducido) {
-                    const spanHijo = el.querySelector('[data-es]');
-                    if (spanHijo) {
-                        spanHijo.innerText = (idioma === 'en') ? spanHijo.getAttribute('data-en') : spanHijo.getAttribute('data-es');
-                    } else {
-                        el.innerText = textoTraducido;
-                    }
-                }
-            });
-            document.getElementById("menuOpciones").classList.remove("mostrar");
+            location.reload(); 
         }
 
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
 
         function cerrarSesion() {
             localStorage.removeItem('usuarioLogueado');
-            window.location.reload(); // Recarga la página después de salir
+            window.location.reload();
         }
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Verificamos sesión solo para mostrar/ocultar botones, NO para bloquear el acceso
             if (localStorage.getItem('usuarioLogueado')) {
                 document.getElementById('btnLogin').style.display = 'none';
                 document.getElementById('btnLogout').style.display = 'block';
@@ -83,19 +69,18 @@
         });
 
         async function cargarCursos() {
+            const grid = document.getElementById('grid-cursos');
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
                 if (data.estado === 'éxito') {
-                    const grid = document.getElementById('grid-cursos');
+                    // LIMPIEZA: Esto evita que se dupliquen los cursos
                     grid.innerHTML = '';
+                    
                     data.datos.forEach(curso => {
                         const comprado = localStorage.getItem(`curso_${curso.id}_comprado`) === 'true';
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        
-                        // Lógica de enlace: Si no está logueado, al tocar 'Comprar' lo manda al login
-                        const enlace = localStorage.getItem('usuarioLogueado') ? `pago.html?cursoId=${curso.id}` : 'login.html';
                         
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
@@ -105,13 +90,26 @@
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
                                 <p>${curso.descripcion}</p>
-                                <a href="${comprado ? 'curso.html' : enlace}" class="btn-enlace">${comprado ? 'Acceder' : 'Comprar'}</a>
+                                <button onclick="manejarAccion(${curso.id}, ${comprado})" class="btn-enlace" style="background: ${comprado ? '#10b981' : '#00f2c3'}; color: #000; font-weight: bold;">
+                                    ${comprado ? 'ACCEDER' : 'COMPRAR'}
+                                </button>
                             </div>
                         `;
                         grid.appendChild(tarjeta);
                     });
                 }
             } catch (e) { console.error('Error:', e); }
+        }
+
+        function manejarAccion(cursoId, yaComprado) {
+            if (yaComprado) {
+                window.location.href = `curso.html?id=${cursoId}`;
+            } else {
+                // Simulación directa: marcamos como comprado y refrescamos
+                alert("¡Compra exitosa! Ahora tienes acceso.");
+                localStorage.setItem(`curso_${cursoId}_comprado`, 'true');
+                cargarCursos();
+            }
         }
     </script>
 </body>
