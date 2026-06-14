@@ -39,7 +39,7 @@
 
         <div id="seccionLogin" class="formulario">
             <h2>Acceso al Sistema</h2>
-            <form onsubmit="hacerLogin(event)">
+            <form id="formLogin">
                 <div class="form-grupo">
                     <label>Correo Electrónico</label>
                     <input type="email" id="email" required>
@@ -55,7 +55,7 @@
         <div id="seccionGestion" class="oculto">
             <div class="formulario">
                 <h2>Crear Nuevo Curso</h2>
-                <form id="formularioCurso" onsubmit="crearCurso(event)">
+                <form id="formularioCurso">
                     <div class="form-grupo">
                         <label>Nombre del Curso</label>
                         <input type="text" id="nombre" required>
@@ -71,9 +71,7 @@
                     <button type="submit" class="btn">Crear Curso</button>
                 </form>
             </div>
-            
             <div id="mensaje" class="mensaje"></div>
-            
             <div class="formulario">
                 <h2>Cursos Disponibles</h2>
                 <div id="cursos" class="cursos"></div>
@@ -84,7 +82,10 @@
     <script>
         const API_URL = '/api';
 
-        // Lógica de Login
+        // Event Listeners para evitar recarga
+        document.getElementById('formLogin').addEventListener('submit', hacerLogin);
+        document.getElementById('formularioCurso').addEventListener('submit', crearCurso);
+
         async function hacerLogin(event) {
             event.preventDefault();
             const email = document.getElementById('email').value;
@@ -107,8 +108,8 @@
                 localStorage.setItem('token', data.token);
                 document.getElementById('seccionLogin').classList.add('oculto');
                 document.getElementById('seccionGestion').classList.remove('oculto');
-                cargarCursos();
                 verificarConexion();
+                cargarCursos();
             } catch (err) {
                 alert('❌ ' + err.message);
                 btn.disabled = false;
@@ -116,11 +117,9 @@
             }
         }
 
-        // --- TUS FUNCIONES ORIGINALES ---
         async function verificarConexion() {
             try {
                 const res = await fetch(API_URL + '/test');
-                const data = await res.json();
                 const el = document.getElementById('estadoConexion');
                 el.className = 'status conectado';
                 el.textContent = '✅ Servidor conectado';
@@ -154,15 +153,33 @@
 
         async function crearCurso(e) {
             e.preventDefault();
-            // ... (resto de tu lógica de crear curso)
-            mostrarExito('Curso creado correctamente');
-            cargarCursos();
+            const nombre = document.getElementById('nombre').value;
+            const descripcion = document.getElementById('descripcion').value;
+            const precio = document.getElementById('precio').value;
+
+            try {
+                const res = await fetch(API_URL + '/cursos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('token') },
+                    body: JSON.stringify({ nombre, descripcion, precio })
+                });
+                if (res.ok) {
+                    mostrarExito('Curso creado correctamente');
+                    document.getElementById('formularioCurso').reset();
+                    cargarCursos();
+                }
+            } catch (e) { mostrarError('Error al crear curso'); }
         }
 
         async function eliminarCurso(id) {
-            if (!confirm('¿Eliminar?')) return;
-            const res = await fetch(API_URL + '/cursos/' + id, { method: 'DELETE' });
-            if (res.ok) { mostrarExito('Eliminado'); cargarCursos(); }
+            if (!confirm('¿Eliminar este curso?')) return;
+            try {
+                const res = await fetch(API_URL + '/cursos/' + id, { 
+                    method: 'DELETE',
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                });
+                if (res.ok) { mostrarExito('Curso eliminado'); cargarCursos(); }
+            } catch (e) { mostrarError('Error al eliminar'); }
         }
 
         function mostrarError(m) { 
