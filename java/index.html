@@ -6,10 +6,10 @@
     <title>Zensei Art Academy - Cursos Profesionales</title>
     <link rel="stylesheet" href="estilos-principal.css">
     <style>
-        /* La capa de pago que oculta todo lo demás */
+        /* Capa de pago minimalista: Se sobrepone a todo */
         .pantalla-pago-full {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #0a0a0f; z-index: 9999; justify-content: center; align-items: center;
+            background: rgba(10, 10, 15, 0.95); z-index: 9999; justify-content: center; align-items: center;
             flex-direction: column; color: white;
         }
         .contenedor-tarjetas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
@@ -25,37 +25,40 @@
         <div class="contenedor-ajustes">
             <button class="btn-icon" onclick="toggleMenu(event)">⚙️</button>
             <div id="menuOpciones" class="menu-desplegable">
-                <span class="menu-titulo" data-es="Visual" data-en="Visual">Visual</span>
-                <button onclick="cambiarTema('oscuro')">🌙 <span data-es="Modo Oscuro" data-en="Dark Mode">Dark mode</span></button>
-                <button onclick="cambiarTema('claro')">☀️ <span data-es="Modo Claro" data-en="Light Mode">Light mode</span></button>
+                <span class="menu-titulo">Visual</span>
+                <button onclick="cambiarTema('oscuro')">🌙 Modo Oscuro</button>
+                <button onclick="cambiarTema('claro')">☀️ Modo Claro</button>
                 <hr class="menu-separador">
-                <span class="menu-titulo" data-es="Idioma" data-en="Language">Idioma</span>
-                <button onclick="cambiarIdioma('es')">Español</button>
-                <button onclick="cambiarIdioma('en')">English</button>
+                <span class="menu-titulo">Audio</span>
+                <button onclick="toggleSonido()" id="btnSonido">🔊 Sonido: ON</button>
                 <hr class="menu-separador">
-                <span class="menu-titulo" data-es="Audio" data-en="Audio">Audio</span>
-                <button onclick="toggleSonido()" id="btnSonido" data-es="🔊 Sonido: ON" data-en="🔊 Sound: ON">🔊 Sonido: ON</button>
-                <hr class="menu-separador">
-                <button onclick="window.location.href='login.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
-                <button id="btnLogout" onclick="cerrarSesion()" style="display:none;">🚪 <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span></button>
+                <button onclick="window.location.href='login.html'" id="btnLogin">🔑 Iniciar Sesión</button>
+                <button id="btnLogout" onclick="cerrarSesion()" style="display:none;">🚪 Cerrar Sesión</button>
             </div>
         </div>
 
         <header class="encabezado">
-            <p class="txt-bienvenidos-arriba" data-es="Bienvenidos a" data-en="Welcome to">Bienvenidos a</p>
+            <p class="txt-bienvenidos-arriba">Bienvenidos a</p>
             <h1 class="titulo-academia">Zensei Art Academy</h1>
-            <p class="txt-bienvenidos-abajo" data-es="Eleva tu talento al nivel profesional. Toca un curso para ver su especialización." data-en="Elevate your talent to a professional level. Tap a course to see its specialization.">
-                Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.
-            </p>
+            <p class="txt-bienvenidos-abajo">Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.</p>
         </header>
 
-        <h3 class="titulo-categoria" data-es="🧑‍🎨 Estilos de Dibujo / Especializaciones" data-en="🧑‍🎨 Drawing Styles / Specializations">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
+        <h3 class="titulo-categoria">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
         <div class="grid-cursos" id="grid-cursos">
             <p style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
         </div>
 
-        <section class="banner-inspirador">...</section>
-        <footer class="pie-pagina">...</footer>
+        <section class="banner-inspirador">
+            <div class="banner-texto">
+                <h2>Tu viaje apenas comienza</h2>
+                <p>El artista que te espera al final del camino es capaz de dominar cualquier lienzo. <strong>Tu estilo único te está esperando.</strong></p>
+            </div>
+        </section>
+
+        <footer class="pie-pagina">
+            <h4 class="titulo-footer">Zensei Art Academy</h4>
+            <p class="copyright">© 2026 Zensei Art Academy. Todos los derechos reservados.</p>
+        </footer>
     </div>
 
     <section id="pantalla-pago" class="pantalla-pago-full">
@@ -69,14 +72,45 @@
     </section>
 
     <script>
-        /* TU LÓGICA ORIGINAL AQUÍ */
-        // (Asegúrate de no borrar tus funciones cambiarIdioma, toggleMenu, reproducirSonido, etc.)
-        
+        let sonidoActivo = true;
+        const API_BASE = 'http://localhost:3001/api';
+
+        // --- TUS FUNCIONES ORIGINALES ---
+        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
+        function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
+        function toggleSonido() { sonidoActivo = !sonidoActivo; document.getElementById("btnSonido").innerText = sonidoActivo ? "🔊 Sonido: ON" : "🔇 Sonido: OFF"; }
+        function cerrarSesion() { localStorage.removeItem('token'); localStorage.removeItem('usuarioLogueado'); location.reload(); }
+
+        // --- CARGA DE CURSOS CORREGIDA ---
         async function cargarCursos() {
-            // ... (Tu lógica original, pero en el botón de compra usa esta función de abajo)
+            try {
+                const res = await fetch(`${API_BASE}/cursos`);
+                const data = await res.json();
+                const grid = document.getElementById('grid-cursos');
+                grid.innerHTML = ''; // Limpiar antes de llenar
+                
+                if (data.estado === 'éxito') {
+                    data.datos.slice(0, 4).forEach(curso => {
+                        const tarjeta = document.createElement('div');
+                        tarjeta.className = 'tarjeta-curso';
+                        tarjeta.innerHTML = `
+                            <div class="imagen-curso">
+                                <span class="badge-precio">$${curso.precio}</span>
+                                <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
+                            </div>
+                            <div class="info-curso">
+                                <h4>${curso.nombre}</h4>
+                                <p>${curso.descripcion}</p>
+                                <button onclick="abrirPago()" class="btn-enlace">Comprar</button>
+                            </div>
+                        `;
+                        grid.appendChild(tarjeta);
+                    });
+                }
+            } catch (e) { console.error('Error al cargar:', e); document.getElementById('grid-cursos').innerHTML = '<p>Error al conectar con el servidor.</p>'; }
         }
 
-        /* LAS MODIFICACIONES AGREGADAS */
+        // --- MODIFICACIONES DE PAGO ---
         function abrirPago() {
             document.getElementById('contenido-principal').style.display = 'none';
             document.getElementById('pantalla-pago').style.display = 'flex';
@@ -89,12 +123,17 @@
 
         async function confirmar(metodo) {
             alert("¡Pago con " + metodo + " procesado con éxito!");
-            // Aquí puedes llamar a tu API para guardar en MySQL
             location.reload();
         }
-        
-        // ¡IMPORTANTE!: En tu función cargarCursos original, asegúrate de que el 
-        // botón de comprar tenga: onclick="abrirPago()"
+
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            cargarCursos();
+            if (localStorage.getItem('usuarioLogueado')) {
+                document.getElementById('btnLogin').style.display = 'none';
+                document.getElementById('btnLogout').style.display = 'block';
+            }
+        });
     </script>
 </body>
 </html>
