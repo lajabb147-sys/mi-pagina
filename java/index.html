@@ -6,7 +6,7 @@
     <title>Zensei Art Academy - Cursos Profesionales</title>
     <link rel="stylesheet" href="estilos-principal.css">
     <style>
-        /* Estilos de la sección de pago (estética profesional) */
+        /* Estilos de la sección de pago integrados */
         .seccion-pago {
             width: 100%; max-width: 800px; margin: 40px auto;
             background: rgba(90, 15, 150, 0.1); padding: 40px;
@@ -41,13 +41,14 @@
         </div>
 
         <header class="encabezado">
-            <h1>Zensei Art Academy</h1>
-            <p>Eleva tu talento al nivel profesional.</p>
+            <p class="txt-bienvenidos-arriba">Bienvenidos a</p>
+            <h1 class="titulo-academia">Zensei Art Academy</h1>
+            <p class="txt-bienvenidos-abajo">Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.</p>
         </header>
 
-        <h3 class="titulo-categoria">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
+        <h3 class="titulo-categoria" id="titulo-cursos">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
         <div class="grid-cursos" id="grid-cursos">
-            <p style="text-align: center;">Cargando cursos...</p>
+            <p style="text-align: center; color: #666; padding: 40px;">Cargando cursos...</p>
         </div>
 
         <section id="seccion-pago" class="seccion-pago">
@@ -73,16 +74,43 @@
         let metodoSeleccionado = null;
         const API_BASE = 'http://localhost:3001/api';
 
-        // Funciones originales conservadas
+        // --- TU LÓGICA ORIGINAL RESTAURADA ---
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
         function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
-        function toggleSonido() { /* Lógica de sonido */ }
         function cerrarSesion() { localStorage.clear(); location.reload(); }
+        
+        async function cargarCursos() {
+            try {
+                const res = await fetch(`${API_BASE}/cursos`);
+                const data = await res.json();
+                if (data.estado === 'éxito') {
+                    const grid = document.getElementById('grid-cursos');
+                    grid.innerHTML = '';
+                    data.datos.forEach(curso => {
+                        const tarjeta = document.createElement('div');
+                        tarjeta.className = 'tarjeta-curso';
+                        tarjeta.innerHTML = `
+                            <div class="imagen-curso">
+                                <span class="badge-precio">$${curso.precio}</span>
+                                <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
+                            </div>
+                            <div class="info-curso">
+                                <h4>${curso.nombre}</h4>
+                                <p>${curso.descripcion}</p>
+                                <button onclick="iniciarCompra(${curso.id})" class="btn-enlace">Comprar</button>
+                            </div>
+                        `;
+                        grid.appendChild(tarjeta);
+                    });
+                }
+            } catch (e) { console.error('Error:', e); }
+        }
 
-        // Nueva lógica de compra
+        // --- LÓGICA DE PAGOS NUEVA ---
         function iniciarCompra(id) {
             cursoIdSeleccionado = id;
             document.getElementById('grid-cursos').style.display = 'none';
+            document.getElementById('titulo-cursos').style.display = 'none';
             document.getElementById('seccion-pago').style.display = 'block';
         }
 
@@ -106,21 +134,8 @@
 
         function cancelarPago() {
             document.getElementById('grid-cursos').style.display = 'grid';
+            document.getElementById('titulo-cursos').style.display = 'block';
             document.getElementById('seccion-pago').style.display = 'none';
-        }
-
-        async function cargarCursos() {
-            const res = await fetch(`${API_BASE}/cursos`);
-            const data = await res.json();
-            const grid = document.getElementById('grid-cursos');
-            grid.innerHTML = '';
-            data.datos.forEach(curso => {
-                grid.innerHTML += `
-                    <div class="tarjeta-curso">
-                        <h4>${curso.nombre}</h4>
-                        <button onclick="iniciarCompra(${curso.id})">Comprar</button>
-                    </div>`;
-            });
         }
 
         window.onload = cargarCursos;
