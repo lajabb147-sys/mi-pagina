@@ -96,24 +96,16 @@
         const API_BASE = 'http://localhost:3001/api';
         const FRONTEND_HOME = 'index.html'; 
 
-        window.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
             console.log("DOM Cargado. Preparando formulario...");
-            
-            // Redirección automática comentada para evitar bucle de recarga
-            /*
-            if (localStorage.getItem('token')) {
-                window.location.href = FRONTEND_HOME;
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', hacerLogin);
             }
-            */
-
-            document.getElementById('loginForm').addEventListener('submit', hacerLogin);
         });
 
         async function hacerLogin(event) {
             event.preventDefault(); 
-            
-            console.log("Intentando iniciar sesión...");
-            
             const email = document.getElementById('email').value.trim().toLowerCase();
             const password = document.getElementById('password').value;
             const btnEntrar = document.querySelector('.btn-entrar');
@@ -122,8 +114,6 @@
             btnEntrar.textContent = 'Verificando...';
 
             try {
-                console.log("Enviando petición a:", `${API_BASE}/auth/login`);
-                
                 const response = await fetch(`${API_BASE}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -131,24 +121,18 @@
                 });
 
                 const data = await response.json();
-                console.log("Respuesta del servidor:", data); 
-
+                
                 if (!response.ok) {
-                    alert('❌ ' + (data.mensaje || 'Error al iniciar sesión'));
-                    btnEntrar.disabled = false;
-                    btnEntrar.textContent = 'Entrar';
-                    return;
+                    throw new Error(data.mensaje || 'Error al iniciar sesión');
                 }
 
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('usuarioLogueado', data.nombre);
                 
-                console.log("Login exitoso, redirigiendo a index...");
                 window.location.href = FRONTEND_HOME;
-
             } catch (error) {
-                console.error("Error en la solicitud:", error);
-                alert('❌ Error de conexión. Revisa la consola F12.');
+                console.error("Error:", error);
+                alert('❌ ' + error.message);
                 btnEntrar.disabled = false;
                 btnEntrar.textContent = 'Entrar';
             }
