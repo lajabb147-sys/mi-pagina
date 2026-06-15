@@ -67,7 +67,7 @@
             <p class="subtitulo-login">Iniciar Sesión</p>
         </header>
 
-        <form id="loginForm">
+        <form id="loginForm" onsubmit="return false;">
             <div class="grupo-input">
                 <label for="email">Usuario o Correo Electrónico</label>
                 <input type="text" id="email" name="email" placeholder="ejemplo@arte.com" required>
@@ -83,7 +83,7 @@
                 </label>
                 <a href="#" class="link-olvido">¿Olvidaste tu contraseña?</a>
             </div>
-            <button type="submit" class="btn-entrar">Entrar</button>
+            <button type="button" class="btn-entrar" onclick="hacerLogin()">Entrar</button>
         </form>
 
         <footer class="registro-footer">
@@ -96,19 +96,15 @@
         const API_BASE = 'http://localhost:3001/api';
         const FRONTEND_HOME = 'index.html'; 
 
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("DOM Cargado. Preparando formulario...");
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) {
-                loginForm.addEventListener('submit', hacerLogin);
-            }
-        });
-
-        async function hacerLogin(event) {
-            event.preventDefault(); 
+        async function hacerLogin() {
             const email = document.getElementById('email').value.trim().toLowerCase();
             const password = document.getElementById('password').value;
             const btnEntrar = document.querySelector('.btn-entrar');
+
+            if (!email || !password) {
+                alert("Por favor, ingresa tus credenciales.");
+                return;
+            }
 
             btnEntrar.disabled = true;
             btnEntrar.textContent = 'Verificando...';
@@ -129,6 +125,7 @@
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('usuarioLogueado', data.nombre);
                 
+                // Redirección definitiva
                 window.location.href = FRONTEND_HOME;
             } catch (error) {
                 console.error("Error:", error);
