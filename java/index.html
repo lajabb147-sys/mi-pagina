@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zensei Art Academy - Cursos Profesionales</title>
-    <link rel="stylesheet" href="estilos.css">
+    <!-- Ruta corregida: Ahora busca el CSS en la misma carpeta -->
+    <link rel="stylesheet" href="estilos-principal.css">
 </head>
 <body>
     <div class="contenedor-principal">
@@ -22,7 +23,8 @@
                 <span class="menu-titulo" data-es="Audio" data-en="Audio">Audio</span>
                 <button onclick="toggleSonido()" id="btnSonido" data-es="🔊 Sonido: ON" data-en="🔊 Sound: ON">🔊 Sonido: ON</button>
                 <hr class="menu-separador">
-                <button onclick="window.location.href='/java/index.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
+                <!-- Redirección corregida para la misma carpeta -->
+                <button onclick="window.location.href='login.html'" id="btnLogin">🔑 <span data-es="Iniciar Sesión" data-en="Login">Iniciar Sesión</span></button>
                 <button id="btnLogout" onclick="cerrarSesion()" style="display:none;">🚪 <span data-es="Cerrar Sesión" data-en="Logout">Cerrar Sesión</span></button>
             </div>
         </div>
@@ -69,7 +71,6 @@
     <script>
         let sonidoActivo = true;
         const API_BASE = 'http://localhost:3001/api';
-        const FRONTEND_HOME = 'http://localhost:3001/Java/index.html';
 
         function cambiarIdioma(idioma) {
             localStorage.setItem('idiomaSeleccionado', idioma);
@@ -129,7 +130,7 @@
             localStorage.removeItem('token');
             localStorage.removeItem('usuarioId');
             localStorage.removeItem('usuarioLogueado');
-            window.location.href = FRONTEND_HOME;
+            location.reload(); 
         }
 
         document.addEventListener("click", () => document.getElementById("menuOpciones").classList.remove("mostrar"));
@@ -163,7 +164,7 @@
                             <div class="info-curso">
                                 <h4 data-es="${curso.nombre}" data-en="${curso.nombre_en}">${curso.nombre}</h4>
                                 <p data-es="${curso.descripcion}" data-en="${curso.descripcion_en}">${curso.descripcion}</p>
-                                <a href="${comprado ? '/Java/curso.html' : '/Java/pago.html'}?cursoId=${curso.id}" 
+                                <a href="${comprado ? 'curso.html' : 'pago.html'}?cursoId=${curso.id}" 
                                    class="btn-enlace"
                                    data-es="${comprado ? 'Acceder' : 'Comprar'}"
                                    data-en="${comprado ? 'Access' : 'Buy'}">${comprado ? 'Acceder' : 'Comprar'}</a>
