@@ -67,7 +67,7 @@
             <p class="subtitulo-login">Iniciar Sesión</p>
         </header>
 
-        <form id="loginForm" onsubmit="return false;">
+        <form id="loginForm" onsubmit="event.preventDefault(); hacerLogin();">
             <div class="grupo-input">
                 <label for="email">Usuario o Correo Electrónico</label>
                 <input type="text" id="email" name="email" placeholder="ejemplo@arte.com" required>
@@ -83,7 +83,7 @@
                 </label>
                 <a href="#" class="link-olvido">¿Olvidaste tu contraseña?</a>
             </div>
-            <button type="button" class="btn-entrar" onclick="hacerLogin()">Entrar</button>
+            <button type="submit" class="btn-entrar">Entrar</button>
         </form>
 
         <footer class="registro-footer">
@@ -94,7 +94,6 @@
 
     <script>
         const API_BASE = 'http://localhost:3001/api';
-        const FRONTEND_HOME = 'index.html'; 
 
         async function hacerLogin() {
             const email = document.getElementById('email').value.trim().toLowerCase();
@@ -117,19 +116,22 @@
                 });
 
                 const data = await response.json();
+                console.log("Respuesta del servidor:", data);
                 
                 if (!response.ok) {
                     throw new Error(data.mensaje || 'Error al iniciar sesión');
                 }
 
+                // Guardado de sesión
                 localStorage.setItem('token', data.token);
-                localStorage.setItem('usuarioLogueado', data.nombre);
+                localStorage.setItem('usuarioLogueado', data.nombre || email);
                 
-                // Redirección definitiva
-                window.location.href = FRONTEND_HOME;
+                // Redirección directa a tu index
+                window.location.href = "index.html";
+
             } catch (error) {
-                console.error("Error:", error);
-                alert('❌ ' + error.message);
+                console.error("Error completo:", error);
+                alert('❌ Error: ' + error.message);
                 btnEntrar.disabled = false;
                 btnEntrar.textContent = 'Entrar';
             }
