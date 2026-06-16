@@ -6,18 +6,22 @@
     <title>Zensei Art Academy - Cursos Profesionales</title>
     <link rel="stylesheet" href="estilos-principal.css">
     <style>
-        /* Capa de pago minimalista: Se sobrepone a todo */
+        /* Capa de pago minimalista */
         .pantalla-pago-full {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 10, 15, 0.95); z-index: 9999; justify-content: center; align-items: center;
             flex-direction: column; color: white;
         }
         .contenedor-tarjetas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+        
+        /* Tarjetas simétricas */
         .tarjeta-pago {
-            background: #1a1a2e; padding: 30px; border-radius: 20px; text-align: center;
-            border: 2px solid #5a0f96; cursor: pointer; transition: 0.3s;
+            width: 200px; height: 160px;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            background: #1a1a2e; padding: 20px; border-radius: 20px;
+            border: 2px solid #5a0f96; cursor: pointer; transition: 0.3s; text-align: center;
         }
-        .tarjeta-pago:hover { border-color: #00ffcc; transform: scale(1.05); }
+        .tarjeta-pago:hover { border-color: #00ffcc; box-shadow: 0 0 20px rgba(0, 255, 204, 0.2); transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -61,34 +65,50 @@
         </footer>
     </div>
 
+    <!-- PANTALLA DE PAGO -->
     <section id="pantalla-pago" class="pantalla-pago-full">
-        <h2>Selecciona tu método de pago</h2>
+        <h2 style="margin-bottom: 10px;">Selecciona tu método de pago</h2>
+        <p style="color: #888; margin-bottom: 30px;">Estaremos encantados de que compres nuestros cursos.</p>
+        
         <div class="contenedor-tarjetas">
-            <div class="tarjeta-pago" onclick="confirmar('Nicaragua')"><h3>🇳🇮</h3><p>BAC / BANPRO</p></div>
-            <div class="tarjeta-pago" onclick="confirmar('Latam')"><h3>🌎</h3><p>Western Union</p></div>
-            <div class="tarjeta-pago" onclick="confirmar('Global')"><h3>💳</h3><p>PayPal</p></div>
+            <div class="tarjeta-pago" onclick="mostrarConfirmacion('BAC / BANPRO / LAFISE')">
+                <h3>🏦</h3>
+                <p>BAC / BANPRO / LAFISE</p>
+            </div>
+            <div class="tarjeta-pago" onclick="mostrarConfirmacion('Western Union')">
+                <h3>🌎</h3>
+                <p>Western Union</p>
+            </div>
+            <div class="tarjeta-pago" onclick="mostrarConfirmacion('PayPal')">
+                <h3>💳</h3>
+                <p>PayPal</p>
+            </div>
         </div>
-        <button onclick="cancelar()" style="margin-top: 40px; background: none; border: 1px solid #555; color: white; padding: 10px 20px; cursor: pointer;">Cancelar</button>
+
+        <div id="barra-confirmacion" style="display: none; margin-top: 40px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid #5a0f96; width: 300px; text-align: center;">
+            <p id="info-curso-seleccionado" style="font-size: 0.9em; margin-bottom: 15px; color: white;"></p>
+            <button onclick="confirmarPago()" style="background: #00ffcc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">Proceder a pagar</button>
+        </div>
+
+        <button onclick="cancelar()" style="margin-top: 20px; background: none; border: none; color: #666; cursor: pointer;">Cancelar</button>
     </section>
 
     <script>
         let sonidoActivo = true;
+        let metodoActual = "";
         const API_BASE = 'http://localhost:3001/api';
 
-        // --- TUS FUNCIONES ORIGINALES ---
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
         function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
         function toggleSonido() { sonidoActivo = !sonidoActivo; document.getElementById("btnSonido").innerText = sonidoActivo ? "🔊 Sonido: ON" : "🔇 Sonido: OFF"; }
         function cerrarSesion() { localStorage.removeItem('token'); localStorage.removeItem('usuarioLogueado'); location.reload(); }
 
-        // --- CARGA DE CURSOS CORREGIDA ---
         async function cargarCursos() {
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
                 const grid = document.getElementById('grid-cursos');
-                grid.innerHTML = ''; // Limpiar antes de llenar
-                
+                grid.innerHTML = '';
                 if (data.estado === 'éxito') {
                     data.datos.slice(0, 4).forEach(curso => {
                         const tarjeta = document.createElement('div');
@@ -101,19 +121,32 @@
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
                                 <p>${curso.descripcion}</p>
-                                <button onclick="abrirPago()" class="btn-enlace">Comprar</button>
+                                <button onclick="abrirPago('${curso.nombre}', '${curso.precio}')" class="btn-enlace">Comprar</button>
                             </div>
                         `;
                         grid.appendChild(tarjeta);
                     });
                 }
-            } catch (e) { console.error('Error al cargar:', e); document.getElementById('grid-cursos').innerHTML = '<p>Error al conectar con el servidor.</p>'; }
+            } catch (e) { console.error('Error:', e); }
         }
 
-        // --- MODIFICACIONES DE PAGO ---
-        function abrirPago() {
+        function abrirPago(nombre, precio) {
+            window.cursoSeleccionado = { nombre, precio };
             document.getElementById('contenido-principal').style.display = 'none';
             document.getElementById('pantalla-pago').style.display = 'flex';
+            document.getElementById('barra-confirmacion').style.display = 'none';
+        }
+
+        function mostrarConfirmacion(metodo) {
+            metodoActual = metodo;
+            document.getElementById('info-curso-seleccionado').innerHTML = 
+                `<b>Curso:</b> ${window.cursoSeleccionado.nombre}<br><b>Precio:</b> $${window.cursoSeleccionado.precio}<br><b>Método:</b> ${metodo}`;
+            document.getElementById('barra-confirmacion').style.display = 'block';
+        }
+
+        function confirmarPago() {
+            alert("Redirigiendo a " + metodoActual + "...");
+            location.reload();
         }
 
         function cancelar() {
@@ -121,12 +154,6 @@
             document.getElementById('pantalla-pago').style.display = 'none';
         }
 
-        async function confirmar(metodo) {
-            alert("¡Pago con " + metodo + " procesado con éxito!");
-            location.reload();
-        }
-
-        // Inicialización
         window.addEventListener('DOMContentLoaded', () => {
             cargarCursos();
             if (localStorage.getItem('usuarioLogueado')) {
@@ -137,4 +164,3 @@
     </script>
 </body>
 </html>
-
