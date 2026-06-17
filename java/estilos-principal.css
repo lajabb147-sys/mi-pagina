@@ -29,25 +29,19 @@
 
 
 body.light-mode {
-    --bg-color: #e8e8ee; /* Un gris azulado mucho más sofisticado */
-    --text-color: #050208;
-    --text-muted: #2d2640;
-    --text-footer: #4a4060;
-
-    --header-bg: linear-gradient(135deg, #2d1b4e 0%, #1a0f30 100%);
-    --header-shadow: rgba(0, 0, 0, 0.2);
+    --bg-color: #e8e8ee;
+    
+    --text-color: #1a0f30; 
+    --text-muted: #4a3e56;
+    
+    --header-bg: linear-gradient(135deg, #3a2560 0%, #20123a 100%);
+    --header-shadow: rgba(0, 0, 0, 0.3);
 
     --card-bg: #ffffff;
     --card-hover-bg: #f8f8ff;
-    --card-border: rgba(45, 27, 78, 0.15);
+    --card-border: rgba(58, 37, 96, 0.3); /* Borde con más intensidad morada */
 
-    --banner-gradient-1: rgba(45, 27, 78, 0.05);
-    --banner-gradient-2: #dcdce6;
-
-    --footer-bg: #dcdce6;
-    --footer-border: rgba(45, 27, 78, 0.1);
-
-    --accent-color: #008f72; /* Un verde-cian más oscuro para mejorar lectura */
+    --accent-color: #00a884;
 }
 * {
     box-sizing: border-box;
