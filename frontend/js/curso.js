@@ -117,3 +117,32 @@ function renderOtrosCursos(cursoActualId) {
   renderCurso(curso);
   if (otrosCursosList) renderOtrosCursos(curso.id);
 })();
+
+// --- NOTIFICACIÓN FLOTANTE AL COMPRAR ---
+function mostrarNotificacion(mensaje) {
+    const notificacion = document.createElement('div');
+    notificacion.innerText = mensaje;
+    notificacion.style.position = 'fixed';
+    notificacion.style.bottom = '20px';
+    notificacion.style.right = '20px';
+    notificacion.style.background = '#00ffcc';
+    notificacion.style.color = '#0f0f1a';
+    notificacion.style.padding = '15px 25px';
+    notificacion.style.borderRadius = '10px';
+    notificacion.style.fontWeight = 'bold';
+    notificacion.style.zIndex = '99999';
+    notificacion.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3)';
+    notificacion.style.transition = 'all 0.3s ease';
+    
+    document.body.appendChild(notificacion);
+
+    setTimeout(() => {
+        notificacion.remove();
+    }, 3000);
+}
+
+document.addEventListener('click', (e) => {
+    if (e.target.textContent === 'Ver este curso') {
+        mostrarNotificacion('¡Iniciando proceso de inscripción!');
+    }
+});
