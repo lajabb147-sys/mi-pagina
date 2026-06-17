@@ -29,28 +29,26 @@
 
 
 body.light-mode {
+    --bg-color: #e8e8ee; /* Un gris azulado mucho más sofisticado */
+    --text-color: #050208;
+    --text-muted: #2d2640;
+    --text-footer: #4a4060;
 
-    --bg-color: #f0f0f5; 
-    --text-color: #1a0f30;
-    --text-muted: #4a3e56;
-    --text-footer: #5a4b66;
+    --header-bg: linear-gradient(135deg, #2d1b4e 0%, #1a0f30 100%);
+    --header-shadow: rgba(0, 0, 0, 0.2);
 
-    --header-bg: rgba(60, 20, 100, 0.9);
-    --header-shadow: rgba(60, 20, 100, 0.2);
+    --card-bg: #ffffff;
+    --card-hover-bg: #f8f8ff;
+    --card-border: rgba(45, 27, 78, 0.15);
 
-    --card-bg: rgba(255, 255, 255, 0.95);
-    --card-hover-bg: #ffffff;
-    --card-border: rgba(60, 20, 100, 0.1);
+    --banner-gradient-1: rgba(45, 27, 78, 0.05);
+    --banner-gradient-2: #dcdce6;
 
-    --banner-gradient-1: rgba(60, 20, 100, 0.05);
-    --banner-gradient-2: #e0dcf0;
+    --footer-bg: #dcdce6;
+    --footer-border: rgba(45, 27, 78, 0.1);
 
-    --footer-bg: rgba(60, 20, 100, 0.05);
-    --footer-border: rgba(60, 20, 100, 0.1);
-
-    --accent-color: #1b9078;
+    --accent-color: #008f72; /* Un verde-cian más oscuro para mejorar lectura */
 }
-
 * {
     box-sizing: border-box;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
