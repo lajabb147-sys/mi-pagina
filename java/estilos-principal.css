@@ -29,7 +29,7 @@
 
 
 body.light-mode {
-    
+
     --bg-color: #f0f0f5; 
     --text-color: #1a0f30;
     --text-muted: #4a3e56;
@@ -50,7 +50,6 @@ body.light-mode {
 
     --accent-color: #1b9078;
 }
-
 
 * {
     box-sizing: border-box;
