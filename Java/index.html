@@ -3,46 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zensei Art Academy</title>
+    <title>Zensei Art Academy - Cursos Profesionales</title>
     <link rel="stylesheet" href="estilos-principal.css">
-    <style>
-        /* Estilos para asegurar simetría en la pantalla de pago */
-        .pantalla-pago-full {
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; background: #0f0f0f; color: white; padding: 20px;
-        }
-        .contenedor-tarjetas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .tarjeta-pago { 
-            width: 150px; height: 150px; background: #1a1a1a; border: 2px solid #5a0f96; 
-            border-radius: 15px; display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; cursor: pointer; transition: 0.3s;
-        }
-        .tarjeta-pago:hover { transform: scale(1.05); border-color: #00ffcc; }
-    </style>
 </head>
 <body>
     <div class="contenedor-principal" id="contenido-principal">
         <div class="contenedor-ajustes">
             <button class="btn-icon" onclick="toggleMenu(event)">⚙️</button>
             <div id="menuOpciones" class="menu-desplegable">
+                <span class="menu-titulo">Visual</span>
                 <button onclick="cambiarTema('oscuro')">🌙 Modo Oscuro</button>
                 <button onclick="cambiarTema('claro')">☀️ Modo Claro</button>
+                <hr class="menu-separador">
+                <span class="menu-titulo">Audio</span>
                 <button onclick="toggleSonido()" id="btnSonido">🔊 Sonido: ON</button>
+                <hr class="menu-separador">
                 <button onclick="window.location.href='login.html'" id="btnLogin">🔑 Iniciar Sesión</button>
+                <button id="btnLogout" onclick="cerrarSesion()" style="display:none;">🚪 Cerrar Sesión</button>
             </div>
         </div>
 
         <header class="encabezado">
-            <h1>Zensei Art Academy</h1>
+            <p class="txt-bienvenidos-arriba">Bienvenidos a</p>
+            <h1 class="titulo-academia">Zensei Art Academy</h1>
+            <p class="txt-bienvenidos-abajo">Eleva tu talento al nivel profesional. Toca un curso para ver su especialización.</p>
         </header>
 
+        <h3 class="titulo-categoria">🧑‍🎨 Estilos de Dibujo / Especializaciones</h3>
         <div class="grid-cursos" id="grid-cursos">
-            <p>Cargando cursos...</p>
+            <p style="text-align: center; color: #666; grid-column: 1/-1; padding: 40px;">Cargando cursos...</p>
         </div>
+
+        <section class="banner-inspirador">
+            <div class="banner-texto">
+                <h2>Tu viaje apenas comienza</h2>
+                <p>El artista que te espera al final del camino es capaz de dominar cualquier lienzo. <strong>Tu estilo único te está esperando.</strong></p>
+            </div>
+        </section>
+
+        <footer class="pie-pagina">
+            <h4 class="titulo-footer">Zensei Art Academy</h4>
+            <p class="copyright">© 2026 Zensei Art Academy. Todos los derechos reservados.</p>
+        </footer>
     </div>
 
     <section id="pantalla-pago" class="pantalla-pago-full" style="display:none;">
-        <h2 style="margin-bottom: 30px;">Selecciona tu método de pago</h2>
+        <h2 style="margin-bottom: 10px;">Selecciona tu método de pago</h2>
         <div class="contenedor-tarjetas">
             <div class="tarjeta-pago" onclick="mostrarConfirmacion('Banco')"><h3>🏦</h3><p>Bancos</p></div>
             <div class="tarjeta-pago" onclick="mostrarConfirmacion('Western Union')"><h3>🌎</h3><p>Western Union</p></div>
@@ -50,7 +56,7 @@
         </div>
         <div id="barra-confirmacion" style="display: none; margin-top: 40px; padding: 20px; border: 1px solid #5a0f96; border-radius: 12px; width: 300px; text-align: center;">
             <p id="info-curso-seleccionado"></p>
-            <button onclick="confirmarPago()" style="background: #00ffcc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; width: 100%;">Proceder a pagar</button>
+            <button onclick="confirmarPago()" style="background: #00ffcc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">Proceder a pagar</button>
         </div>
         <button onclick="cancelar()" style="margin-top: 20px; background: none; color: #666; border: none; cursor: pointer;">Cancelar</button>
     </section>
@@ -58,41 +64,45 @@
     <script>
         const API_BASE = 'http://localhost:3001/api';
 
-        // Funciones recuperadas
-        function toggleMenu(e) { document.getElementById("menuOpciones").classList.toggle("mostrar"); }
-        function cambiarTema(t) { document.body.className = t === 'claro' ? 'light-mode' : ''; }
-        function toggleSonido() { alert("Sonido alternado"); }
-        function mostrarConfirmacion(metodo) { 
-            document.getElementById('barra-confirmacion').style.display = 'block'; 
-            document.getElementById('info-curso-seleccionado').innerText = `Pago vía ${metodo}`;
-            window.metodoSeleccionado = metodo;
-        }
-        
         async function cargarCursos() {
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
                 const grid = document.getElementById('grid-cursos');
                 grid.innerHTML = '';
-                if(data.estado === 'éxito') {
-                    data.datos.forEach(c => {
-                        grid.innerHTML += `<div class="tarjeta-curso"><h4>${c.nombre}</h4><button onclick="abrirPago('${c.nombre}', ${c.precio})">Comprar</button></div>`;
+                
+                if (data.estado === 'éxito') {
+                    data.datos.forEach(curso => {
+                        const tarjeta = document.createElement('div');
+                        tarjeta.className = 'tarjeta-curso';
+                        // MODIFICACIÓN DEFINITIVA: Ruta absoluta desde la raíz del servidor
+                        tarjeta.innerHTML = `
+                            <div class="imagen-curso">
+                                <span class="badge-precio">$${curso.precio}</span>
+                                <img src="/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
+                            </div>
+                            <div class="info-curso">
+                                <h4>${curso.nombre}</h4>
+                                <p>${curso.descripcion}</p>
+                                <button onclick="abrirPago('${curso.nombre}', '${curso.precio}')" class="btn-enlace">Comprar</button>
+                            </div>
+                        `;
+                        grid.appendChild(tarjeta);
                     });
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { 
+                console.error('Error al cargar cursos:', e); 
+                document.getElementById('grid-cursos').innerHTML = '<p>Error al conectar con la base de datos.</p>';
+            }
         }
 
-        function abrirPago(nombre, precio) { 
-            document.getElementById('contenido-principal').style.display = 'none'; 
-            document.getElementById('pantalla-pago').style.display = 'flex'; 
-        }
-        function cancelar() { 
-            document.getElementById('contenido-principal').style.display = 'block'; 
-            document.getElementById('pantalla-pago').style.display = 'none'; 
-        }
-        function confirmarPago() { alert("Pago procesado"); location.reload(); }
-
-        window.onload = cargarCursos;
+        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
+        function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
+        function abrirPago(nombre, precio) { window.cursoSeleccionado = { nombre, precio }; document.getElementById('contenido-principal').style.display = 'none'; document.getElementById('pantalla-pago').style.display = 'flex'; }
+        function cancelar() { document.getElementById('contenido-principal').style.display = 'block'; document.getElementById('pantalla-pago').style.display = 'none'; }
+        function confirmarPago() { alert("Redirigiendo..."); location.reload(); }
+        
+        window.addEventListener('DOMContentLoaded', cargarCursos);
     </script>
 </body>
 </html>
