@@ -47,42 +47,22 @@
         </footer>
     </div>
 
-    <section id="pantalla-pago" class="pantalla-pago-full">
+    <section id="pantalla-pago" class="pantalla-pago-full" style="display:none;">
         <h2 style="margin-bottom: 10px;">Selecciona tu método de pago</h2>
-        <p style="color: #888; margin-bottom: 30px;">Estaremos encantados de que compres nuestros cursos.</p>
-        
         <div class="contenedor-tarjetas">
-            <div class="tarjeta-pago" onclick="mostrarConfirmacion('BAC / BANPRO / LAFISE')">
-                <h3>🏦</h3>
-                <p>BAC / BANPRO / LAFISE</p>
-            </div>
-            <div class="tarjeta-pago" onclick="mostrarConfirmacion('Western Union')">
-                <h3>🌎</h3>
-                <p>Western Union</p>
-            </div>
-            <div class="tarjeta-pago" onclick="mostrarConfirmacion('PayPal')">
-                <h3>💳</h3>
-                <p>PayPal</p>
-            </div>
+            <div class="tarjeta-pago" onclick="mostrarConfirmacion('Banco')"><h3>🏦</h3><p>Bancos</p></div>
+            <div class="tarjeta-pago" onclick="mostrarConfirmacion('Western Union')"><h3>🌎</h3><p>Western Union</p></div>
+            <div class="tarjeta-pago" onclick="mostrarConfirmacion('PayPal')"><h3>💳</h3><p>PayPal</p></div>
         </div>
-
-        <div id="barra-confirmacion" style="display: none; margin-top: 40px; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border: 1px solid #5a0f96; width: 300px; text-align: center;">
-            <p id="info-curso-seleccionado" style="font-size: 0.9em; margin-bottom: 15px; color: white;"></p>
+        <div id="barra-confirmacion" style="display: none; margin-top: 40px; padding: 20px; border: 1px solid #5a0f96; border-radius: 12px; width: 300px; text-align: center;">
+            <p id="info-curso-seleccionado"></p>
             <button onclick="confirmarPago()" style="background: #00ffcc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%;">Proceder a pagar</button>
         </div>
-
-        <button onclick="cancelar()" style="margin-top: 20px; background: none; border: none; color: #666; cursor: pointer;">Cancelar</button>
+        <button onclick="cancelar()" style="margin-top: 20px; background: none; color: #666; border: none; cursor: pointer;">Cancelar</button>
     </section>
 
     <script>
-        let sonidoActivo = true;
-        let metodoActual = "";
         const API_BASE = 'http://localhost:3001/api';
-
-        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
-        function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
-        function toggleSonido() { sonidoActivo = !sonidoActivo; document.getElementById("btnSonido").innerText = sonidoActivo ? "🔊 Sonido: ON" : "🔇 Sonido: OFF"; }
-        function cerrarSesion() { localStorage.removeItem('token'); localStorage.removeItem('usuarioLogueado'); location.reload(); }
 
         async function cargarCursos() {
             try {
@@ -90,14 +70,16 @@
                 const data = await res.json();
                 const grid = document.getElementById('grid-cursos');
                 grid.innerHTML = '';
+                
                 if (data.estado === 'éxito') {
-                    data.datos.slice(0, 4).forEach(curso => {
+                    data.datos.forEach(curso => {
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
+                        // MODIFICACIÓN: Se añade un manejador de error a la imagen (onerror)
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
-                                <img src="${curso.imagen || 'default.jpg'}" alt="${curso.nombre}">
+                                <img src="${curso.imagen}" alt="${curso.nombre}" onerror="this.onerror=null; this.src='default.jpg';">
                             </div>
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
@@ -108,40 +90,19 @@
                         grid.appendChild(tarjeta);
                     });
                 }
-            } catch (e) { console.error('Error:', e); }
-        }
-
-        function abrirPago(nombre, precio) {
-            window.cursoSeleccionado = { nombre, precio };
-            document.getElementById('contenido-principal').style.display = 'none';
-            document.getElementById('pantalla-pago').style.display = 'flex';
-            document.getElementById('barra-confirmacion').style.display = 'none';
-        }
-
-        function mostrarConfirmacion(metodo) {
-            metodoActual = metodo;
-            document.getElementById('info-curso-seleccionado').innerHTML = 
-                `<b>Curso:</b> ${window.cursoSeleccionado.nombre}<br><b>Precio:</b> $${window.cursoSeleccionado.precio}<br><b>Método:</b> ${metodo}`;
-            document.getElementById('barra-confirmacion').style.display = 'block';
-        }
-
-        function confirmarPago() {
-            alert("Redirigiendo a " + metodoActual + "...");
-            location.reload();
-        }
-
-        function cancelar() {
-            document.getElementById('contenido-principal').style.display = 'block';
-            document.getElementById('pantalla-pago').style.display = 'none';
-        }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            cargarCursos();
-            if (localStorage.getItem('usuarioLogueado')) {
-                document.getElementById('btnLogin').style.display = 'none';
-                document.getElementById('btnLogout').style.display = 'block';
+            } catch (e) { 
+                console.error('Error al cargar cursos:', e); 
+                document.getElementById('grid-cursos').innerHTML = '<p>Error al conectar con la base de datos.</p>';
             }
-        });
+        }
+
+        // Funciones auxiliares
+        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
+        function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
+        function abrirPago(nombre, precio) { window.cursoSeleccionado = { nombre, precio }; document.getElementById('contenido-principal').style.display = 'none'; document.getElementById('pantalla-pago').style.display = 'flex'; }
+        function cancelar() { document.getElementById('contenido-principal').style.display = 'block'; document.getElementById('pantalla-pago').style.display = 'none'; }
+        
+        window.addEventListener('DOMContentLoaded', cargarCursos);
     </script>
 </body>
 </html>
