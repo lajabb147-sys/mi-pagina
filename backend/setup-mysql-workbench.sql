@@ -1,4 +1,4 @@
--- 1. Limpieza total de la base de datos
+-- 1. Limpieza total de la base de datos para evitar errores y duplicados
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS inscripciones;
 DROP TABLE IF EXISTS cursos;
@@ -9,7 +9,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 CREATE TABLE usuarios (
   id INT PRIMARY KEY AUTO_INCREMENT,
   email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL
+  password VARCHAR(255) NOT NULL,
+  activo BOOLEAN DEFAULT TRUE,
+  nombre VARCHAR(100)
 );
 
 -- 3. Creación de tabla cursos
@@ -24,14 +26,13 @@ CREATE TABLE cursos (
 -- 4. Creación de tabla inscripciones
 CREATE TABLE inscripciones (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  usuario_id INT NOT NULL,
-  curso_id INT NOT NULL,
-  fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-  FOREIGN KEY (curso_id) REFERENCES cursos(id)
+  correo_usuario VARCHAR(100),
+  curso_nombre VARCHAR(150),
+  metodo_pago VARCHAR(50),
+  fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 5. Inserción de datos (Alineados con tus nombres de archivo)
+-- 5. Inserción de datos iniciales
 INSERT INTO cursos (id, nombre, descripcion, precio, imagen) VALUES 
 (1, 'Lineart Minimalista', 'El poder de la simplicidad.', 25.00, 'minimalista_curso.jpg'), 
 (2, 'Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad.', 49.99, 'realismo_curso.jpg'), 

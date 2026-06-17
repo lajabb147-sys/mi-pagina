@@ -12,8 +12,8 @@
             <button class="btn-icon" onclick="toggleMenu(event)">⚙️</button>
             <div id="menuOpciones" class="menu-desplegable">
                 <span class="menu-titulo">Visual</span>
-                <button onclick="cambiarTema('oscuro')">🌙 Modo Oscuro</button>
                 <button onclick="cambiarTema('claro')">☀️ Modo Claro</button>
+                <button onclick="cambiarTema('oscuro')">🌙 Modo Oscuro</button>
                 <hr class="menu-separador">
                 <span class="menu-titulo">Audio</span>
                 <button onclick="toggleSonido()" id="btnSonido">🔊 Sonido: ON</button>
@@ -62,7 +62,7 @@
     </section>
 
     <script>
-         const API_BASE = 'http://localhost:3001/api';
+        const API_BASE = 'http://localhost:3001/api';
 
         async function cargarCursos() {
             const grid = document.getElementById('grid-cursos');
@@ -78,7 +78,7 @@
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
-                                <img src="/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
+                                <img src="Java/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
                             </div>
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
@@ -97,7 +97,6 @@
             }
         }
 
-        // --- FUNCIONES DE CONTROL ---
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
         function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
         
@@ -122,7 +121,7 @@
         }
 
         function confirmarPago() { 
-            alert("Redirigiendo al pago de: " + window.cursoSeleccionado.nombre); 
+            alert("Redirigiendo..."); 
             location.reload(); 
         }
         
