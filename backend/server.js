@@ -1,4 +1,31 @@
-// Importar dependencias
+const path = require('path');
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+require('dotenv').config({ path: path.resolve(__dirname, '.env') });
+
+const conexion = require('./config/conexion');
+
+const app = express();
+
+// Middlewares
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// --- ESTO ES LO QUE ESTABA MAL Y AHORA ESTÁ ARREGLADO ---
+// 1. Ruta para que las imágenes se vean (404 resuelto)
+app.use('/Java', express.static(path.join(__dirname, 'Java')));
+
+// 2. Sirve tus archivos (HTML, CSS, JS) sin redirecciones raras
+app.use(express.static(__dirname));
+
+// 3. Ruta principal directa (Elimina el bucle que te bloquea el teclado/mouse)
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// --- AQUÍ EMPIEZA TU CÓDIGO DE SIEMPRE --- // Importar dependencias
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
