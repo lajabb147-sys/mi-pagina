@@ -77,15 +77,20 @@ function mostrarAlerta(mensaje, tipo = 'info') {
   if (!alertBox) return;
   alertBox.textContent = mensaje;
   alertBox.hidden = false;
+  
+  // Detección de modo claro
+  const isLight = document.body.classList.contains('light-mode');
+
   if (tipo === 'error') {
     alertBox.style.background = 'rgba(255, 93, 120, 0.12)';
     alertBox.style.border = '1px solid rgba(255, 93, 120, 0.3)';
-    alertBox.style.color = '#ffdfe3';
+    alertBox.style.color = isLight ? '#8b0000' : '#ffdfe3';
   } else {
     alertBox.style.background = 'rgba(0, 229, 193, 0.12)';
     alertBox.style.border = '1px solid rgba(0, 229, 193, 0.25)';
-    alertBox.style.color = '#d4f7eb';
+    alertBox.style.color = isLight ? '#004d40' : '#d4f7eb';
   }
+  
   setTimeout(() => { if (alertBox) alertBox.hidden = true; }, 6000);
 }
 
