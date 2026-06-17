@@ -451,15 +451,6 @@ body.light-mode .payment-card:hover {
 body.light-mode .payment-card h3, 
 body.light-mode .payment-card p {
     color: #2d2d4a; /
+
 }
 
-/* Esto mata cualquier efecto hover existente en el modo claro */
-body.light-mode .payment-card:hover {
-    background-color: #d1d1d6 !important;
-    border-color: #a0a0a5 !important;
-}
-
-body.light-mode .payment-card:hover * {
-    color: #4a4060 !important;
-    background: transparent !important; /* Asegura que el texto no herede fondos */
-}
