@@ -1,4 +1,4 @@
--- 1. Limpieza radical
+-- 1. Limpieza total de la base de datos
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS inscripciones;
 DROP TABLE IF EXISTS cursos;
@@ -12,7 +12,7 @@ CREATE TABLE usuarios (
   password VARCHAR(255) NOT NULL
 );
 
--- 3. Creación de tabla cursos CON COLUMNA IMAGEN
+-- 3. Creación de tabla cursos (con columna imagen integrada)
 CREATE TABLE cursos (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(150) UNIQUE NOT NULL,
@@ -21,14 +21,7 @@ CREATE TABLE cursos (
   imagen VARCHAR(255)
 );
 
--- 4. Inserción con los nombres exactos de tus archivos
-INSERT INTO cursos (id, nombre, descripcion, precio, imagen) VALUES 
-(1, 'Lineart Minimalista', 'El poder de la simplicidad.', 25.00, 'minimalista_curso.jpg'), 
-(2, 'Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad.', 49.99, 'realismo_curso.jpg'), 
-(3, 'Manga y Anime Profesional', 'Diseño de personajes impactantes.', 39.99, 'manga_curso.jpg'), 
-(4, 'Ilustración Digital', 'Dominio de tablet y software.', 35.00, 'digital_curso.jpg');
-
--- 5. Tabla de Inscripciones
+-- 4. Creación de tabla inscripciones
 CREATE TABLE inscripciones (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT NOT NULL,
@@ -38,5 +31,9 @@ CREATE TABLE inscripciones (
   FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );
 
--- 6. Consulta de verificación
-SELECT id, nombre, imagen FROM cursos ORDER BY id ASC;
+-- 5. Inserción de datos (Los nombres de las imágenes deben coincidir con tus archivos)
+INSERT INTO cursos (id, nombre, descripcion, precio, imagen) VALUES 
+(1, 'Lineart Minimalista', 'El poder de la simplicidad.', 25.00, 'minimalista_curso.jpg'), 
+(2, 'Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad.', 49.99, 'realismo_curso.jpg'), 
+(3, 'Manga y Anime Profesional', 'Diseño de personajes impactantes.', 39.99, 'manga_curso.jpg'), 
+(4, 'Ilustración Digital', 'Dominio de tablet y software.', 35.00, 'digital_curso.jpg');

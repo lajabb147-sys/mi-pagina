@@ -1,56 +1,39 @@
--- Setup de MySQL para Zensei Art Academy
--- Ejecuta este script en MySQL Workbench con tu usuario root.
+-- 1. Limpieza total de la base de datos
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS inscripciones;
+DROP TABLE IF EXISTS cursos;
+DROP TABLE IF EXISTS usuarios;
+SET FOREIGN_KEY_CHECKS = 1;
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'laja123';
-FLUSH PRIVILEGES;
-
-CREATE DATABASE IF NOT EXISTS zensei_academy;
-USE zensei_academy;
-
-CREATE USER IF NOT EXISTS 'zensei'@'localhost' IDENTIFIED BY 'laja123';
-GRANT ALL PRIVILEGES ON zensei_academy.* TO 'zensei'@'localhost';
-FLUSH PRIVILEGES;
-
-CREATE TABLE IF NOT EXISTS usuarios (
+-- 2. Creación de tabla usuarios
+CREATE TABLE usuarios (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  nombre VARCHAR(100) NOT NULL,
   email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  activo BOOLEAN DEFAULT TRUE
+  password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS cursos (
+-- 3. Creación de tabla cursos (con columna imagen integrada)
+CREATE TABLE cursos (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  nombre VARCHAR(150) NOT NULL,
-  descripcion TEXT NOT NULL,
-  precio DECIMAL(10, 2) NOT NULL,
-  imagen VARCHAR(255),
-  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  activo BOOLEAN DEFAULT TRUE
+  nombre VARCHAR(150) UNIQUE NOT NULL,
+  descripcion TEXT,
+  precio DECIMAL(10, 2),
+  imagen VARCHAR(255)
 );
 
-CREATE TABLE IF NOT EXISTS inscripciones (
+-- 4. Creación de tabla inscripciones
+CREATE TABLE inscripciones (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT NOT NULL,
   curso_id INT NOT NULL,
   fecha_inscripcion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  estado ENUM('activo', 'completado', 'cancelado') DEFAULT 'activo',
   FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
   FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );
 
-CREATE TABLE IF NOT EXISTS notificaciones (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  usuario_id INT NOT NULL,
-  tipo VARCHAR(50) NOT NULL,
-  mensaje TEXT NOT NULL,
-  leida BOOLEAN DEFAULT FALSE,
-  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-
-INSERT IGNORE INTO cursos (nombre, descripcion, precio, imagen) VALUES
-('Lineart Minimalista', 'El poder de la simplicidad. Aprende a definir figuras completas, rostros y conceptos usando trazos puros, limpios y continuos.', 25.00, 'minimalista_curso.jpg'),
-('Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad. Técnicas avanzadas de sombreado, volumen y texturas extremas que imitan una fotografía.', 49.99, 'realismo_curso.jpg'),
-('Manga y Anime Profesional', 'Diseño de personajes con fisonomía japonesa, expresiones impactantes, ojos expresivos y estructura dinámica de viñetas.', 39.99, 'manga_curso.jpg');
+-- 5. Inserción de datos (Los nombres de las imágenes deben coincidir con tus archivos)
+INSERT INTO cursos (id, nombre, descripcion, precio, imagen) VALUES 
+(1, 'Lineart Minimalista', 'El poder de la simplicidad.', 25.00, 'minimalista_curso.jpg'), 
+(2, 'Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad.', 49.99, 'realismo_curso.jpg'), 
+(3, 'Manga y Anime Profesional', 'Diseño de personajes impactantes.', 39.99, 'manga_curso.jpg'), 
+(4, 'Ilustración Digital', 'Dominio de tablet y software.', 35.00, 'digital_curso.jpg');
