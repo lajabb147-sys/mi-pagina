@@ -1,8 +1,8 @@
--- Crear base de datos
+-- Crear la base de datos
 CREATE DATABASE IF NOT EXISTS zensei_academy;
 USE zensei_academy;
 
--- Tabla de Usuarios
+-- Tabla Usuarios: EMAIL es UNIQUE (no se repite), PASSWORD en formato texto real
 CREATE TABLE IF NOT EXISTS usuarios (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(100) NOT NULL,
@@ -12,10 +12,10 @@ CREATE TABLE IF NOT EXISTS usuarios (
   activo BOOLEAN DEFAULT TRUE
 );
 
--- Tabla de Cursos
+-- Tabla Cursos: NOMBRE es UNIQUE (no se duplican los cursos)
 CREATE TABLE IF NOT EXISTS cursos (
   id INT PRIMARY KEY AUTO_INCREMENT,
-  nombre VARCHAR(150) NOT NULL,
+  nombre VARCHAR(150) UNIQUE NOT NULL,
   descripcion TEXT NOT NULL,
   precio DECIMAL(10, 2) NOT NULL,
   imagen VARCHAR(255),
@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS cursos (
   activo BOOLEAN DEFAULT TRUE
 );
 
--- Tabla de Inscripciones
+-- Tabla Inscripciones: Relaciona Usuarios y Cursos
 CREATE TABLE IF NOT EXISTS inscripciones (
   id INT PRIMARY KEY AUTO_INCREMENT,
   usuario_id INT NOT NULL,
@@ -34,25 +34,9 @@ CREATE TABLE IF NOT EXISTS inscripciones (
   FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );
 
--- Tabla de Notificaciones
-CREATE TABLE IF NOT EXISTS notificaciones (
-  id INT PRIMARY KEY AUTO_INCREMENT,
-  usuario_id INT NOT NULL,
-  tipo VARCHAR(50) NOT NULL,
-  mensaje TEXT NOT NULL,
-  leida BOOLEAN DEFAULT FALSE,
-  fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-
--- Datos de ejemplo para Cursos
-INSERT INTO cursos (nombre, descripcion, precio, imagen) VALUES
-('Lineart Minimalista', 'El poder de la simplicidad. Aprende a definir figuras completas, rostros y conceptos usando trazos puros, limpios y continuos.', 25.00, 'minimalista_curso.jpg'),
-('Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad. Técnicas avanzadas de sombreado, volumen y texturas extremas que imitan una fotografía.', 49.99, 'realismo_curso.jpg'),
-('Manga y Anime Profesional', 'Diseño de personajes con fisonomía japonesa, expresiones impactantes, ojos expresivos y estructura dinámica de viñetas.', 39.99, 'manga_curso.jpg');
-
--- Crear índices para optimizar búsquedas
-CREATE INDEX idx_usuario_email ON usuarios(email);
-CREATE INDEX idx_inscripcion_usuario ON inscripciones(usuario_id);
-CREATE INDEX idx_inscripcion_curso ON inscripciones(curso_id);
-CREATE INDEX idx_notificacion_usuario ON notificaciones(usuario_id);
+-- Insertar cursos de forma segura (IGNORE evita errores si ya existen)
+INSERT IGNORE INTO cursos (nombre, descripcion, precio, imagen) VALUES
+('Lineart Minimalista', 'El poder de la simplicidad. Aprende a definir figuras completas.', 25.00, 'minimalista_curso.jpg'),
+('Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad.', 49.99, 'realismo_curso.jpg'),
+('Manga y Anime Profesional', 'Diseño de personajes con fisonomía japonesa.', 39.99, 'manga_curso.jpg'),
+('Ilustración Digital', 'Dominio de tablet y software.', 35.00, 'digital_curso.jpg');
