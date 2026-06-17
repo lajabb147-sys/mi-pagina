@@ -65,21 +65,22 @@
         const API_BASE = 'http://localhost:3001/api';
 
         async function cargarCursos() {
+            const grid = document.getElementById('grid-cursos');
             try {
                 const res = await fetch(`${API_BASE}/cursos`);
                 const data = await res.json();
-                const grid = document.getElementById('grid-cursos');
+                
+                // Limpiar mensaje de carga
                 grid.innerHTML = '';
                 
-                if (data.estado === 'éxito') {
+                if (data && data.estado === 'éxito') {
                     data.datos.forEach(curso => {
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        // MODIFICACIÓN DEFINITIVA: Ruta absoluta desde la raíz del servidor
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
-                                <img src="/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
+                                <img src="/Java/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
                             </div>
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
@@ -89,17 +90,26 @@
                         `;
                         grid.appendChild(tarjeta);
                     });
+                } else {
+                    grid.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
                 }
             } catch (e) { 
                 console.error('Error al cargar cursos:', e); 
-                document.getElementById('grid-cursos').innerHTML = '<p>Error al conectar con la base de datos.</p>';
+                grid.innerHTML = '<p>Error al conectar con el servidor.</p>';
             }
         }
 
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
         function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
-        function abrirPago(nombre, precio) { window.cursoSeleccionado = { nombre, precio }; document.getElementById('contenido-principal').style.display = 'none'; document.getElementById('pantalla-pago').style.display = 'flex'; }
-        function cancelar() { document.getElementById('contenido-principal').style.display = 'block'; document.getElementById('pantalla-pago').style.display = 'none'; }
+        function abrirPago(nombre, precio) { 
+            window.cursoSeleccionado = { nombre, precio }; 
+            document.getElementById('contenido-principal').style.display = 'none'; 
+            document.getElementById('pantalla-pago').style.display = 'flex'; 
+        }
+        function cancelar() { 
+            document.getElementById('contenido-principal').style.display = 'block'; 
+            document.getElementById('pantalla-pago').style.display = 'none'; 
+        }
         function confirmarPago() { alert("Redirigiendo..."); location.reload(); }
         
         window.addEventListener('DOMContentLoaded', cargarCursos);
