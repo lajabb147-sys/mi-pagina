@@ -57,16 +57,21 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// --- API DE CURSOS ---
-app.get('/api/cursos', async (req, res) => {
-    try {
-        const connection = await conexion.getConnection();
-        const [cursos] = await connection.query('SELECT * FROM cursos');
-        connection.release();
-        res.json({ estado: 'éxito', datos: cursos });
-    } catch (error) {
-        res.status(500).json({ estado: 'error', mensaje: 'Error al cargar cursos' });
-    }
+/// --- API DE CURSOS (Simplificada para descartar errores) ---
+app.get('/api/cursos', (req, res) => {
+    // Intentamos hacer la consulta a la BD
+    conexion.getConnection()
+        .then(connection => {
+            return connection.query('SELECT * FROM cursos')
+                .then(([results]) => {
+                    connection.release();
+                    res.json({ estado: 'éxito', datos: results });
+                });
+        })
+        .catch(error => {
+            console.error("Error BD:", error);
+            res.status(500).json({ estado: 'error', mensaje: error.message });
+        });
 });
 
 // --- API DE INSCRIPCIONES ---
