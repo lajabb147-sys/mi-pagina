@@ -79,14 +79,14 @@
                         tarjeta.className = 'tarjeta-curso';
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
-                                <span class="badge-precio">$${curso.precio}</span>
-                                <img src="/Java/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
-                            </div>
-                            <div class="info-curso">
-                                <h4>${curso.nombre}</h4>
-                                <p>${curso.descripcion}</p>
-                                <button onclick="abrirPago('${curso.nombre}', '${curso.precio}')" class="btn-enlace">Comprar</button>
-                            </div>
+    <span class="badge-precio">$${curso.precio}</span>
+    <img src="/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
+</div>
+<div class="info-curso">
+    <h4>${curso.nombre}</h4>
+    <p>${curso.descripcion}</p>
+    <button onclick="abrirPago('${curso.nombre}', '${curso.precio}')" class="btn-enlace">Comprar</button>
+</div>
                         `;
                         grid.appendChild(tarjeta);
                     });
