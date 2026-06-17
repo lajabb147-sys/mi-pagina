@@ -465,3 +465,14 @@ body.light-mode .payment-card:hover {
     background-color: #d1d1d6 !important;
     border-color: #a0a0a5 !important;
 }
+/* Especificidad ultra alta para ganar cualquier conflicto de estilo */
+body.light-mode .payment-card:hover,
+body.light-mode .payment-card:hover *,
+body.light-mode .payment-card:hover h3,
+body.light-mode .payment-card:hover p,
+body.light-mode .payment-card:hover span {
+    color: #4a4060 !important;
+    fill: #4a4060 !important;
+    background-color: #d1d1d6 !important;
+    border-color: #a0a0a5 !important;
+}
