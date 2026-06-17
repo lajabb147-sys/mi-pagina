@@ -1,51 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap');
 
 :root {
-    /* Fondo más profundo y cinematográfico */
+    
     --bg-color: #050208;
     
     --text-color: #ffffff;
     --text-muted: #cccccc;
     --text-footer: #aaaaaa;
 
-    /* Encabezado más oscuro y sobrio (sin el morado plástico) */
     --header-bg: rgba(20, 5, 30, 0.95);
     --header-shadow: rgba(0, 0, 0, 0.4);
 
-    /* Tarjetas con efecto de cristal ahumado */
-    --card-bg: rgba(255, 255, 255, 0.02);
+  --card-bg: rgba(255, 255, 255, 0.02);
     --card-hover-bg: rgba(15, 10, 25, 0.8);
     --card-border: rgba(255, 255, 255, 0.05);
 
-    /* Degradados más suaves y elegantes */
+    
     --banner-gradient-1: rgba(30, 5, 50, 0.4);
     --banner-gradient-2: rgba(5, 2, 8, 0.95);
 
     --footer-bg: rgba(255, 255, 255, 0.01);
     --footer-border: rgba(255, 255, 255, 0.03);
 
-    /* Tus acentos brillantes que ahora resaltarán más */
+    
     --accent-color: #00ffcc;
     --accent-purple: #e0b0ff;
 }
 
 
 body.light-mode {
-    --bg-color: #f5f0fa;
+    
+    --bg-color: #f0f0f5; 
     --text-color: #1a0f30;
     --text-muted: #4a3e56;
     --text-footer: #5a4b66;
-    --header-bg: rgba(56, 7, 92, 0.9);
-    --header-shadow: rgba(120, 40, 180, 0.3);
-    --card-bg: rgba(255, 255, 255, 0.8);
+
+    --header-bg: rgba(60, 20, 100, 0.9);
+    --header-shadow: rgba(60, 20, 100, 0.2);
+
+    --card-bg: rgba(255, 255, 255, 0.95);
     --card-hover-bg: #ffffff;
-    --card-border: rgba(120, 40, 180, 0.15);
-    --banner-gradient-1: rgba(120, 40, 180, 0.1);
-    --banner-gradient-2: rgba(255, 255, 255, 0.8);
-    --footer-bg: rgba(120, 40, 180, 0.05);
-    --footer-border: rgba(120, 40, 180, 0.1);
-    --accent-color: #1b9078; 
+    --card-border: rgba(60, 20, 100, 0.1);
+
+    --banner-gradient-1: rgba(60, 20, 100, 0.05);
+    --banner-gradient-2: #e0dcf0;
+
+    --footer-bg: rgba(60, 20, 100, 0.05);
+    --footer-border: rgba(60, 20, 100, 0.1);
+
+    --accent-color: #1b9078;
 }
+
 
 * {
     box-sizing: border-box;
