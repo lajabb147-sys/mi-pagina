@@ -75,11 +75,11 @@
                     data.datos.forEach(curso => {
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
-                        // MODIFICACIÓN: Se añade un manejador de error a la imagen (onerror)
+                        // RUTA: Usamos "./" para asegurar que busque en la carpeta actual
                         tarjeta.innerHTML = `
                             <div class="imagen-curso">
                                 <span class="badge-precio">$${curso.precio}</span>
-                                <img src="${curso.imagen}" alt="${curso.nombre}" onerror="this.onerror=null; this.src='default.jpg';">
+                                <img src="./${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
                             </div>
                             <div class="info-curso">
                                 <h4>${curso.nombre}</h4>
@@ -96,11 +96,11 @@
             }
         }
 
-        // Funciones auxiliares
         function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
         function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
         function abrirPago(nombre, precio) { window.cursoSeleccionado = { nombre, precio }; document.getElementById('contenido-principal').style.display = 'none'; document.getElementById('pantalla-pago').style.display = 'flex'; }
         function cancelar() { document.getElementById('contenido-principal').style.display = 'block'; document.getElementById('pantalla-pago').style.display = 'none'; }
+        function confirmarPago() { alert("Redirigiendo..."); location.reload(); }
         
         window.addEventListener('DOMContentLoaded', cargarCursos);
     </script>
