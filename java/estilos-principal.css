@@ -442,16 +442,21 @@ input:checked + .slider-switch::before {
     border: 2px solid #5a0f96; cursor: pointer; text-align: center;
 }
 
-/* Esto evita que las tarjetas cambien de color al pasar el mouse o al cambiar el modo */
+/* Bloqueo total: los métodos de pago no cambian de color */
 .payment-card, 
-.payment-card:hover {
-    background-color: #2b2b3a !important; /* El color oscuro que prefieras */
-    border-color: #4a4060 !important;     /* El borde que ya tenías */
+.payment-card:hover, 
+body.light-mode .payment-card, 
+body.light-mode .payment-card:hover {
+    background-color: #2b2b3a !important; /* Tu color de fondo oscuro */
+    border: 1px solid #4a4060 !important;
+    transition: none !important; /* Elimina cualquier efecto de transición */
 }
 
 .payment-card h3, 
 .payment-card p,
 .payment-card:hover h3, 
-.payment-card:hover p {
-    color: #e0e0e0 !important; /* El color de letra que siempre usas en modo oscuro */
+.payment-card:hover p,
+body.light-mode .payment-card h3, 
+body.light-mode .payment-card p {
+    color: #e0e0e0 !important; /* Color de texto claro (tipo modo oscuro) */
 }
