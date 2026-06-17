@@ -12,14 +12,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // --- CONFIGURACIÓN DE RUTAS ---
-// Servimos la carpeta 'Java' para que las imágenes sean accesibles
+// --- ARCHIVOS ESTÁTICOS ---
+// 1. Esto le dice: "Cuando el navegador pida algo que empiece por /Java, ve a buscarlo a la carpeta Java"
 app.use('/Java', express.static(path.join(__dirname, 'Java')));
-// Servir el resto de archivos estáticos (index.html, estilos, etc.)
-app.use(express.static(__dirname));
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// 2. Esto le dice: "Para todo lo demás (CSS, JS, index.html), busca en la raíz del proyecto"
+app.use(express.static(__dirname));
 
 // --- API DE CURSOS (Consulta limpia) ---
 app.get('/api/cursos', async (req, res) => {
