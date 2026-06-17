@@ -209,12 +209,14 @@ input:checked + .slider-switch::before {
     display: flex;
     flex-direction: column;
     backdrop-filter: blur(4px);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-.tarjeta-curso:hover {
-    transform: translateY(-8px);
+/* Modificación: Brillo Flotante */
+.tarjeta-curso:hover, .tarjeta-pago:hover {
+    transform: translateY(-8px) scale(1.05);
     border-color: var(--accent-color);
-    box-shadow: 0 12px 30px rgba(0, 255, 204, 0.2);
+    box-shadow: 0 0 15px var(--accent-color), inset 0 0 10px rgba(0, 255, 204, 0.2);
     background: var(--card-hover-bg);
 }
 
@@ -421,4 +423,18 @@ input:checked + .slider-switch::before {
 
 .menu-desplegable button:hover {
     background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* --- Nuevos Estilos para Pantalla de Pago --- */
+.pantalla-pago-full {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 10, 15, 0.95); z-index: 9999; justify-content: center; align-items: center;
+    flex-direction: column; color: white;
+}
+.contenedor-tarjetas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
+.tarjeta-pago {
+    width: 200px; height: 160px;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    background: #1a1a2e; padding: 20px; border-radius: 20px;
+    border: 2px solid #5a0f96; cursor: pointer; text-align: center;
 }
