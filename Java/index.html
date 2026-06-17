@@ -78,41 +78,41 @@
                         const tarjeta = document.createElement('div');
                         tarjeta.className = 'tarjeta-curso';
                         tarjeta.innerHTML = `
-                            <div class="imagen-curso">
-    <span class="badge-precio">$${curso.precio}</span>
-    <img src="/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
-</div>
-<div class="info-curso">
-    <h4>${curso.nombre}</h4>
-    <p>${curso.descripcion}</p>
-    <button onclick="abrirPago('${curso.nombre}', '${curso.precio}')" class="btn-enlace">Comprar</button>
-</div>
-                        `;
-                        grid.appendChild(tarjeta);
-                    });
-                } else {
-                    grid.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
-                }
-            } catch (e) { 
-                console.error('Error al cargar cursos:', e); 
-                grid.innerHTML = '<p>Error al conectar con el servidor.</p>';
-            }
+                    <div class="imagen-curso">
+                        <span class="badge-precio">$${curso.precio}</span>
+                        <img src="/${curso.imagen}" alt="${curso.nombre}" onerror="this.src='default.jpg';">
+                    </div>
+                    <div class="info-curso">
+                        <h4>${curso.nombre}</h4>
+                        <p>${curso.descripcion}</p>
+                        <button onclick="abrirPago('${curso.nombre}', '${curso.precio}')" class="btn-enlace">Comprar</button>
+                    </div>
+                `;
+                grid.appendChild(tarjeta);
+            });
+        } else {
+            grid.innerHTML = '<p>No se encontraron cursos disponibles.</p>';
         }
+    } catch (e) { 
+        console.error('Error al cargar cursos:', e); 
+        grid.innerHTML = '<p>Error al conectar con el servidor.</p>';
+    }
+}
 
-        function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
-        function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
-        function abrirPago(nombre, precio) { 
-            window.cursoSeleccionado = { nombre, precio }; 
-            document.getElementById('contenido-principal').style.display = 'none'; 
-            document.getElementById('pantalla-pago').style.display = 'flex'; 
-        }
-        function cancelar() { 
-            document.getElementById('contenido-principal').style.display = 'block'; 
-            document.getElementById('pantalla-pago').style.display = 'none'; 
-        }
-        function confirmarPago() { alert("Redirigiendo..."); location.reload(); }
-        
-        window.addEventListener('DOMContentLoaded', cargarCursos);
-    </script>
+function toggleMenu(event) { event.stopPropagation(); document.getElementById("menuOpciones").classList.toggle("mostrar"); }
+function cambiarTema(tipo) { document.body.classList.toggle('light-mode', tipo === 'claro'); }
+function abrirPago(nombre, precio) { 
+    window.cursoSeleccionado = { nombre, precio }; 
+    document.getElementById('contenido-principal').style.display = 'none'; 
+    document.getElementById('pantalla-pago').style.display = 'flex'; 
+}
+function cancelar() { 
+    document.getElementById('contenido-principal').style.display = 'block'; 
+    document.getElementById('pantalla-pago').style.display = 'none'; 
+}
+function confirmarPago() { alert("Redirigiendo..."); location.reload(); }
+
+window.addEventListener('DOMContentLoaded', cargarCursos);
+</script>
 </body>
 </html>
