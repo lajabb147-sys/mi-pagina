@@ -1,7 +1,3 @@
--- ==========================================================
--- SCRIPT DEFINITIVO: BASE DE DATOS ZENSEI ACADEMY
--- ==========================================================
-
 -- 1. Limpieza radical: eliminamos todo para asegurar orden 1-4
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS inscripciones;
