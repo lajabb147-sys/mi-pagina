@@ -452,3 +452,16 @@ body.light-mode .payment-card h3,
 body.light-mode .payment-card p {
     color: #2d2d4a; /
 }
+
+/* Estilo para que el texto mantenga un azul suave y legible al pasar la flecha */
+body.light-mode .payment-card:hover h3, 
+body.light-mode .payment-card:hover p {
+    color: #4a4060 !important; /* Un tono coherente con tu paleta, no tan fuerte */
+    transition: color 0.3s ease;
+}
+
+/* El fondo gris que querías para el hover */
+body.light-mode .payment-card:hover {
+    background-color: #d1d1d6 !important;
+    border-color: #a0a0a5 !important;
+}
