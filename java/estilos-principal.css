@@ -117,17 +117,32 @@ input:checked + .slider-switch::before { transform: translateX(22px); }
 .pantalla-pago-full { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(10, 10, 15, 0.95); z-index: 9999; justify-content: center; align-items: center; flex-direction: column; color: white; }
 .contenedor-tarjetas { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-top: 30px; }
 
-/* REGLAS PARA MANTENER TAMAÑO Y COLOR FIJO EN TARJETAS DE PAGO */
+/* FIX FINAL: Estilo para tarjetas de pago */
 .tarjeta-pago {
-    width: 200px !important;
-    height: 160px !important;
-    background: #1a1a2e !important;
+    width: 240px !important;
+    height: 180px !important;
+    background-color: #1a1a2e !important;
     border: 2px solid #5a0f96 !important;
     color: #ffffff !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px !important;
+    border-radius: 20px !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+}
+
+.tarjeta-pago h3, 
+.tarjeta-pago p {
+    color: #ffffff !important;
+    margin: 10px 0 0 0 !important;
+    font-size: 1.1em !important;
 }
 
 .tarjeta-pago:hover {
-    transform: none !important;
-    background: #1a1a2e !important;
-    border-color: #5a0f96 !important;
+    border-color: #00ffcc !important;
+    transform: translateY(-5px) !important;
 }
