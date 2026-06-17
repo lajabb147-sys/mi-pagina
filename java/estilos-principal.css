@@ -441,3 +441,14 @@ input:checked + .slider-switch::before {
     background: #1a1a2e; padding: 20px; border-radius: 20px;
     border: 2px solid #5a0f96; cursor: pointer; text-align: center;
 }
+
+body.light-mode .payment-card:hover {
+    background-color: #d1d1d6; 
+    border-color: #a0a0a5;
+    transition: background-color 0.3s ease; 
+} 
+
+body.light-mode .payment-card h3, 
+body.light-mode .payment-card p {
+    color: #2d2d4a; /
+}
