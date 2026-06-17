@@ -12,7 +12,7 @@ CREATE TABLE usuarios (
   password VARCHAR(255) NOT NULL
 );
 
--- 3. Creación de tabla cursos (con columna imagen integrada)
+-- 3. Creación de tabla cursos
 CREATE TABLE cursos (
   id INT PRIMARY KEY AUTO_INCREMENT,
   nombre VARCHAR(150) UNIQUE NOT NULL,
@@ -31,7 +31,7 @@ CREATE TABLE inscripciones (
   FOREIGN KEY (curso_id) REFERENCES cursos(id)
 );
 
--- 5. Inserción de datos (Los nombres de las imágenes deben coincidir con tus archivos)
+-- 5. Inserción de datos (Alineados con tus nombres de archivo)
 INSERT INTO cursos (id, nombre, descripcion, precio, imagen) VALUES 
 (1, 'Lineart Minimalista', 'El poder de la simplicidad.', 25.00, 'minimalista_curso.jpg'), 
 (2, 'Realismo e Hiperrealismo', 'Domina el arte de capturar la realidad.', 49.99, 'realismo_curso.jpg'), 
